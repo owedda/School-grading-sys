@@ -4,45 +4,80 @@ declare(strict_types=1);
 
 namespace App\Repositories\UserLesson;
 
-use App\Collections\DataCollection;
-use App\DTO\UserLessonsDTO;
 use App\Models\Lesson;
 use App\Models\UserLesson;
+use App\Repositories\Lesson\LessonRepository;
+use App\Service\Grading\Collections\DataCollection;
+use App\Service\Grading\DataModel\LessonModel;
+use App\Service\Grading\DataModel\UserLessonModel;
+use App\Service\Grading\DTO\AttendingLessonDTO;
+use App\Service\Grading\Interfaces\TransformerInterface;
+use App\Service\Grading\Transformers\LessonTransformer;
+use App\Service\Grading\Transformers\UserLessonTransformer;
 use Illuminate\Http\Request;
 
-class UserLessonRepository implements UserLessonRepositoryInterface
+final class UserLessonRepository implements UserLessonRepositoryInterface
 {
-    public function __construct(private readonly UserLesson $userLesson, private readonly Lesson $lesson)
-    {
+    public function __construct(
+        private readonly UserLesson $userLesson,
+        private readonly UserLessonTransformer $userLessontransformer,
+        private readonly LessonRepository $lessonRepository
+    ) {
     }
 
-    public function getAllLessonsCollectionWithAssignedStudentsOrNull(Request $request): DataCollection
+    public function getAllAttendingLessonsDTO(Request $request): DataCollection
     {
-        $userId = $request->input('user_id');
+        $userIdFromRequest = $request->input('user_id');
+        $arrayUserLessons = $this->userLesson::where('user_id', $userIdFromRequest)->with('lessons')->get()->toArray();
 
-        $collectionAllLessons = new DataCollection($this->lesson->all()->toArray());
+        $collectionAttendingLessonDTO = new DataCollection();
+        $collectionUserHaveLessons = $this->userLessontransformer->transformToCollection($arrayUserLessons);
+        $collectionAllLessons = $this->lessonRepository->getAllLessons();
 
-        $userLessonsArray = $this->userLesson::where('user_id', $userId)->with('lessons')->get()->toArray();
-        $collectionHaveLessons = new DataCollection($userLessonsArray);
-
-        $collectionLessonsWithAssignedStudentsOrNull = new DataCollection();
-
-        foreach ($collectionAllLessons as $value)
-        {
-            $this->addToLessonsCollection($collectionHaveLessons, $value, $collectionLessonsWithAssignedStudentsOrNull);
+        foreach ($collectionAllLessons as $lesson) {
+            $collectionAttendingLessonDTO->add($this->getAttendingLessonDTO($collectionUserHaveLessons, $lesson));
         }
 
-        return $collectionLessonsWithAssignedStudentsOrNull;
+        return $collectionAttendingLessonDTO;
     }
 
-    private function addToLessonsCollection(DataCollection $collectionHaveLessons, $value, DataCollection $collectionLessonsWithAssignedStudentsOrNull): void
-    {
-        $item = $collectionHaveLessons->firstWhere('lesson_id', $value['id']);
+    private function getAttendingLessonDTO(
+        DataCollection $collectionUserHaveLessons,
+        LessonModel $lesson
+    ): AttendingLessonDTO {
 
-        if (is_null($item) === false) {
-            $collectionLessonsWithAssignedStudentsOrNull->add(new UserLessonsDTO($value['id'], $value['name'], true, $item['id']));
-        } else {
-            $collectionLessonsWithAssignedStudentsOrNull->add(new UserLessonsDTO($value['id'], $value['name'], false));
+        $item = $this->filterIfUserAttendsConcreteLessonElseNull($collectionUserHaveLessons, $lesson);
+
+        if (is_null($item)) {
+            return new AttendingLessonDTO($lesson->getId(), $lesson->getName(), false);
         }
+        return new AttendingLessonDTO($lesson->getId(), $lesson->getName(), true, $item->getId());
+    }
+
+    private function filterIfUserAttendsConcreteLessonElseNull(
+        DataCollection $collectionUserHaveLessons,
+        LessonModel $lesson
+    ): ?UserLessonModel {
+
+        foreach ($collectionUserHaveLessons as $key => $userLesson) {
+            if ($userLesson->getLessonId() === $lesson->getId()) {
+                return $userLesson;
+            }
+        }
+
+        return null;
+    }
+
+    public function deleteElementById(string $userLessonId): void
+    {
+        $this->userLesson->destroy($userLessonId);
+    }
+
+    public function save(Request $request): void
+    {
+        $userLesson = new UserLesson();
+        $userLesson->user_id = $request->input('user_id');
+        $userLesson->lesson_id = $request->input('$lesson_id');
+        $userLesson->save();
     }
 }

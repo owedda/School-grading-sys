@@ -2,8 +2,8 @@
 
 return [
     'userManagement' => [
-        'title'          => 'User management',
-        'title_singular' => 'User management',
+        'title'          => 'UserModel management',
+        'title_singular' => 'UserModel management',
     ],
     'permission'     => [
         'title'          => 'Permissions',
@@ -41,7 +41,7 @@ return [
     ],
     'user'           => [
         'title'          => 'Users',
-        'title_singular' => 'User',
+        'title_singular' => 'UserModel',
         'fields'         => [
             'id'                       => 'ID',
             'username'                 => 'Username',
@@ -140,7 +140,7 @@ return [
             'deleted_at_helper' => '',
             'team'              => 'Team',
             'team_helper'       => '',
-            'user'              => 'User',
+            'user'              => 'UserModel',
             'user_helper'       => '',
         ],
     ],

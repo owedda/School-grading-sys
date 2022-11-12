@@ -40,23 +40,23 @@
                     @foreach($users as $key => $user)
                         <tr>
                             <td>
-                                {{ $user['username'] ?? '' }}
+                                {{ $user->getUsername() ?? '' }}
                             </td>
                             <td>
-                                {{ $user['name'] ?? '' }}
+                                {{ $user->getName() ?? '' }}
                             </td>
                             <td>
-                                {{ $user['last_name'] ?? '' }}
+                                {{ $user->getLastName() ?? '' }}
                             </td>
                             <td>
-                                {{ $user['email'] ?? '' }}
+                                {{ $user->getEmail() ?? '' }}
                             </td>
                             <td>
-                                <a class="btn btn-xs btn-info" href="{{ route('userLessons.index', ['user_id'=>$user['id']]) }}">
+                                <a class="btn btn-xs btn-info" href="{{ route('userLessons.index', ['user_id'=>$user->getId()]) }}">
                                     {{ __('global.add_to_lesson') }}
                                 </a>
 
-                                <form action="{{ route('users.destroy', $user['id']) }}" method="POST" onsubmit="return confirm('{{ __('global.areYouSure') }}');" style="display: inline-block;">
+                                <form action="{{ route('users.destroy', $user->getId()) }}" method="POST" onsubmit="return confirm('{{ __('global.areYouSure') }}');" style="display: inline-block;">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="submit" class="btn btn-xs btn-danger" value="{{ __('global.delete') }}">
@@ -83,7 +83,7 @@
                 order: [[ 1, 'desc' ]],
                 pageLength: 100,
             });
-            $('.datatable-User:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+            $('.datatable-UserModel:not(.ajaxTable)').DataTable({ buttons: dtButtons })
             $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
                 $($.fn.dataTable.tables(true)).DataTable()
                     .columns.adjust();

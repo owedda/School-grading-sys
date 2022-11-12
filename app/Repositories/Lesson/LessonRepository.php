@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Repositories\Lesson;
 
-use App\Collections\DataCollection;
 use App\Models\Lesson;
+use App\Service\Grading\Collections\DataCollection;
+use App\Service\Grading\Transformers\LessonTransformer;
 
-class LessonRepository
+final class LessonRepository implements LessonRepositoryInterface
 {
-    public function __construct(private readonly Lesson $lesson)
+    public function __construct(private readonly Lesson $lesson, private readonly LessonTransformer $lessonTransformer)
     {
     }
 
     public function getAllLessons(): DataCollection
     {
-        return new DataCollection($this->lesson->all()->toArray());
+        return $this->lessonTransformer->transformToCollection($this->lesson->all()->toArray());
     }
 }

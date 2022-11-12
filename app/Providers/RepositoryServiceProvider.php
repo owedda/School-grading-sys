@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Lesson\LessonRepository;
+use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\User\UserRepository;
 use App\Repositories\UserLesson\UserLessonRepository;
@@ -14,6 +16,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(UserLessonRepositoryInterface::class, UserLessonRepository::class);
+        $this->app->bind(LessonRepositoryInterface::class, LessonRepository::class);
     }
 
     public function boot(): void

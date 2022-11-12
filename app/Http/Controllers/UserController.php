@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\UserType;
 use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+final class UserController extends Controller
 {
     public function __construct(private readonly UserRepositoryInterface $userRepository)
     {
@@ -26,15 +26,16 @@ class UserController extends Controller
         return view('students.create');
     }
 
+    //TODO: make own requests
     public function store(Request $request)
     {
         $this->userRepository->storeStudent($request);
         return view('students.create');
     }
 
-    public function destroy(User $user): \Illuminate\Http\RedirectResponse
+    public function destroy(string $userId): RedirectResponse
     {
-        $this->userRepository->deleteUser($user);
+        $this->userRepository->deleteById($userId);
         return back();
     }
 }

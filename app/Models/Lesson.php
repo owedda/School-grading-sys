@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use App\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\Lesson
+ * App\Models\LessonModel
  *
  * @property int $id
  * @property string $name
@@ -22,7 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Lesson extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory;
+    use HasUuids;
 
     protected $fillable = [
         'name'

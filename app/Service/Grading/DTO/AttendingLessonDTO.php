@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\DTO;
+namespace App\Service\Grading\DTO;
 
-class UserLessonsDTO
+final class AttendingLessonDTO
 {
-    public function __construct(private readonly string $lessonId,
-                                private readonly string $lessonName,
-                                private readonly bool $isInLesson,
-                                private readonly ?string $userLessonId = null)
-    {
+    public function __construct(
+        private readonly string $lessonId,
+        private readonly string $lessonName,
+        private readonly bool $isInLesson,
+        private readonly ?string $userLessonId = null
+    ) {
     }
 
     public function getLessonName(): string

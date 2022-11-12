@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\UserType;
-use App\Services\UnitEnumToArrayAdapter;
+use App\Service\UnitEnumToArrayAdapter;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

@@ -4,21 +4,25 @@ declare(strict_types=1);
 
 namespace App\Repositories\User;
 
-use App\Collections\DataCollection;
 use App\Models\User;
 use App\Models\UserType;
+use App\Service\Grading\Collections\DataCollection;
+use App\Service\Grading\DataModel\UserModel;
+use App\Service\Grading\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 
-class UserRepository implements UserRepositoryInterface
+final class UserRepository implements UserRepositoryInterface
 {
-    public function __construct(private readonly User $user)
-    {
+    public function __construct(
+        private readonly User $user,
+        private readonly UserTransformer $transformer
+    ) {
     }
 
     public function getAll(): DataCollection
     {
-        $users = $this->user->all()->toArray();
-        return new DataCollection($users);
+        $usersArray = $this->user->all()->toArray();
+        return $this->transformer->transformToCollection($usersArray);
     }
 
     public function storeStudent(Request $request): void
@@ -33,8 +37,13 @@ class UserRepository implements UserRepositoryInterface
         $newUser->save();
     }
 
-    public function deleteUser(User $user): void
+    public function deleteById(string $userId): void
     {
-        $user->delete();
+        $this->user->destroy($userId);
+    }
+
+    public function getElementById(string $userId): UserModel
+    {
+        return $this->transformer->transformToObject($this->user::find($userId));
     }
 }

@@ -2,7 +2,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            {{ $user->name }} {{ trans('menu.lessons') }}
+            {{ $user->getName() }} {{ trans('menu.lessons') }}
         </div>
 
         <div class="card-body">
@@ -22,23 +22,23 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($sendCollection as $key => $lesson)
-                        <tr data-entry-id="{{ $lesson->getLessonId() }}">
+                    @foreach($userAttendingLessonsCollection as $key => $userAttendingLesson)
+                        <tr data-entry-id="{{ $userAttendingLesson->getLessonId() }}">
                             <td>
 
                             </td>
                             <td>
-                                {{ $lesson->getLessonName() ?? '' }}
+                                {{ $userAttendingLesson->getLessonName() ?? '' }}
                             </td>
                             <td>
-                                @if($lesson->isInLesson())
-                                    <form action="{{ route('userLessons.destroy', $lesson->getUserLessonId()) }}" method="POST">
+                                @if($userAttendingLesson->isInLesson())
+                                    <form action="{{ route('userLessons.destroy', $userAttendingLesson->getUserLessonId()) }}" method="POST">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ __('global.delete') }}">
                                     </form>
                                 @else
-                                    <form action="{{ route('userLessons.store', ['user_id' => $user->id, '$lesson_id' => $lesson->getLessonId()]) }}" method="POST">
+                                    <form action="{{ route('userLessons.store', ['user_id' => $user->getId(), '$lesson_id' => $userAttendingLesson->getLessonId()]) }}" method="POST">
                                         <input type="hidden" name="_method" value="POST">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-info" value="Add">

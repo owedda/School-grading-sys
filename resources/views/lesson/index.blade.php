@@ -21,7 +21,7 @@
                         <tr>
                            <td>
                                <a class="btn btn-xs btn-success" href="{{ route('lessons.index') }}">
-                                   {{ $lesson->name }}
+                                   {{ $lesson->getName() }}
                                </a>
                            </td>
                         </tr>

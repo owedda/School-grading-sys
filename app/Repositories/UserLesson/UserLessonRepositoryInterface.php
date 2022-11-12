@@ -2,10 +2,14 @@
 
 namespace App\Repositories\UserLesson;
 
-use App\Collections\DataCollection;
+use App\Service\Grading\Collections\DataCollection;
 use Illuminate\Http\Request;
 
 interface UserLessonRepositoryInterface
 {
-    public function getAllLessonsCollectionWithAssignedStudentsOrNull(Request $request): DataCollection;
+    public function getAllAttendingLessonsDTO(Request $request): DataCollection;
+
+    public function deleteElementById(string $userLessonId): void;
+
+    public function save(Request $request): void;
 }

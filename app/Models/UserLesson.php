@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * App\Models\UserLesson
+ * App\Models\UserLessonModel
  *
  * @property int $id
  * @property string $user_id
@@ -32,7 +31,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class UserLesson extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory;
+    use HasUuids;
 
     protected $fillable = [
         'user_id',
