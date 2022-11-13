@@ -52,7 +52,7 @@
                                 {{ $user->getEmail() ?? '' }}
                             </td>
                             <td>
-                                <a class="btn btn-xs btn-info" href="{{ route('userLessons.index', ['user_id'=>$user->getId()]) }}">
+                                <a class="btn btn-xs btn-info" href="{{ route('userLessons.index', ['user-id'=>$user->getId()]) }}">
                                     {{ __('global.add_to_lesson') }}
                                 </a>
 

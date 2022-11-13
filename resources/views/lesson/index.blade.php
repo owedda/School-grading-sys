@@ -20,7 +20,7 @@
                     @foreach($lessons as $key => $lesson)
                         <tr>
                            <td>
-                               <a class="btn btn-xs btn-success" href="{{ route('lessons.index') }}">
+                               <a class="btn btn-xs btn-success" href="{{ route('lessons.index', ['lesson-id' => $lesson->getId()]) }}">
                                    {{ $lesson->getName() }}
                                </a>
                            </td>

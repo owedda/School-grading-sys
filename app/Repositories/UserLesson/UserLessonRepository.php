@@ -27,7 +27,7 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
 
     public function getAllAttendingLessonsDTO(Request $request): DataCollection
     {
-        $userIdFromRequest = $request->input('user_id');
+        $userIdFromRequest = $request->input('user-id');
         $arrayUserLessons = $this->userLesson::where('user_id', $userIdFromRequest)->with('lessons')->get()->toArray();
 
         $collectionAttendingLessonDTO = new DataCollection();
@@ -76,8 +76,8 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
     public function save(Request $request): void
     {
         $userLesson = new UserLesson();
-        $userLesson->user_id = $request->input('user_id');
-        $userLesson->lesson_id = $request->input('$lesson_id');
+        $userLesson->user_id = $request->input('user-id');
+        $userLesson->lesson_id = $request->input('$lesson-id');
         $userLesson->save();
     }
 }

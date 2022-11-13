@@ -21,7 +21,7 @@ class UserLessonController extends Controller
     //TODO: make own requests
     public function index(Request $request)
     {
-        $userIdFromRequest = $request->input('user_id');
+        $userIdFromRequest = $request->input('user-id');
         $user = $this->userRepository->getElementById($userIdFromRequest);
 
         $userAttendingLessonsCollection = $this->userLessonRepository->getAllAttendingLessonsDTO($request);

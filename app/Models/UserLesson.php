@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @mixin \Eloquent
  * @property-read int|null $lessons_count
  * @property-read \App\Models\User $user
+ * @property-read int|null $user_count
  */
 class UserLesson extends Model
 {

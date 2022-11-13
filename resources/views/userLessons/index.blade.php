@@ -38,7 +38,7 @@
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ __('global.delete') }}">
                                     </form>
                                 @else
-                                    <form action="{{ route('userLessons.store', ['user_id' => $user->getId(), '$lesson_id' => $userAttendingLesson->getLessonId()]) }}" method="POST">
+                                    <form action="{{ route('userLessons.store', ['user-id' => $user->getId(), '$lesson-id' => $userAttendingLesson->getLessonId()]) }}" method="POST">
                                         <input type="hidden" name="_method" value="POST">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-info" value="Add">
