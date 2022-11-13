@@ -22,7 +22,6 @@ class UserLessonController extends Controller
     ) {
     }
 
-    //TODO: make own requests
     public function index(UserLessonRequest $request)
     {
         $userIdFromRequest = $request->input('user-id');
