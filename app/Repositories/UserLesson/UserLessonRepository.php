@@ -10,7 +10,7 @@ use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\LessonModel;
 use App\Service\Grading\DataModel\UserLessonModel;
 use App\Service\Grading\DTO\AttendingLessonDTO;
-use App\Service\Grading\DTO\UserLessonRequestDTO;
+use App\Service\Grading\DTO\UserLessonStoreDTO;
 use App\Service\Grading\Transformers\ModelToDataModel\UserLessonTransformer;
 
 final class UserLessonRepository implements UserLessonRepositoryInterface
@@ -69,7 +69,7 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
         $this->userLesson->destroy($userLessonId);
     }
 
-    public function save(UserLessonRequestDTO $requestDTO): void
+    public function save(UserLessonStoreDTO $requestDTO): void
     {
         $userLesson = new UserLesson();
         $userLesson->user_id = $requestDTO->getUserId();
@@ -77,8 +77,12 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
         $userLesson->save();
     }
 
-    public function getUsersInConcreteLesson(string $lessonId)
+    public function getUsersInConcreteLesson(string $lessonId): DataCollection
     {
-        // TODO: Implement getUsersInConcreteLesson() method.
+        $collectionUsersInConcreteLesson = new DataCollection();
+
+
+
+        return $collectionUsersInConcreteLesson;
     }
 }

@@ -9,9 +9,8 @@ use App\Http\Requests\UserLessonStoreRequest;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
-use App\Service\Grading\DTO\UserLessonRequestDTO;
+use App\Service\Grading\Transformers\ModelToDTO\UserLessonStoreDTOTransformer;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class UserLessonController extends Controller
 {
@@ -19,6 +18,7 @@ class UserLessonController extends Controller
         private readonly UserLessonRepositoryInterface $userLessonRepository,
         private readonly UserRepositoryInterface $userRepository,
         private readonly LessonRepositoryInterface $lessonRepository,
+        private readonly UserLessonStoreDTOTransformer $userLessonStoreDTOTransformer
     ) {
     }
 
@@ -45,11 +45,8 @@ class UserLessonController extends Controller
 
     public function store(UserLessonStoreRequest $request): RedirectResponse
     {
-        $userLesson = new UserLessonRequestDTO(
-            $request->input('user-id'),
-            $request->input('lesson-id')
-        );
-        $this->userLessonRepository->save($userLesson);
+        $this->userLessonRepository->save($this->userLessonStoreDTOTransformer
+            ->transformToObject($request->only('user-id', 'lesson-id')));
 
         return back();
     }

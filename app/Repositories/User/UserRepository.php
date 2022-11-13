@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\UserType;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\UserModel;
-use App\Service\Grading\DTO\UserRequestDTO;
+use App\Service\Grading\DTO\UserStoreDTO;
 use App\Service\Grading\Transformers\ModelToDataModel\UserTransformer;
 
 final class UserRepository implements UserRepositoryInterface
@@ -25,7 +25,7 @@ final class UserRepository implements UserRepositoryInterface
         return $this->transformer->transformArrayToCollection($usersArray);
     }
 
-    public function storeStudent(UserRequestDTO $userRequestDTO): void
+    public function storeStudent(UserStoreDTO $userRequestDTO): void
     {
         $newUser = new User();
         $newUser->username = $userRequestDTO->getUsername();

@@ -3,7 +3,7 @@
 namespace App\Repositories\UserLesson;
 
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DTO\UserLessonRequestDTO;
+use App\Service\Grading\DTO\UserLessonStoreDTO;
 
 interface UserLessonRepositoryInterface
 {
@@ -11,7 +11,7 @@ interface UserLessonRepositoryInterface
 
     public function deleteElementById(string $userLessonId): void;
 
-    public function save(UserLessonRequestDTO $requestDTO): void;
+    public function save(UserLessonStoreDTO $requestDTO): void;
 
     public function getUsersInConcreteLesson(string $lessonId);
 }

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Repositories\User;
 
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DTO\UserRequestDTO;
+use App\Service\Grading\DTO\UserStoreDTO;
 
 interface UserRepositoryInterface
 {
     public function getAll(): DataCollection;
 
-    public function storeStudent(UserRequestDTO $userRequestDTO): void;
+    public function storeStudent(UserStoreDTO $userRequestDTO): void;
 
     public function deleteById(string $userId): void;
 

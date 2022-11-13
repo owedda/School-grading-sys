@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
-use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
-use App\Service\Grading\DTO\UserRequestDTO;
+use App\Service\Grading\Transformers\ModelToDTO\UserStoreDTOTransformer;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 final class UserController extends Controller
 {
-    public function __construct(private readonly UserRepositoryInterface $userRepository)
-    {
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly UserStoreDTOTransformer $userTransformer
+    ) {
     }
 
     public function index()
@@ -30,7 +30,9 @@ final class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-        $this->userRepository->storeStudent($this->getUserRequestDTO($request));
+        $this->userRepository->storeStudent($this->userTransformer->transformToObject(
+            $request->only('username', 'name', 'last-name', 'email', 'password')
+        ));
         return view('students.create');
     }
 
@@ -38,16 +40,5 @@ final class UserController extends Controller
     {
         $this->userRepository->deleteById($userId);
         return back();
-    }
-
-    private function getUserRequestDTO(UserStoreRequest $request): UserRequestDTO
-    {
-        $userRequestDTO = new UserRequestDTO();
-        $userRequestDTO->setUsername($request->input('username'));
-        $userRequestDTO->setName($request->input('name'));
-        $userRequestDTO->setLastName($request->input('last-name'));
-        $userRequestDTO->setEmail($request->input('email'));
-        $userRequestDTO->setPassword($request->input('password'));
-        return $userRequestDTO;
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Grading\DTO;
 
-class UserLessonRequestDTO
+class UserLessonStoreDTO
 {
     public function __construct(
         private readonly string $userId,
