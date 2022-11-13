@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserStoreRequest;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Service\Grading\DTO\UserRequestDTO;
@@ -27,8 +28,7 @@ final class UserController extends Controller
         return view('students.create');
     }
 
-    //TODO: make own requests
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
         $this->userRepository->storeStudent($this->getUserRequestDTO($request));
         return view('students.create');
@@ -40,12 +40,12 @@ final class UserController extends Controller
         return back();
     }
 
-    private function getUserRequestDTO(Request $request): UserRequestDTO
+    private function getUserRequestDTO(UserStoreRequest $request): UserRequestDTO
     {
         $userRequestDTO = new UserRequestDTO();
         $userRequestDTO->setUsername($request->input('username'));
         $userRequestDTO->setName($request->input('name'));
-        $userRequestDTO->setLastName($request->input('last_name'));
+        $userRequestDTO->setLastName($request->input('last-name'));
         $userRequestDTO->setEmail($request->input('email'));
         $userRequestDTO->setPassword($request->input('password'));
         return $userRequestDTO;

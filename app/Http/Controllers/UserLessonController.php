@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserLessonRequest;
+use App\Http\Requests\UserLessonStoreRequest;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
@@ -21,7 +23,7 @@ class UserLessonController extends Controller
     }
 
     //TODO: make own requests
-    public function index(Request $request)
+    public function index(UserLessonRequest $request)
     {
         $userIdFromRequest = $request->input('user-id');
         $user = $this->userRepository->getElementById($userIdFromRequest);
@@ -32,7 +34,7 @@ class UserLessonController extends Controller
         return view('userLessons.index', compact('usersAttendingLessonsCollection', 'user'));
     }
 
-    public function usersInConcreteLesson(Request $request)
+    public function usersInConcreteLesson(UserLessonRequest $request)
     {
         $lessonIdFromRequest = $request->input('lesson-id');
         $lesson = $this->lessonRepository->getElementById($lessonIdFromRequest);
@@ -42,8 +44,7 @@ class UserLessonController extends Controller
         return view('userLessons.index', compact('usersInConcreteLessonCollection', 'lesson'));
     }
 
-    //TODO: make own requests
-    public function store(Request $request): RedirectResponse
+    public function store(UserLessonStoreRequest $request): RedirectResponse
     {
         $userLesson = new UserLessonRequestDTO(
             $request->input('user-id'),

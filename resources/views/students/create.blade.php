@@ -30,11 +30,11 @@
                     <span class="help-block">{{ __('cruds.user.fields.name_helper') }}</span>
                 </div>
                 <div class="form-group">
-                    <label class="required" for="last_name">{{ __('cruds.user.fields.last_name') }}</label>
-                    <input class="form-control {{ $errors->has('last_name') ? 'is-invalid' : '' }}" type="text" name="last_name" id="last_name" value="{{ old('last_name', '') }}" required>
-                    @if($errors->has('last_name'))
+                    <label class="required" for="last-name">{{ __('cruds.user.fields.last_name') }}</label>
+                    <input class="form-control {{ $errors->has('last-name') ? 'is-invalid' : '' }}" type="text" name="last-name" id="last-name" value="{{ old('last-name', '') }}" required>
+                    @if($errors->has('last-name'))
                         <div class="invalid-feedback">
-                            {{ $errors->first('last_name') }}
+                            {{ $errors->first('last-name') }}
                         </div>
                     @endif
                     <span class="help-block">{{ __('cruds.user.fields.name_helper') }}</span>
