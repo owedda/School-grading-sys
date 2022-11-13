@@ -8,7 +8,6 @@ use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
 use App\Service\Grading\DTO\UserLessonRequestDTO;
-use App\Service\Grading\Transformers\ModelToDataModel\UserLessonTransformer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
