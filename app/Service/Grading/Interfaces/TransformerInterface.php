@@ -6,5 +6,5 @@ use App\Service\Grading\Collections\DataCollection;
 
 interface TransformerInterface
 {
-    public function transformToCollection(array $data): DataCollection;
+    public function transformArrayToCollection(array $data): DataCollection;
 }

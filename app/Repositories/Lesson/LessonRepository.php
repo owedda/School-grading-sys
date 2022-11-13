@@ -6,7 +6,8 @@ namespace App\Repositories\Lesson;
 
 use App\Models\Lesson;
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\Transformers\LessonTransformer;
+use App\Service\Grading\DataModel\LessonModel;
+use App\Service\Grading\Transformers\ModelToDataModel\LessonTransformer;
 
 final class LessonRepository implements LessonRepositoryInterface
 {
@@ -14,8 +15,13 @@ final class LessonRepository implements LessonRepositoryInterface
     {
     }
 
-    public function getAllLessons(): DataCollection
+    public function getAll(): DataCollection
     {
-        return $this->lessonTransformer->transformToCollection($this->lesson->all()->toArray());
+        return $this->lessonTransformer->transformArrayToCollection($this->lesson->all()->toArray());
+    }
+
+    public function getElementById(string $lessonIdFromRequest): LessonModel
+    {
+        return $this->lessonTransformer->transformToObject($this->lesson::find($lessonIdFromRequest));
     }
 }

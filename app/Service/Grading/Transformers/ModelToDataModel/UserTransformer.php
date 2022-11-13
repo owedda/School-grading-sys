@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\Transformers;
+namespace App\Service\Grading\Transformers\ModelToDataModel;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\UserModel;
@@ -10,7 +10,7 @@ use App\Service\Grading\Interfaces\TransformerInterface;
 
 final class UserTransformer implements TransformerInterface
 {
-    public function transformToCollection(array $data): DataCollection
+    public function transformArrayToCollection(array $data): DataCollection
     {
         $collection = new DataCollection();
 

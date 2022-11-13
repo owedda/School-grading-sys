@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\Transformers;
+namespace App\Service\Grading\Transformers\ModelToDataModel;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\LessonModel;
@@ -10,19 +10,22 @@ use App\Service\Grading\Interfaces\TransformerInterface;
 
 final class LessonTransformer implements TransformerInterface
 {
-    public function transformToCollection(array $data): DataCollection
+    public function transformArrayToCollection(array $data): DataCollection
     {
         $collection = new DataCollection();
 
         foreach ($data as $lesson) {
-            $collection->add(
-                new LessonModel(
-                    $lesson['id'],
-                    $lesson['name']
-                )
-            );
+            $collection->add($this->transformToObject($lesson));
         }
 
         return $collection;
+    }
+
+    public function transformToObject(mixed $data): LessonModel
+    {
+        return new LessonModel(
+            $data['id'],
+            $data['name']
+        );
     }
 }

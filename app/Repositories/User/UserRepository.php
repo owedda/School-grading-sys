@@ -8,8 +8,8 @@ use App\Models\User;
 use App\Models\UserType;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\UserModel;
-use App\Service\Grading\Transformers\UserTransformer;
-use Illuminate\Http\Request;
+use App\Service\Grading\DTO\UserRequestDTO;
+use App\Service\Grading\Transformers\ModelToDataModel\UserTransformer;
 
 final class UserRepository implements UserRepositoryInterface
 {
@@ -22,17 +22,17 @@ final class UserRepository implements UserRepositoryInterface
     public function getAll(): DataCollection
     {
         $usersArray = $this->user->all()->toArray();
-        return $this->transformer->transformToCollection($usersArray);
+        return $this->transformer->transformArrayToCollection($usersArray);
     }
 
-    public function storeStudent(Request $request): void
+    public function storeStudent(UserRequestDTO $userRequestDTO): void
     {
         $newUser = new User();
-        $newUser->username = $request->input('username');
-        $newUser->name = $request->input('name');
-        $newUser->last_name = $request->input('last_name');
-        $newUser->email = $request->input('email');
-        $newUser->password = bcrypt($request->input('password'));
+        $newUser->username = $userRequestDTO->getUsername();
+        $newUser->name = $userRequestDTO->getName();
+        $newUser->last_name = $userRequestDTO->getLastName();
+        $newUser->email = $userRequestDTO->getEmail();
+        $newUser->password = $userRequestDTO->getPassword();
         $newUser->type = UserType::Student;
         $newUser->save();
     }

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\UserLesson;
+use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
+use App\Service\Grading\DTO\UserLessonRequestDTO;
+use App\Service\Grading\Transformers\ModelToDataModel\UserLessonTransformer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,8 @@ class UserLessonController extends Controller
 {
     public function __construct(
         private readonly UserLessonRepositoryInterface $userLessonRepository,
-        private readonly UserRepositoryInterface $userRepository
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly LessonRepositoryInterface $lessonRepository,
     ) {
     }
 
@@ -24,15 +27,30 @@ class UserLessonController extends Controller
         $userIdFromRequest = $request->input('user-id');
         $user = $this->userRepository->getElementById($userIdFromRequest);
 
-        $userAttendingLessonsCollection = $this->userLessonRepository->getAllAttendingLessonsDTO($request);
+        $usersAttendingLessonsCollection = $this->userLessonRepository
+            ->getAllLessonsAsAttendingLessonsDTOCollection($userIdFromRequest);
 
-        return view('userLessons.index', compact('userAttendingLessonsCollection', 'user'));
+        return view('userLessons.index', compact('usersAttendingLessonsCollection', 'user'));
+    }
+
+    public function usersInConcreteLesson(Request $request)
+    {
+        $lessonIdFromRequest = $request->input('lesson-id');
+        $lesson = $this->lessonRepository->getElementById($lessonIdFromRequest);
+
+        $usersInConcreteLessonCollection = $this->userLessonRepository->getUsersInConcreteLesson($lessonIdFromRequest);
+
+        return view('userLessons.index', compact('usersInConcreteLessonCollection', 'lesson'));
     }
 
     //TODO: make own requests
     public function store(Request $request): RedirectResponse
     {
-        $this->userLessonRepository->save($request);
+        $userLesson = new UserLessonRequestDTO(
+            $request->input('user-id'),
+            $request->input('lesson-id')
+        );
+        $this->userLessonRepository->save($userLesson);
 
         return back();
     }

@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Service\Grading\DTO\UserRequestDTO;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,7 @@ final class UserController extends Controller
     //TODO: make own requests
     public function store(Request $request)
     {
-        $this->userRepository->storeStudent($request);
+        $this->userRepository->storeStudent($this->getUserRequestDTO($request));
         return view('students.create');
     }
 
@@ -37,5 +38,16 @@ final class UserController extends Controller
     {
         $this->userRepository->deleteById($userId);
         return back();
+    }
+
+    private function getUserRequestDTO(Request $request): UserRequestDTO
+    {
+        $userRequestDTO = new UserRequestDTO();
+        $userRequestDTO->setUsername($request->input('username'));
+        $userRequestDTO->setName($request->input('name'));
+        $userRequestDTO->setLastName($request->input('last_name'));
+        $userRequestDTO->setEmail($request->input('email'));
+        $userRequestDTO->setPassword($request->input('password'));
+        return $userRequestDTO;
     }
 }

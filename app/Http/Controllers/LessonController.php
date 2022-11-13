@@ -14,7 +14,7 @@ class LessonController extends Controller
 
     public function index()
     {
-        $lessons = $this->lessonRepository->getAllLessons();
+        $lessons = $this->lessonRepository->getAll();
         return view('lesson.index', compact('lessons'));
     }
 }
