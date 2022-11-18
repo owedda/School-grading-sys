@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserLessonRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Service\Grading\Transformers\ModelToDTO\UserStoreDTOTransformer;
@@ -21,6 +22,16 @@ final class UserController extends Controller
     {
         $users = $this->userRepository->getAll();
         return view('students.index', compact('users'));
+    }
+
+    public function lessons(string $userId)
+    {
+        $user = $this->userRepository->getElementById($userId);
+
+        $usersAttendingLessonsCollection = $this->userRepository
+            ->getAllLessonsAsAttendingLessonsDTOCollection($userId);
+
+        return view('students.lessons', compact('usersAttendingLessonsCollection', 'user'));
     }
 
     public function create()

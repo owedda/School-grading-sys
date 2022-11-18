@@ -16,4 +16,6 @@ interface UserRepositoryInterface
     public function deleteById(string $userId): void;
 
     public function getElementById(string $userId);
+
+    public function getAllLessonsAsAttendingLessonsDTOCollection(string $userID): DataCollection;
 }

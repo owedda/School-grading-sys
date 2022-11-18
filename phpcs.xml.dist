@@ -4,6 +4,7 @@
 
     <file>app</file>
     <file>tests</file>
+    <file>routes</file>
 
     <exclude-pattern>*/.phpstorm.meta.php</exclude-pattern>
     <exclude-pattern>*/_ide_helper.php</exclude-pattern>

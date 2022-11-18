@@ -9,25 +9,25 @@ Route::controller(UserController::class)
     ->prefix('users')
     ->name('users.')
     ->group(function () {
-    Route::get('', 'index')->name('index');
-    Route::get('create', 'create')->name('create');
-    Route::post('', 'store')->name('store');
-    Route::delete('{id}', 'destroy')->name('destroy');
-});
+        Route::get('', 'index')->name('index');
+        Route::get('{userId}/lessons', 'lessons')->name('lessons');
+        Route::get('create', 'create')->name('create');
+        Route::post('', 'store')->name('store');
+        Route::delete('{id}', 'destroy')->name('destroy');
+    });
 
 Route::controller(LessonController::class)
     ->prefix('lessons')
     ->name('lessons.')
     ->group(function () {
         Route::get('', 'index')->name('index');
+        Route::get('{lessonId}/users', 'users')->name('users');
     });
 
 Route::controller(UserLessonController::class)
     ->prefix('userLessons')
     ->name('userLessons.')
     ->group(function () {
-        Route::get('', 'index')->name('index');
         Route::post('', 'store')->name('store');
         Route::delete('{id}', 'destroy')->name('destroy');
     });
-

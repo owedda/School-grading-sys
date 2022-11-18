@@ -24,4 +24,10 @@ final class LessonRepository implements LessonRepositoryInterface
     {
         return $this->lessonTransformer->transformToObject($this->lesson::find($lessonIdFromRequest));
     }
+
+    public function getUsersInConcreteLesson(string $lessonId): DataCollection
+    {
+        $collectionUsersInConcreteLesson = new DataCollection();
+        return $collectionUsersInConcreteLesson;
+    }
 }
