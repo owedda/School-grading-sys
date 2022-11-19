@@ -38,8 +38,6 @@ final class LessonRepository implements LessonRepositoryInterface
         $arrayUserLessonsWithUsers = $this->userLesson::where('lesson_id', $lessonId)->with('user')->get()->toArray();
         $arrayUsers = array_column($arrayUserLessonsWithUsers, 'user');
 
-        $collectionUsersInConcreteLesson = new DataCollection($this->userTransformer->transformArrayToCollection($arrayUsers));
-
-        return $collectionUsersInConcreteLesson;
+        return new DataCollection($this->userTransformer->transformArrayToCollection($arrayUsers));
     }
 }
