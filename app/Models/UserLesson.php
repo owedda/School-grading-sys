@@ -40,12 +40,13 @@ class UserLesson extends Model
         'lesson_id'
     ];
 
-    public function lessons()
+    public function lesson()
     {
         return $this->belongsTo(Lesson::class, 'lesson_id', 'id');
     }
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+
+    public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

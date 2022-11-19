@@ -5,14 +5,22 @@ declare(strict_types=1);
 namespace App\Repositories\Lesson;
 
 use App\Models\Lesson;
+use App\Models\UserLesson;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\LessonModel;
 use App\Service\Grading\Transformers\ModelToDataModel\LessonTransformer;
+use App\Service\Grading\Transformers\ModelToDataModel\UserLessonTransformer;
+use App\Service\Grading\Transformers\ModelToDataModel\UserTransformer;
 
 final class LessonRepository implements LessonRepositoryInterface
 {
-    public function __construct(private readonly Lesson $lesson, private readonly LessonTransformer $lessonTransformer)
-    {
+    public function __construct(
+        private readonly Lesson $lesson,
+        private readonly UserLesson $userLesson,
+        private readonly LessonTransformer $lessonTransformer,
+        private readonly UserLessonTransformer $userLessonTransformer,
+        private readonly UserTransformer $userTransformer
+    ) {
     }
 
     public function getAll(): DataCollection
@@ -27,7 +35,11 @@ final class LessonRepository implements LessonRepositoryInterface
 
     public function getUsersInConcreteLesson(string $lessonId): DataCollection
     {
-        $collectionUsersInConcreteLesson = new DataCollection();
+        $arrayUserLessonsWithUsers = $this->userLesson::where('lesson_id', $lessonId)->with('user')->get()->toArray();
+        $arrayUsers = array_column($arrayUserLessonsWithUsers, 'user');
+
+        $collectionUsersInConcreteLesson = new DataCollection($this->userTransformer->transformArrayToCollection($arrayUsers));
+
         return $collectionUsersInConcreteLesson;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Grading\Interfaces;
+namespace App\Service\Grading\Transformers;
 
 use App\Service\Grading\Collections\DataCollection;
 

@@ -3,7 +3,7 @@
 
 <div class="card">
     <div class="card-header">
-        {{ __('cruds.user.title_singular') }} {{ __('global.list') }}
+        {{ $lesson->getName() }}
     </div>
 
     <div class="card-body">
@@ -46,7 +46,7 @@
                             {{ $user->getLastName() ?? '' }}
                         </td>
                         <td>
-                            <a class="btn btn-xs btn-info" href="{{ route('userLessons.index', ['user-id'=>$user->getId()]) }}">
+                            <a class="btn btn-xs btn-info" href="{{ route('lessons.index', ['user-id'=>$user->getId()]) }}">
                                 {{ __('global.add_to_lesson') }}
                             </a>
 

@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserLessonRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Repositories\User\UserRepositoryInterface;
-use App\Service\Grading\Transformers\ModelToDTO\UserStoreDTOTransformer;
+use App\Service\Grading\Transformers\RequestToDTO\UserStoreDTOTransformer;
 use Illuminate\Http\RedirectResponse;
 
 final class UserController extends Controller

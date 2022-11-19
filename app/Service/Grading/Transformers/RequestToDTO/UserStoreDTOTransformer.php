@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\Transformers\ModelToDTO;
+namespace App\Service\Grading\Transformers\RequestToDTO;
 
 use App\Service\Grading\DTO\UserStoreDTO;
 

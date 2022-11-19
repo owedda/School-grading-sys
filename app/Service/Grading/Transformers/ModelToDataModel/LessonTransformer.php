@@ -6,7 +6,7 @@ namespace App\Service\Grading\Transformers\ModelToDataModel;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\LessonModel;
-use App\Service\Grading\Interfaces\TransformerInterface;
+use App\Service\Grading\Transformers\TransformerInterface;
 
 final class LessonTransformer implements TransformerInterface
 {

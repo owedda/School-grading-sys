@@ -59,10 +59,13 @@ final class UserRepository implements UserRepositoryInterface
 
     public function getAllLessonsAsAttendingLessonsDTOCollection(string $userID): DataCollection
     {
-        $arrayUserLessons = $this->userLesson::where('user_id', $userID)->with('lessons')->get()->toArray();
+        $arrayUserLessons = $this->user::where('id', $userID)->with('lessons')->get()->toArray();
+        $arrayUserLessons = array_column($arrayUserLessons, 'lessons');
 
+
+        //dd($arrayUserLessons);
         $collectionAttendingLessonDTO = new DataCollection();
-        $collectionUserHaveLessons = $this->userLessonTransformer->transformArrayToCollection($arrayUserLessons);
+        $collectionUserHaveLessons = $this->userLessonTransformer->transformArrayToCollection($arrayUserLessons[0]);
         $collectionAllLessons = $this->lessonRepository->getAll();
 
         foreach ($collectionAllLessons as $lesson) {

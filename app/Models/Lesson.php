@@ -28,8 +28,8 @@ class Lesson extends Model
         'name'
     ];
 
-    public function user_lesson(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function userLessons()
     {
-        return $this->belongsTo(UserLesson::class);
+        return $this->hasMany(UserLesson::class, 'lesson_id', 'id');
     }
 }

@@ -63,9 +63,9 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function user_lessons(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function lessons()
     {
-        return $this->hasMany(UserLesson::class);
+        return $this->hasMany(UserLesson::class, 'user_id', 'id');
     }
 
     protected $hidden = [

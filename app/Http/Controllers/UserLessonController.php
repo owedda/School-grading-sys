@@ -9,7 +9,7 @@ use App\Http\Requests\UserLessonStoreRequest;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
-use App\Service\Grading\Transformers\ModelToDTO\UserLessonStoreDTOTransformer;
+use App\Service\Grading\Transformers\RequestToDTO\UserLessonStoreDTOTransformer;
 use Illuminate\Http\RedirectResponse;
 
 class UserLessonController extends Controller

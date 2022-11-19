@@ -10,5 +10,4 @@ interface UserLessonRepositoryInterface
     public function deleteElementById(string $userLessonId): void;
 
     public function save(UserLessonStoreDTO $requestDTO): void;
-
 }
