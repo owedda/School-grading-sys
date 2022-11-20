@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserLessonRequest;
 use App\Http\Requests\UserLessonStoreRequest;
-use App\Repositories\Lesson\LessonRepositoryInterface;
-use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
 use App\Service\Grading\Transformers\RequestToDTO\UserLessonStoreDTOTransformer;
 use Illuminate\Http\RedirectResponse;

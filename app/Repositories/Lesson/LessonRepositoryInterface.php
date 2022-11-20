@@ -9,7 +9,7 @@ interface LessonRepositoryInterface
 {
     public function getAll(): DataCollection;
 
-    public function getElementById(string $lessonIdFromRequest): LessonModel;
+    public function getElementById(string $id): LessonModel;
 
-    public function getUsersInConcreteLesson(string $lessonId);
+    public function getUsersInConcreteLesson(string $lessonId, string $date);
 }

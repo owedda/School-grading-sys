@@ -7,10 +7,16 @@
     </div>
 
     <div class="card-body">
-        <input type="date" />
-        <a class="btn btn-xs btn-info" >
-            {{ 'update' }}
-        </a>
+
+        <form method="GET" action="{{ route('lessons.users', ['lessonId' => $lesson->getId()]) }}"  style="display: inline-block;">
+            @csrf
+            <input type="date" id="date"  name="date" value="{{ $date }}"/>
+            <input type="submit" class="btn btn-xs btn-info" value="Update">
+        </form>
+
+        <div align="right">
+            Selected date: {{ $date }}
+        </div>
     </div>
 
 
@@ -27,6 +33,9 @@
                         </th>
                         <th>
                             {{ __('cruds.user.fields.last_name') }}
+                        </th>
+                        <th>
+                            Evaluation
                         </th>
                         <th>
                             &nbsp;
@@ -46,15 +55,25 @@
                             {{ $user->getLastName() ?? '' }}
                         </td>
                         <td>
-                            <a class="btn btn-xs btn-info" href="{{ route('lessons.index', ['user-id'=>$user->getId()]) }}">
-                                {{ __('global.add_to_lesson') }}
-                            </a>
+                            {{ $user->getEvaluationValue() ?? '' }}
+                        </td>
+                        <td>
+                            @if(is_null($user->getEvaluationValue()))
+                                <form method="POST" action="{{ route('evaluations.store') }}"  style="display: inline-block;">
+                                    @csrf
+                                    <input type="hidden" name="date" value="{{ $date }}">
+                                    <input type="hidden" name="user-lesson-id" value={{ $user->getUserLessonId() }}>
+                                    <input type="number" id="number" type="number" name="value" min="1" max="10" required>
+                                    <input type="submit" class="btn btn-xs btn-success" value="Save">
+                                </form>
+                            @else
+                                <form method="POST" action="{{ route('evaluations.destroy', ['id' => $user->getEvaluationId()]) }}"  style="display: inline-block;">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <input type="submit" class="btn btn-xs btn-danger" value="Remove">
+                                </form>
+                            @endif
 
-                            <form action="{{ route('users.destroy', $user->getId()) }}" method="POST" onsubmit="return confirm('{{ __('global.areYouSure') }}');" style="display: inline-block;">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <input type="submit" class="btn btn-xs btn-danger" value="{{ __('global.delete') }}">
-                            </form>
                         </td>
                     </tr>
                 @endforeach
@@ -66,23 +85,5 @@
 
 
 @endsection
-@section('scripts')
-    @parent
-    <script>
-        $(function () {
-            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 
-            $.extend(true, $.fn.dataTable.defaults, {
-                order: [[ 1, 'desc' ]],
-                pageLength: 100,
-            });
-            $('.datatable-UserModel:not(.ajaxTable)').DataTable({ buttons: dtButtons })
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
-            });
-        })
-
-    </script>
-@endsection
 

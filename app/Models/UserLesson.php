@@ -40,13 +40,20 @@ class UserLesson extends Model
         'lesson_id'
     ];
 
-    public function lesson()
+    public $timestamps = false;
+
+    public function lesson(): BelongsTo
     {
         return $this->belongsTo(Lesson::class, 'lesson_id', 'id');
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function evaluation(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Evaluation::class, 'user_lesson_id', 'id');
     }
 }

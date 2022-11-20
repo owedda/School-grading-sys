@@ -1,5 +1,8 @@
 @extends('layouts.main')
 @section('content')
+@section(true)
+    {{ date_default_timezone_set('Europe/Vilnius') }}
+@endsection
 
     <div class="card">
         <div class="card-header">
@@ -20,9 +23,11 @@
                     @foreach($lessons as $key => $lesson)
                         <tr>
                            <td>
-                               <a class="btn btn-xs btn-success" href="{{ route('lessons.users', ['lessonId' => $lesson->getId()]) }}">
-                                   {{ $lesson->getName() }}
-                               </a>
+                               <form method="GET" action="{{ route('lessons.users', ['lessonId' => $lesson->getId()]) }}"  style="display: inline-block;">
+                                   @csrf
+                                   <input type="hidden" id="date"  name="date" value="{{ date("Y-m-d") }}"/>
+                                   <input type="submit" class="btn btn-xs btn-success" value="{{ $lesson->getName() }}">
+                               </form>
                            </td>
                         </tr>
                     @endforeach

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserLessonController;
@@ -27,6 +28,14 @@ Route::controller(LessonController::class)
 Route::controller(UserLessonController::class)
     ->prefix('userLessons')
     ->name('userLessons.')
+    ->group(function () {
+        Route::post('', 'store')->name('store');
+        Route::delete('{id}', 'destroy')->name('destroy');
+    });
+
+Route::controller(EvaluationController::class)
+    ->prefix('evaluations')
+    ->name('evaluations.')
     ->group(function () {
         Route::post('', 'store')->name('store');
         Route::delete('{id}', 'destroy')->name('destroy');

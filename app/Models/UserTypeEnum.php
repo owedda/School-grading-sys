@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-enum UserType: string
+enum UserTypeEnum: string
 {
     case Teacher = "Teacher";
     case Student = "Student";

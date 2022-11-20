@@ -6,7 +6,7 @@ namespace App\Service\Grading\Transformers\RequestToDTO;
 
 use App\Service\Grading\DTO\UserLessonStoreDTO;
 
-class UserLessonStoreDTOTransformer
+final class UserLessonStoreDTOTransformer
 {
     public function transformToObject(mixed $data): UserLessonStoreDTO
     {

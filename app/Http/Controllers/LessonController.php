@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserLessonRequest;
+use App\Http\Requests\DateRequest;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 
 class LessonController extends Controller
@@ -14,18 +14,16 @@ class LessonController extends Controller
 
     public function index()
     {
-
         $lessons = $this->lessonRepository->getAll();
-
         return view('lesson.index', compact('lessons'));
     }
 
-    public function users(string $lessonId)
+    public function users(DateRequest $request, string $lessonId)
     {
+        $date = $request->get('date');
         $lesson = $this->lessonRepository->getElementById($lessonId);
+        $usersInConcreteLessonCollection = $this->lessonRepository->getUsersInConcreteLesson($lessonId, $date);
 
-        $usersInConcreteLessonCollection = $this->lessonRepository->getUsersInConcreteLesson($lessonId);
-
-        return view('lesson.users', compact('usersInConcreteLessonCollection', 'lesson'));
+        return view('lesson.users', compact('usersInConcreteLessonCollection', 'lesson', 'date'));
     }
 }

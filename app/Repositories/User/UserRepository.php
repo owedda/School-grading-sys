@@ -6,7 +6,7 @@ namespace App\Repositories\User;
 
 use App\Models\User;
 use App\Models\UserLesson;
-use App\Models\UserType;
+use App\Models\UserTypeEnum;
 use App\Repositories\Lesson\LessonRepository;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\LessonModel;
@@ -21,7 +21,6 @@ final class UserRepository implements UserRepositoryInterface
 {
     public function __construct(
         private readonly User $user,
-        private readonly UserLesson $userLesson,
         private readonly UserTransformer $transformer,
         private readonly UserLessonTransformer $userLessonTransformer,
         private readonly LessonRepository $lessonRepository
@@ -42,18 +41,18 @@ final class UserRepository implements UserRepositoryInterface
         $newUser->last_name = $userRequestDTO->getLastName();
         $newUser->email = $userRequestDTO->getEmail();
         $newUser->password = $userRequestDTO->getPassword();
-        $newUser->type = UserType::Student;
+        $newUser->type = UserTypeEnum::Student;
         $newUser->save();
     }
 
-    public function deleteById(string $userId): void
+    public function deleteById(string $id): void
     {
-        $this->user->destroy($userId);
+        $this->user->destroy($id);
     }
 
-    public function getElementById(string $userId): UserModel
+    public function getElementById(string $id): UserModel
     {
-        return $this->transformer->transformToObject($this->user::find($userId));
+        return $this->transformer->transformToObject($this->user::find($id));
     }
 
 

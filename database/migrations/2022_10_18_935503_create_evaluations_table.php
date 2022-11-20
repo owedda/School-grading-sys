@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->integer('value');
             $table->foreignUuid('user_lesson_id')->constrained()->cascadeOnDelete();
-            $table->timestamps();
+            $table->date('date');
         });
     }
 

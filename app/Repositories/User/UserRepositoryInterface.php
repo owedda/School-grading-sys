@@ -13,9 +13,9 @@ interface UserRepositoryInterface
 
     public function storeStudent(UserStoreDTO $userRequestDTO): void;
 
-    public function deleteById(string $userId): void;
+    public function deleteById(string $id): void;
 
-    public function getElementById(string $userId);
+    public function getElementById(string $id);
 
     public function getAllLessonsAsAttendingLessonsDTOCollection(string $userID): DataCollection;
 }

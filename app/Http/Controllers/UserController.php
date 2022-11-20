@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserLessonRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Service\Grading\Transformers\RequestToDTO\UserStoreDTOTransformer;

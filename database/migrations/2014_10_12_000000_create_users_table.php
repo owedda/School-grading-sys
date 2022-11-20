@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\UserType;
+use App\Models\UserTypeEnum;
 use App\Service\UnitEnumToArrayAdapter;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('username');
             $table->string('name');
             $table->string('last_name');
-            $table->enum('type', UnitEnumToArrayAdapter::getArrayWithEnumNameValues(UserType::cases()));
+            $table->enum('type', UnitEnumToArrayAdapter::getArrayWithEnumNameValues(UserTypeEnum::cases()));
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

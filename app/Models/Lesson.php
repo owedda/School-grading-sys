@@ -28,6 +28,8 @@ class Lesson extends Model
         'name'
     ];
 
+    public $timestamps = false;
+
     public function userLessons()
     {
         return $this->hasMany(UserLesson::class, 'lesson_id', 'id');

@@ -20,9 +20,9 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
     ) {
     }
 
-    public function deleteElementById(string $userLessonId): void
+    public function deleteElementById(string $id): void
     {
-        $this->userLesson->destroy($userLessonId);
+        $this->userLesson->destroy($id);
     }
 
     public function save(UserLessonStoreDTO $requestDTO): void
