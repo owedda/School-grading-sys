@@ -46,7 +46,7 @@
 {{--            @endcan--}}
 {{--            @can('stock_access')--}}
                 <li class="nav-item">
-                    <a href="{{ route("lessons.index") }}" class="nav-link {{ request()->is('admin/stocks') || request()->is('admin/stocks/*') ? 'active' : '' }}">
+                    <a href="{{ route("evaluations.index") }}" class="nav-link {{ request()->is('admin/stocks') || request()->is('admin/stocks/*') ? 'active' : '' }}">
                         <i class="fa fa-sort-numeric-asc nav-icon">
 
                         </i>

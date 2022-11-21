@@ -37,6 +37,7 @@ Route::controller(EvaluationController::class)
     ->prefix('evaluations')
     ->name('evaluations.')
     ->group(function () {
+        Route::get('', 'index')->name('index');
         Route::post('', 'store')->name('store');
         Route::delete('{id}', 'destroy')->name('destroy');
     });

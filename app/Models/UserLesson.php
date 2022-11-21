@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * App\Models\UserLessonModel
@@ -52,8 +53,13 @@ class UserLesson extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function evaluation(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function evaluation(): HasOne
     {
         return $this->hasOne(Evaluation::class, 'user_lesson_id', 'id');
+    }
+
+    public function evaluations(): HasMany
+    {
+        return $this->hasMany(Evaluation::class, 'user_lesson_id', 'id');
     }
 }

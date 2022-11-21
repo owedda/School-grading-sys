@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * App\Models\LessonModel
@@ -30,8 +32,14 @@ class Lesson extends Model
 
     public $timestamps = false;
 
-    public function userLessons()
+    //TODO perziureti ar tikrai naudojamas sitas
+    public function userLessons(): HasMany
     {
         return $this->hasMany(UserLesson::class, 'lesson_id', 'id');
+    }
+
+    public function userLesson(): HasOne
+    {
+        return $this->hasOne(UserLesson::class, 'lesson_id', 'id');
     }
 }
