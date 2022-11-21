@@ -1,0 +1,22 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Service\Grading\Filter;
+
+use App\Service\Grading\Collections\DataCollection;
+use DateTime;
+
+final class DateFromToFilter
+{
+    public function filter(DateTime $dateFrom, DateTime $dateTo): DataCollection
+    {
+        $collection = new DataCollection();
+
+        for ($i = $dateFrom; $i < $dateTo; $i->modify('+1 day')) {
+            $collection->add($i->format('d'));
+        }
+
+        return $collection;
+    }
+}
