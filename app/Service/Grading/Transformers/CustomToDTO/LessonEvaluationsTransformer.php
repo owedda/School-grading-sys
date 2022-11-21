@@ -29,7 +29,7 @@ final class LessonEvaluationsTransformer
 
     public function transformToObject(mixed $data): LessonEvaluationsDTO
     {
-        if (is_null($data['user_lesson']['evaluations'])) {
+        if (is_null($data['evaluations'])) {
             return $this->getLessonEvaluationsNull($data);
         }
         return $this->getLessonEvaluations($data);
@@ -38,15 +38,15 @@ final class LessonEvaluationsTransformer
     private function getLessonEvaluations(mixed $data): LessonEvaluationsDTO
     {
         return new LessonEvaluationsDTO(
-            $data['name'],
-            $this->evaluationDTOTransformer->transformArrayToCollection($data['user_lesson']['evaluations'])
+            $data['lesson']['name'],
+            $this->evaluationDTOTransformer->transformArrayToCollection($data['evaluations'])
         );
     }
 
     private function getLessonEvaluationsNull(mixed $data): LessonEvaluationsDTO
     {
         return new LessonEvaluationsDTO(
-            $data['name']
+            $data['lesson']['name']
         );
     }
 }
