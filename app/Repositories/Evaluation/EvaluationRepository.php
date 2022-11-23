@@ -37,8 +37,8 @@ final class EvaluationRepository implements EvaluationRepositoryInterface
     public function getUserEvaluations(string $userId, DateTime $dateFrom, DateTime $dateTo): DataCollection
     {
         $arrayOfUserEvaluations = UserLesson::where('user_id', $userId)->with('lesson')->with('evaluations', function ($q) use ($dateFrom, $dateTo) {
-                $q->whereDate('date', '>=' , $dateFrom)->whereDate('date', '<=' , $dateTo);
-            })->get()->toArray();
+                $q->whereDate('date', '>=', $dateFrom)->whereDate('date', '<=', $dateTo);
+        })->get()->toArray();
 
         return $this->lessonEvaluationsTransformer->transformArrayToCollection($arrayOfUserEvaluations);
     }

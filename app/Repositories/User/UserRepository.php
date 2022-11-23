@@ -16,6 +16,7 @@ use App\Service\Grading\DTO\AttendingLessonDTO;
 use App\Service\Grading\DTO\UserStoreDTO;
 use App\Service\Grading\Transformers\ModelToDataModel\UserLessonTransformer;
 use App\Service\Grading\Transformers\ModelToDataModel\UserTransformer;
+use Illuminate\Support\Facades\Hash;
 
 final class UserRepository implements UserRepositoryInterface
 {
@@ -40,7 +41,7 @@ final class UserRepository implements UserRepositoryInterface
         $newUser->name = $userRequestDTO->getName();
         $newUser->last_name = $userRequestDTO->getLastName();
         $newUser->email = $userRequestDTO->getEmail();
-        $newUser->password = $userRequestDTO->getPassword();
+        $newUser->password = Hash::make($userRequestDTO->getPassword());
         $newUser->type = UserTypeEnum::Student;
         $newUser->save();
     }

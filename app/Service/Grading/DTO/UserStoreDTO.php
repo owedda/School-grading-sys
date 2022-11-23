@@ -37,6 +37,6 @@ final class UserStoreDTO
 
     public function getPassword(): string
     {
-        return encrypt($this->password);
+        return $this->password;
     }
 }
