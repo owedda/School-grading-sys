@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace App\Repositories\Evaluation;
 
 use App\Models\Evaluation;
-use App\Models\Lesson;
 use App\Models\UserLesson;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DTO\EvaluationStoreDTO;
-use App\Service\Grading\Transformers\CustomToDTO\LessonEvaluationsTransformer;
+use App\Service\Grading\Transformers\TransformerInterface;
 use DateTime;
 
 final class EvaluationRepository implements EvaluationRepositoryInterface
 {
+    private TransformerInterface $lessonEvaluationsTransformer;
+
     public function __construct(
         private readonly Evaluation $evaluation,
-        private readonly LessonEvaluationsTransformer $lessonEvaluationsTransformer
+        private readonly UserLesson $userLesson
     ) {
     }
 
@@ -36,10 +37,22 @@ final class EvaluationRepository implements EvaluationRepositoryInterface
 
     public function getUserEvaluations(string $userId, DateTime $dateFrom, DateTime $dateTo): DataCollection
     {
-        $arrayOfUserEvaluations = UserLesson::where('user_id', $userId)->with('lesson')->with('evaluations', function ($q) use ($dateFrom, $dateTo) {
-                $q->whereDate('date', '>=', $dateFrom)->whereDate('date', '<=', $dateTo);
-        })->get()->toArray();
+        $arrayOfUserEvaluations = $this->userLesson
+            ::where('user_id', $userId)
+            ->with('lesson')
+            ->with('evaluations', function ($q) use ($dateFrom, $dateTo) {
+                $q
+                    ->whereDate('date', '>=', $dateFrom)
+                    ->whereDate('date', '<=', $dateTo);
+            })
+            ->get()
+            ->toArray();
 
         return $this->lessonEvaluationsTransformer->transformArrayToCollection($arrayOfUserEvaluations);
+    }
+
+    public function setLessonEvaluationsTransformer(TransformerInterface $lessonEvaluationsTransformer): void
+    {
+        $this->lessonEvaluationsTransformer = $lessonEvaluationsTransformer;
     }
 }

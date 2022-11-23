@@ -36,12 +36,12 @@ class UserLesson extends Model
     use HasFactory;
     use HasUuids;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'user_id',
         'lesson_id'
     ];
-
-    public $timestamps = false;
 
     public function lesson(): BelongsTo
     {

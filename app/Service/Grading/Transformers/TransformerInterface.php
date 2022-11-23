@@ -3,8 +3,12 @@
 namespace App\Service\Grading\Transformers;
 
 use App\Service\Grading\Collections\DataCollection;
+use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 
-interface TransformerInterface
+interface TransformerInterface extends TransformerToObjectInterface
 {
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
     public function transformArrayToCollection(array $data): DataCollection;
 }

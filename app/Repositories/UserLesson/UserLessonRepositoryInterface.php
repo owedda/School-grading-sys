@@ -2,7 +2,6 @@
 
 namespace App\Repositories\UserLesson;
 
-use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DTO\UserLessonStoreDTO;
 
 interface UserLessonRepositoryInterface

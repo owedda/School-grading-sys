@@ -21,7 +21,7 @@ final class UserLessonTransformer implements TransformerInterface
         return $collection;
     }
 
-    public function transformToObject(mixed $data): UserLessonModel
+    public function transformToObject(array $data): UserLessonModel
     {
         return new UserLessonModel(
             $data['id'],

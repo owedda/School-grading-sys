@@ -26,11 +26,11 @@ class Lesson extends Model
     use HasFactory;
     use HasUuids;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'name'
     ];
-
-    public $timestamps = false;
 
     //TODO perziureti ar tikrai naudojamas sitas
     public function userLessons(): HasMany

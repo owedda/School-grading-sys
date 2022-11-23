@@ -6,9 +6,10 @@ namespace App\Service\Grading\Transformers\CustomToDTO;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DTO\EvaluationDTO;
+use App\Service\Grading\Transformers\TransformerInterface;
 use DateTime;
 
-final class EvaluationDTOTransformer
+final class EvaluationDTOTransformer implements TransformerInterface
 {
     public function transformArrayToCollection(array $data): DataCollection
     {
@@ -21,7 +22,7 @@ final class EvaluationDTOTransformer
         return $collection;
     }
 
-    public function transformToObject(mixed $data): EvaluationDTO
+    public function transformToObject(array $data): EvaluationDTO
     {
         return new EvaluationDTO(
             $data['value'],

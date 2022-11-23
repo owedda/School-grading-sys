@@ -21,7 +21,7 @@ final class StudentEvaluationDTOTransformer implements TransformerInterface
         return $collection;
     }
 
-    public function transformToObject(mixed $data): StudentEvaluationDTO
+    public function transformToObject(array $data): StudentEvaluationDTO
     {
         if (is_null($data['evaluation'])) {
             return $this->getStudentEvaluationDTOWithoutEvaluation($data);
@@ -29,7 +29,7 @@ final class StudentEvaluationDTOTransformer implements TransformerInterface
         return $this->getStudentEvaluationDTOFull($data);
     }
 
-    private function getStudentEvaluationDTOWithoutEvaluation(mixed $data): StudentEvaluationDTO
+    private function getStudentEvaluationDTOWithoutEvaluation(array $data): StudentEvaluationDTO
     {
         return new StudentEvaluationDTO(
             $data['user']['username'],
@@ -39,7 +39,7 @@ final class StudentEvaluationDTOTransformer implements TransformerInterface
         );
     }
 
-    private function getStudentEvaluationDTOFull(mixed $data): StudentEvaluationDTO
+    private function getStudentEvaluationDTOFull(array $data): StudentEvaluationDTO
     {
         return new StudentEvaluationDTO(
             $data['user']['username'],

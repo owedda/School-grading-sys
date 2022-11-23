@@ -6,8 +6,9 @@ namespace App\Service\Grading\Transformers\CustomToDTO;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DTO\LessonEvaluationsDTO;
+use App\Service\Grading\Transformers\TransformerInterface;
 
-final class LessonEvaluationsTransformer
+final class LessonEvaluationsTransformer implements TransformerInterface
 {
     private EvaluationDTOTransformer $evaluationDTOTransformer;
 
@@ -27,7 +28,7 @@ final class LessonEvaluationsTransformer
         return $collection;
     }
 
-    public function transformToObject(mixed $data): LessonEvaluationsDTO
+    public function transformToObject(array $data): LessonEvaluationsDTO
     {
         if (is_null($data['evaluations'])) {
             return $this->getLessonEvaluationsNull($data);
@@ -35,7 +36,7 @@ final class LessonEvaluationsTransformer
         return $this->getLessonEvaluations($data);
     }
 
-    private function getLessonEvaluations(mixed $data): LessonEvaluationsDTO
+    private function getLessonEvaluations(array $data): LessonEvaluationsDTO
     {
         return new LessonEvaluationsDTO(
             $data['lesson']['name'],
@@ -43,7 +44,7 @@ final class LessonEvaluationsTransformer
         );
     }
 
-    private function getLessonEvaluationsNull(mixed $data): LessonEvaluationsDTO
+    private function getLessonEvaluationsNull(array $data): LessonEvaluationsDTO
     {
         return new LessonEvaluationsDTO(
             $data['lesson']['name']

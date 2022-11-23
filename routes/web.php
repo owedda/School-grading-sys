@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\LessonController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserLessonController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::controller(UserController::class)
+    Route::controller(StudentController::class)
         ->prefix('users')
         ->name('users.')
         ->group(function () {

@@ -13,8 +13,8 @@ final class DateFromToFilter
     {
         $collection = new DataCollection();
 
-        for ($i = $dateFrom; $i < $dateTo; $i->modify('+1 day')) {
-            $collection->add($i->format('d'));
+        for ($date = clone $dateFrom; $date < $dateTo; $date->modify('+1 day')) {
+            $collection->add($date->format('d'));
         }
 
         return $collection;

@@ -4,6 +4,7 @@ namespace App\Repositories\Lesson;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\LessonModel;
+use App\Service\Grading\Transformers\TransformerInterface;
 
 interface LessonRepositoryInterface
 {

@@ -29,11 +29,11 @@ class Evaluation extends Model
     use HasFactory;
     use HasUuids;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'value',
         'user_lesson_id',
         'date'
     ];
-
-    public $timestamps = false;
 }

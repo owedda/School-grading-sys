@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -54,6 +55,8 @@ class User extends Authenticatable
     use Notifiable;
     use HasUuids;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'username',
         'name',
@@ -63,7 +66,7 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function lessons()
+    public function userLessons(): HasMany
     {
         return $this->hasMany(UserLesson::class, 'user_id', 'id');
     }

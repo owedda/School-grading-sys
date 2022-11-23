@@ -19,8 +19,11 @@ class UserLessonController extends Controller
 
     public function store(UserLessonStoreRequest $request): RedirectResponse
     {
-        $this->userLessonRepository->save($this->userLessonStoreDTOTransformer
-            ->transformToObject($request->only('user-id', 'lesson-id')));
+        $this->userLessonRepository
+            ->save(
+                $this->userLessonStoreDTOTransformer
+                ->transformToObject($request->only('user-id', 'lesson-id'))
+            );
 
         return back();
     }

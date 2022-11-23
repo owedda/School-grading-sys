@@ -21,7 +21,7 @@ final class UserTransformer implements TransformerInterface
         return $collection;
     }
 
-    public function transformToObject(mixed $data): UserModel
+    public function transformToObject(array $data): UserModel
     {
         return new UserModel(
             $data['id'],
