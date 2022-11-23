@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
 use App\Repositories\Student\StudentRepositoryInterface;
-use App\Service\Grading\Transformers\RequestToDTO\UserStoreDTOTransformer;
+use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -14,7 +14,7 @@ final class StudentController extends Controller
 {
     public function __construct(
         private readonly StudentRepositoryInterface $userRepository,
-        private readonly UserStoreDTOTransformer $userTransformer
+        private readonly TransformerToObjectInterface $userTransformer
     ) {
     }
 

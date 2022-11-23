@@ -6,14 +6,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserLessonStoreRequest;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
-use App\Service\Grading\Transformers\RequestToDTO\UserLessonStoreDTOTransformer;
+use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use Illuminate\Http\RedirectResponse;
 
 class UserLessonController extends Controller
 {
     public function __construct(
         private readonly UserLessonRepositoryInterface $userLessonRepository,
-        private readonly UserLessonStoreDTOTransformer $userLessonStoreDTOTransformer
+        private readonly TransformerToObjectInterface $userLessonStoreDTOTransformer
     ) {
     }
 

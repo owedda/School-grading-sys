@@ -7,7 +7,7 @@ use App\Repositories\Evaluation\EvaluationRepositoryInterface;
 use App\Repositories\Student\StudentRepositoryInterface;
 use App\Service\Grading\DTO\EvaluationDisplayDateDTO;
 use App\Service\Grading\Filter\DateFromToFilter;
-use App\Service\Grading\Transformers\RequestToDTO\EvaluationStoreDTOTransformer;
+use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use DateTime;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -16,8 +16,8 @@ class EvaluationController extends Controller
 {
     public function __construct(
         private readonly EvaluationRepositoryInterface $evaluationRepository,
-        private readonly EvaluationStoreDTOTransformer $evaluationStoreDTOTransformer,
-        private readonly StudentRepositoryInterface $userRepository
+        private readonly StudentRepositoryInterface $userRepository,
+        private readonly TransformerToObjectInterface $evaluationStoreDTOTransformer
     ) {
     }
 
