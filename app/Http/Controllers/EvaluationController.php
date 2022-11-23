@@ -8,6 +8,7 @@ use App\Repositories\Student\StudentRepositoryInterface;
 use App\Service\Grading\DTO\EvaluationDisplayDateDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Filter\DateFromToFilter;
+use App\Service\Grading\Filter\DateFromToFilterInterface;
 use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use DateTime;
 use Illuminate\Contracts\View\View;
@@ -18,7 +19,8 @@ class EvaluationController extends Controller
     public function __construct(
         private readonly EvaluationRepositoryInterface $evaluationRepository,
         private readonly StudentRepositoryInterface $userRepository,
-        private readonly TransformerToObjectInterface $evaluationStoreDTOTransformer
+        private readonly TransformerToObjectInterface $evaluationStoreDTOTransformer,
+        private readonly DateFromToFilterInterface $dateFromToFilter
     ) {
     }
 
@@ -33,13 +35,11 @@ class EvaluationController extends Controller
         $dateTo = new DateTime('last day of this month');
         $user = $this->userRepository->getElementById($userId);
 
-        $daysCollection = new DateFromToFilter();
-
         $lessonsEvaluations = $this->evaluationRepository->getUserEvaluations($userId, $dateFrom, $dateTo);
 
         $evaluationDisplayDate = new EvaluationDisplayDateDTO(
             $month->format('Y-m'),
-            $daysCollection->filter($dateFrom, $dateTo)
+            $this->dateFromToFilter->filter($dateFrom, $dateTo)
         );
 
         return view(
@@ -56,7 +56,7 @@ class EvaluationController extends Controller
         $this->evaluationRepository
             ->save(
                 $this->evaluationStoreDTOTransformer
-                ->transformToObject($request->only('value', 'user-lesson-id', 'date'))
+                ->transformArrayToObject($request->only('value', 'user-lesson-id', 'date'))
             );
 
         return back();

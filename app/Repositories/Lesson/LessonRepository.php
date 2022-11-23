@@ -35,7 +35,7 @@ final class LessonRepository implements LessonRepositoryInterface
      */
     public function getElementById(string $id): LessonModel
     {
-        return $this->lessonTransformer->transformToObject($this->lesson::findOrFail($id)->toArray());
+        return $this->lessonTransformer->transformArrayToObject($this->lesson::findOrFail($id)->toArray());
     }
 
     /**

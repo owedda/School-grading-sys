@@ -19,7 +19,7 @@ final class LessonTransformer implements TransformerInterface
         $collection = new DataCollection();
 
         foreach ($data as $lesson) {
-            $collection->add($this->transformToObject($lesson));
+            $collection->add($this->transformArrayToObject($lesson));
         }
 
         return $collection;
@@ -28,7 +28,7 @@ final class LessonTransformer implements TransformerInterface
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function transformToObject(array $data): LessonModel
+    public function transformArrayToObject(array $data): LessonModel
     {
         $this->validateArray($data);
 

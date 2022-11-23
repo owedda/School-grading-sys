@@ -54,7 +54,7 @@ final class StudentController extends Controller
         $this->userRepository
             ->store(
                 $this->userTransformer
-                ->transformToObject($request->only('username', 'name', 'last-name', 'email', 'password'))
+                ->transformArrayToObject($request->only('username', 'name', 'last-name', 'email', 'password'))
             );
         return view('students.create');
     }

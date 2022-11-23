@@ -26,7 +26,7 @@ class UserLessonController extends Controller
         $this->userLessonRepository
             ->save(
                 $this->userLessonStoreDTOTransformer
-                ->transformToObject($request->only('user-id', 'lesson-id'))
+                ->transformArrayToObject($request->only('user-id', 'lesson-id'))
             );
 
         return back();

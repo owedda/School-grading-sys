@@ -11,6 +11,6 @@ final class TransformerInvalidArgumentException extends Exception
 {
     public function __construct(string $className = "", int $code = 0, ?Throwable $previous = null)
     {
-        parent::__construct(sprintf('%s got incorrect array argument', $className), $code, $previous);
+        parent::__construct(sprintf('%s calling with incorrect array argument', $className), $code, $previous);
     }
 }

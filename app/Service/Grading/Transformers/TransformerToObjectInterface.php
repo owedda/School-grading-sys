@@ -9,5 +9,5 @@ interface TransformerToObjectInterface
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function transformToObject(array $data);
+    public function transformArrayToObject(array $data);
 }

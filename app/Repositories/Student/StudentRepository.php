@@ -11,7 +11,7 @@ use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\UserModel;
 use App\Service\Grading\DTO\UserStoreDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Filter\StudentAttendingLessonsFilter;
+use App\Service\Grading\Filter\StudentAttendingLessonsFilterInterface;
 use App\Service\Grading\Transformers\TransformerInterface;
 use Illuminate\Support\Facades\Hash;
 
@@ -24,7 +24,7 @@ final class StudentRepository implements StudentRepositoryInterface
     public function __construct(
         private readonly User $user,
         private readonly Lesson $lesson,
-        private readonly StudentAttendingLessonsFilter $studentAttendingLessonsFilter
+        private readonly StudentAttendingLessonsFilterInterface $studentAttendingLessonsFilter
     ) {
     }
 
@@ -59,7 +59,7 @@ final class StudentRepository implements StudentRepositoryInterface
      */
     public function getElementById(string $id): UserModel
     {
-        return $this->userTransformer->transformToObject($this->user::findOrFail($id)->toArray());
+        return $this->userTransformer->transformArrayToObject($this->user::findOrFail($id)->toArray());
     }
 
     /**

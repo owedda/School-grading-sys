@@ -5,6 +5,10 @@ namespace App\Providers;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserLessonController;
+use App\Service\Grading\Filter\DateFromToFilter;
+use App\Service\Grading\Filter\DateFromToFilterInterface;
+use App\Service\Grading\Filter\StudentAttendingLessonsFilter;
+use App\Service\Grading\Filter\StudentAttendingLessonsFilterInterface;
 use App\Service\Grading\Transformers\RequestToDTO\EvaluationStoreDTOTransformer;
 use App\Service\Grading\Transformers\RequestToDTO\UserLessonStoreDTOTransformer;
 use App\Service\Grading\Transformers\RequestToDTO\UserStoreDTOTransformer;
@@ -19,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->app->bind(DateFromToFilterInterface::class, DateFromToFilter::class);
+        $this->app->bind(StudentAttendingLessonsFilterInterface::class, StudentAttendingLessonsFilter::class);
+
         $this->app->when(EvaluationController::class)
             ->needs(TransformerToObjectInterface::class)
             ->give(function () {

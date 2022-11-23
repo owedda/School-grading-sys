@@ -9,7 +9,7 @@ use App\Service\Grading\DataModel\LessonModel;
 use App\Service\Grading\DataModel\UserLessonModel;
 use App\Service\Grading\DTO\AttendingLessonDTO;
 
-final class StudentAttendingLessonsFilter
+final class StudentAttendingLessonsFilter implements StudentAttendingLessonsFilterInterface
 {
     public function filter(
         DataCollection $collectionAllLessons,
