@@ -6,6 +6,7 @@ use App\Http\Requests\EvaluationStoreRequest;
 use App\Repositories\Evaluation\EvaluationRepositoryInterface;
 use App\Repositories\Student\StudentRepositoryInterface;
 use App\Service\Grading\DTO\EvaluationDisplayDateDTO;
+use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Filter\DateFromToFilter;
 use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use DateTime;
@@ -21,6 +22,9 @@ class EvaluationController extends Controller
     ) {
     }
 
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
     public function index(): View
     {
         $userId = '07f91c86-4b39-3f8d-ac53-4a0160168e33';
@@ -44,6 +48,9 @@ class EvaluationController extends Controller
         );
     }
 
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
     public function store(EvaluationStoreRequest $request): RedirectResponse
     {
         $this->evaluationRepository

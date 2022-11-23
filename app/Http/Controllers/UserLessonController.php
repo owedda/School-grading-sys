@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserLessonStoreRequest;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
+use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use Illuminate\Http\RedirectResponse;
 
@@ -17,6 +18,9 @@ class UserLessonController extends Controller
     ) {
     }
 
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
     public function store(UserLessonStoreRequest $request): RedirectResponse
     {
         $this->userLessonRepository

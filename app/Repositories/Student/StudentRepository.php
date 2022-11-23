@@ -10,6 +10,7 @@ use App\Models\UserTypeEnum;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\UserModel;
 use App\Service\Grading\DTO\UserStoreDTO;
+use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Filter\StudentAttendingLessonsFilter;
 use App\Service\Grading\Transformers\TransformerInterface;
 use Illuminate\Support\Facades\Hash;
@@ -27,6 +28,9 @@ final class StudentRepository implements StudentRepositoryInterface
     ) {
     }
 
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
     public function getAll(): DataCollection
     {
         $usersArray = $this->user->all()->toArray();
@@ -50,11 +54,17 @@ final class StudentRepository implements StudentRepositoryInterface
         $this->user->destroy($id);
     }
 
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
     public function getElementById(string $id): UserModel
     {
         return $this->userTransformer->transformToObject($this->user::findOrFail($id)->toArray());
     }
 
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
     public function getAllLessonsAsAttendingLessonsDTOCollection(string $userID): DataCollection
     {
         $arrayUserWithUserLessons = $this->user

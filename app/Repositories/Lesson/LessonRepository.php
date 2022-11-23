@@ -38,6 +38,9 @@ final class LessonRepository implements LessonRepositoryInterface
         return $this->lessonTransformer->transformToObject($this->lesson::findOrFail($id)->toArray());
     }
 
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
     public function getUsersInConcreteLesson(string $lessonId, string $date): DataCollection
     {
         $arrayUserLessonsWithUsers = $this->userLesson

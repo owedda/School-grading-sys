@@ -8,7 +8,6 @@ use App\Http\Controllers\UserLessonController;
 use App\Service\Grading\Transformers\RequestToDTO\EvaluationStoreDTOTransformer;
 use App\Service\Grading\Transformers\RequestToDTO\UserLessonStoreDTOTransformer;
 use App\Service\Grading\Transformers\RequestToDTO\UserStoreDTOTransformer;
-use App\Service\Grading\Transformers\TransformerInterface;
 use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use Illuminate\Support\ServiceProvider;
 

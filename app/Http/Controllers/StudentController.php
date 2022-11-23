@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
 use App\Repositories\Student\StudentRepositoryInterface;
+use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -18,12 +19,18 @@ final class StudentController extends Controller
     ) {
     }
 
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
     public function index(): View
     {
         $users = $this->userRepository->getAll();
         return view('students.index', compact('users'));
     }
 
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
     public function lessons(string $userId): View
     {
         $user = $this->userRepository->getElementById($userId);
@@ -39,6 +46,9 @@ final class StudentController extends Controller
         return view('students.create');
     }
 
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
     public function store(UserStoreRequest $request): View
     {
         $this->userRepository

@@ -8,6 +8,7 @@ use App\Models\Evaluation;
 use App\Models\UserLesson;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DTO\EvaluationStoreDTO;
+use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
 use DateTime;
 
@@ -35,6 +36,9 @@ final class EvaluationRepository implements EvaluationRepositoryInterface
         $evaluation->save();
     }
 
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
     public function getUserEvaluations(string $userId, DateTime $dateFrom, DateTime $dateTo): DataCollection
     {
         $arrayOfUserEvaluations = $this->userLesson
