@@ -26,7 +26,7 @@ class LessonController extends Controller
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function users(DateRequest $request, string $lessonId): View
+    public function showUsers(DateRequest $request, string $lessonId): View
     {
         $date = $request->get('date');
         $lesson = $this->lessonRepository->getElementById($lessonId);

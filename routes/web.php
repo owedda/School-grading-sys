@@ -12,7 +12,7 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('users.')
         ->group(function () {
             Route::get('', 'index')->name('index');
-            Route::get('{userId}/lessons', 'lessons')->name('lessons');
+            Route::get('{userId}/lessons', 'showLessons')->name('lessons');
             Route::get('create', 'create')->name('create');
             Route::post('', 'store')->name('store');
             Route::delete('{id}', 'destroy')->name('destroy');
@@ -23,7 +23,7 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('lessons.')
         ->group(function () {
             Route::get('', 'index')->name('index');
-            Route::get('{lessonId}/users', 'users')->name('users');
+            Route::get('{lessonId}/users', 'showUsers')->name('users');
         });
 
     Route::controller(UserLessonController::class)

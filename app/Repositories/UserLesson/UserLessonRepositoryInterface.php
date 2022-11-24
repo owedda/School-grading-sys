@@ -2,7 +2,7 @@
 
 namespace App\Repositories\UserLesson;
 
-use App\Service\Grading\DTO\UserLessonStoreDTO;
+use App\Service\Grading\DTO\StoreDTO\UserLessonStoreDTO;
 
 interface UserLessonRepositoryInterface
 {

@@ -4,7 +4,7 @@ namespace App\Repositories\Student;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\UserModel;
-use App\Service\Grading\DTO\UserStoreDTO;
+use App\Service\Grading\DTO\StoreDTO\UserStoreDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
 

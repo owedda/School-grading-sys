@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\DTO;
+namespace App\Service\Grading\DTO\CustomDTO;
 
 use App\Service\Grading\Collections\DataCollection;
 

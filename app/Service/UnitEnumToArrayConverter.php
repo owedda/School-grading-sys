@@ -6,7 +6,7 @@ namespace App\Service;
 
 use UnitEnum;
 
-final class UnitEnumToArrayAdapter
+final class UnitEnumToArrayConverter
 {
     public static function getArrayWithEnumNameValues(array $unitEnum): array
     {

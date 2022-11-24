@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Grading\Transformers\RequestToDTO;
 
-use App\Service\Grading\DTO\EvaluationStoreDTO;
+use App\Service\Grading\DTO\StoreDTO\EvaluationStoreDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerToObjectInterface;
 

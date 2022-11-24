@@ -45,30 +45,4 @@ class LessonTransformerTest extends TestCase
         $actual = $this->lessonTransformer->transformArrayToCollection($dataArray);
         $this->assertEquals($expected, $actual);
     }
-
-    public function testTransformArrayToCollectionThrowsException(): void
-    {
-        $dataArray = [
-            '0' => [
-                'id' => '20dca277-fd64-4d85-ba60-2ce7a529b3a7',
-                'name' => 'Math',
-            ],
-            '1' => [
-                'id' => 'b9d3ad00-ad31-4f5c-8b64-95735122ec5d',
-                'test' => 'Biology',
-            ]
-        ];
-
-        $this->expectException(TransformerInvalidArgumentException::class);
-        $this->expectExceptionMessage(LessonTransformer::class . ' got incorrect array argument');
-
-        $actual = $this->lessonTransformer->transformArrayToCollection($dataArray);
-    }
-
-
-    public function testTransformToObject(): void
-    {
-        /** @todo This test is incomplete. */
-        $this->markTestIncomplete();
-    }
 }

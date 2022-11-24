@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\DTO;
-
-use Date;
+namespace App\Service\Grading\DTO\StoreDTO;
 
 final class EvaluationStoreDTO
 {

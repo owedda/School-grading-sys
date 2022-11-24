@@ -4,14 +4,14 @@
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
                 <a class="btn btn-success" href="{{ route("users.create") }}">
-                    {{ __('global.add') }} {{ __('cruds.user.title_singular') }}
+                    Add Student
                 </a>
             </div>
         </div>
 
     <div class="card">
         <div class="card-header">
-            {{ __('cruds.user.title_singular') }} {{ __('global.list') }}
+            Students:
         </div>
 
         <div class="card-body">

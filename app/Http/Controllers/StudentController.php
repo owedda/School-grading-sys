@@ -31,7 +31,7 @@ final class StudentController extends Controller
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function lessons(string $userId): View
+    public function showLessons(string $userId): View
     {
         $user = $this->userRepository->getElementById($userId);
 

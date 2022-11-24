@@ -7,7 +7,7 @@ namespace App\Repositories\Evaluation;
 use App\Models\Evaluation;
 use App\Models\UserLesson;
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DTO\EvaluationStoreDTO;
+use App\Service\Grading\DTO\StoreDTO\EvaluationStoreDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
 use DateTime;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Grading\Transformers\CustomToDTO;
 
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DTO\EvaluationDTO;
+use App\Service\Grading\DTO\CustomDTO\EvaluationDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
 use DateTime;
@@ -46,7 +46,8 @@ final class EvaluationDTOTransformer implements TransformerInterface
     {
         if (
             !array_key_exists('value', $data) ||
-            !array_key_exists('date', $data)
+            !array_key_exists('date', $data) ||
+            !is_int($data['value'])
         ) {
             throw new TransformerInvalidArgumentException(__CLASS__);
         }

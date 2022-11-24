@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Grading\Transformers\CustomToDTO;
 
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DTO\StudentEvaluationDTO;
+use App\Service\Grading\DTO\CustomDTO\StudentEvaluationDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
 

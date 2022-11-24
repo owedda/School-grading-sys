@@ -7,7 +7,7 @@ namespace App\Service\Grading\Filter;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\LessonModel;
 use App\Service\Grading\DataModel\UserLessonModel;
-use App\Service\Grading\DTO\AttendingLessonDTO;
+use App\Service\Grading\DTO\CustomDTO\AttendingLessonDTO;
 
 final class StudentAttendingLessonsFilter implements StudentAttendingLessonsFilterInterface
 {

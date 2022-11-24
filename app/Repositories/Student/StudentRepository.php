@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Models\UserTypeEnum;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\UserModel;
-use App\Service\Grading\DTO\UserStoreDTO;
+use App\Service\Grading\DTO\StoreDTO\UserStoreDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Filter\StudentAttendingLessonsFilterInterface;
 use App\Service\Grading\Transformers\TransformerInterface;

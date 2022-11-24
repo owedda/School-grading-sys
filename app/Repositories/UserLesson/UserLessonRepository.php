@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories\UserLesson;
 
 use App\Models\UserLesson;
-use App\Service\Grading\DTO\UserLessonStoreDTO;
+use App\Service\Grading\DTO\StoreDTO\UserLessonStoreDTO;
 
 final class UserLessonRepository implements UserLessonRepositoryInterface
 {
