@@ -8,7 +8,7 @@
                         <i class="fa-fw fas fa-users nav-icon">
 
                         </i>
-                        {{ __('menu.students') }}
+                        Students
                     </a>
                     <ul class="nav-dropdown-items">
 {{--                        @can('permission_access')--}}
@@ -17,7 +17,7 @@
                                     <i class="fa fa-address-card-o nav-icon">
 
                                     </i>
-                                    {{ __('menu.manage') }}
+                                    Manage
                                 </a>
                             </li>
 {{--                        @endcan--}}
@@ -27,7 +27,7 @@
                                     <i class="fa fa-plus-circle nav-icon">
 
                                     </i>
-                                    {{ __('menu.add') }}
+                                    Add
                                 </a>
                             </li>
 {{--                        @endcan--}}
@@ -40,7 +40,7 @@
                         <i class="fa fa-book nav-icon">
 
                         </i>
-                        {{ __('menu.lessons') }}
+                        Lessons
                     </a>
                 </li>
 {{--            @endcan--}}
@@ -50,7 +50,7 @@
                         <i class="fa fa-sort-numeric-asc nav-icon">
 
                         </i>
-                        {{ __('menu.evaluations') }}
+                        Evaluations
                     </a>
                 </li>
 {{--            @endcan--}}
@@ -70,7 +70,7 @@
                     <i class="nav-icon fas fa-fw fa-sign-out-alt">
 
                     </i>
-                    {{ __('menu.logout') }}
+                    Logout
                 </a>
             </li>
         </ul>

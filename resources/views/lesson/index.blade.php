@@ -5,9 +5,7 @@
 @endsection
 
     <div class="card">
-        <div class="card-header">
-            {{ 'Lessons' }} {{ trans('global.list') }}
-        </div>
+        <div class="card-header">Lessons</div>
 
         <div class="card-body">
             <div class="table-responsive">
@@ -36,4 +34,4 @@
             </div>
         </div>
     </div>
-@endsection
+@endsection()

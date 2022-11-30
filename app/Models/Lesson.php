@@ -32,7 +32,6 @@ class Lesson extends Model
         'name'
     ];
 
-    //TODO perziureti ar tikrai naudojamas sitas
     public function userLessons(): HasMany
     {
         return $this->hasMany(UserLesson::class, 'lesson_id', 'id');
