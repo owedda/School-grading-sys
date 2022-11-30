@@ -12,6 +12,7 @@ use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use DateTime;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class EvaluationController extends Controller
 {
@@ -28,7 +29,7 @@ class EvaluationController extends Controller
      */
     public function index(): View
     {
-        $userId = '07f91c86-4b39-3f8d-ac53-4a0160168e33';
+        $userId = Auth::id();
         $month = new DateTime('this month');
         $dateFrom = new DateTime('first day of this month');
         $dateTo = new DateTime('last day of this month');

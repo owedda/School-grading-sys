@@ -2,7 +2,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            {{ $user->getName() }} {{ trans('menu.lessons') }}
+            {{ $user->getName() }} lessons
         </div>
 
         <div class="card-body">
@@ -12,7 +12,7 @@
                     <tr>
 
                         <th>
-                            {{ trans('cruds.asset.fields.id') }}
+                            Lesson
                         </th>
                         <th>
                             &nbsp;
@@ -30,7 +30,7 @@
                                     <form action="{{ route('userLessons.destroy', $userAttendingLesson->getUserLessonId()) }}" method="POST">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ __('global.delete') }}">
+                                        <input type="submit" class="btn btn-xs btn-danger" value="Delete">
                                     </form>
                                 @else
                                     <form action="{{ route('userLessons.store', ['user-id' => $user->getId(), 'lesson-id' => $userAttendingLesson->getLessonId()]) }}" method="POST">
@@ -40,9 +40,7 @@
                                     </form>
 
                                 @endif
-                                </form>
                             </td>
-                        </tr>
                     @endforeach
                     </tbody>
                 </table>

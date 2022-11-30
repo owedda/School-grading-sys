@@ -6,7 +6,22 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserLessonController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => 'auth'], function () {
+Auth::routes();
+
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => ['auth', 'isStudent']], static function () {
+    Route::controller(EvaluationController::class)
+        ->prefix('evaluations')
+        ->name('evaluations.')
+        ->group(function () {
+            Route::get('', 'index')->name('index');
+            Route::post('', 'store')->name('store');
+            Route::delete('{id}', 'destroy')->name('destroy');
+        });
+});
+
+Route::group(['middleware' => ['auth', 'isTeacher']], static function () {
     Route::controller(StudentController::class)
         ->prefix('users')
         ->name('users.')
@@ -33,19 +48,4 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('', 'store')->name('store');
             Route::delete('{id}', 'destroy')->name('destroy');
         });
-
-    Route::controller(EvaluationController::class)
-        ->prefix('evaluations')
-        ->name('evaluations.')
-        ->group(function () {
-            Route::get('', 'index')->name('index');
-            Route::post('', 'store')->name('store');
-            Route::delete('{id}', 'destroy')->name('destroy');
-        });
 });
-
-
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

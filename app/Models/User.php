@@ -55,6 +55,12 @@ class User extends Authenticatable
     use Notifiable;
     use HasUuids;
 
+    private const USERTYPE =
+        [
+            'Teacher' => 'Teacher',
+            'Student' => 'Student'
+        ];
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -65,6 +71,16 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+
+    public function isTeacher(): bool
+    {
+        return $this->type === self::USERTYPE['Teacher'];
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->type === self::USERTYPE['Student'];
+    }
 
     public function userLessons(): HasMany
     {
