@@ -6,14 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up(): void
     {
-        Schema::create('evaluations', function (Blueprint $table) {
+        Schema::create('evaluations', static function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->integer('value');
             $table->foreignUuid('user_lesson_id')->constrained()->cascadeOnDelete();
@@ -21,11 +16,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down(): void
     {
         Schema::dropIfExists('evaluations');
