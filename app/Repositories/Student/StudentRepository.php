@@ -33,7 +33,7 @@ final class StudentRepository implements StudentRepositoryInterface
      */
     public function getAll(): DataCollection
     {
-        $usersArray = $this->user->all()->toArray();
+        $usersArray = $this->user::where('type', UserTypeEnum::Student->value)->get()->toArray();
         return $this->userTransformer->transformArrayToCollection($usersArray);
     }
 
@@ -45,7 +45,7 @@ final class StudentRepository implements StudentRepositoryInterface
         $newUser->last_name = $userRequestDTO->getLastName();
         $newUser->email = $userRequestDTO->getEmail();
         $newUser->password = Hash::make($userRequestDTO->getPassword());
-        $newUser->type = UserTypeEnum::Student;
+        $newUser->type = UserTypeEnum::Student->value;
         $newUser->save();
     }
 
