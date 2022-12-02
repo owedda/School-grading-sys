@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Common\UnitEnumToArrayConverter;
 use App\Models\UserTypeEnum;
-use App\Service\UnitEnumToArrayConverter;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
