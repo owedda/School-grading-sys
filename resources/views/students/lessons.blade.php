@@ -10,7 +10,6 @@
                 <table class=" table table-bordered table-striped table-hover datatable datatable-Asset">
                     <thead>
                     <tr>
-
                         <th>
                             Lesson
                         </th>
@@ -21,7 +20,7 @@
                     </thead>
                     <tbody>
                     @foreach($usersAttendingLessonsCollection as $key => $userAttendingLesson)
-
+                        <tr>
                             <td>
                                 {{ $userAttendingLesson->getLessonName() ?? '' }}
                             </td>
@@ -38,9 +37,9 @@
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-info" value="Add">
                                     </form>
-
                                 @endif
                             </td>
+                        </tr>
                     @endforeach
                     </tbody>
                 </table>
