@@ -9,7 +9,21 @@
             Evaluations user: {{ $user->getName() }} {{ $user->getLastName() }}
         </div>
         <div class="card-header">
-            From date: {{  $evaluationDisplayDate->getMonth() }}
+            From date: {{  $evaluationDisplayDate->getDate()->format('Y-m') }}
+        </div>
+        <div class="card-header">
+            Month:
+            <div>
+                <form method="GET" action="{{ route('evaluations.index')}}"  style="display: inline-block;">
+                    <input type="hidden" id="date"  name="date" value="{{ $evaluationDisplayDate->getDate()->modify('-1 month')->format('Y-m-d') }}"/>
+                    <input type="submit" class="btn btn-xs btn-danger" value="Previous">
+                </form>
+
+                <form method="GET" action="{{ route('evaluations.index')}}"  style="display: inline-block;">
+                    <input type="hidden" id="date"  name="date" value="{{ $evaluationDisplayDate->getDate()->modify('+2 month')->format('Y-m-d') }}"/>
+                    <input type="submit" class="btn btn-xs btn-success" value="Next">
+                </form>
+            </div>
         </div>
 
         <div class="card-body">

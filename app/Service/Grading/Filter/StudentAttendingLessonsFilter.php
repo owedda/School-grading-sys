@@ -31,12 +31,12 @@ final class StudentAttendingLessonsFilter implements StudentAttendingLessonsFilt
         LessonModel $lesson
     ): AttendingLessonDTO {
 
-        $item = $this->filterIfUserAttendsConcreteLessonElseNull($collectionUserHaveLessons, $lesson);
+        $userLesson = $this->filterIfUserAttendsConcreteLessonElseNull($collectionUserHaveLessons, $lesson);
 
-        if (is_null($item)) {
+        if ($userLesson === null) {
             return new AttendingLessonDTO($lesson->getId(), $lesson->getName(), false);
         }
-        return new AttendingLessonDTO($lesson->getId(), $lesson->getName(), true, $item->getId());
+        return new AttendingLessonDTO($lesson->getId(), $lesson->getName(), true, $userLesson->getId());
     }
 
     private function filterIfUserAttendsConcreteLessonElseNull(

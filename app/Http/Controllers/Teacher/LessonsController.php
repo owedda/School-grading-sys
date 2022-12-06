@@ -1,31 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Teacher;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\DateRequest;
 use App\Repositories\Lesson\LessonRepositoryInterface;
-use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use Illuminate\Contracts\View\View;
 
-class LessonController extends Controller
+class LessonsController extends Controller
 {
     public function __construct(
         private readonly LessonRepositoryInterface $lessonRepository,
     ) {
     }
 
-    /**
-     * @throws TransformerInvalidArgumentException
-     */
     public function index(): View
     {
         $lessons = $this->lessonRepository->getAll();
         return view('lesson.index', compact('lessons'));
     }
 
-    /**
-     * @throws TransformerInvalidArgumentException
-     */
     public function showUsers(DateRequest $request, string $lessonId): View
     {
         $date = $request->get('date');

@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Student;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\DateRequest;
 use App\Http\Requests\EvaluationStoreRequest;
 use App\Repositories\Evaluation\EvaluationRepositoryInterface;
-use App\Repositories\Student\StudentRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
+use App\Service\Grading\DTO\CustomDTO\DateRangeDTO;
 use App\Service\Grading\DTO\CustomDTO\EvaluationDisplayDateDTO;
-use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Filter\DateFromToFilterInterface;
+use App\Service\Grading\Filter\DaysFromToFilterInterface;
 use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use DateTime;
 use Illuminate\Contracts\View\View;
@@ -18,39 +20,42 @@ class EvaluationController extends Controller
 {
     public function __construct(
         private readonly EvaluationRepositoryInterface $evaluationRepository,
-        private readonly StudentRepositoryInterface $userRepository,
-        private readonly TransformerToObjectInterface $evaluationStoreDTOTransformer,
-        private readonly DateFromToFilterInterface $dateFromToFilter
+        private readonly UserRepositoryInterface       $userRepository,
+        private readonly TransformerToObjectInterface  $evaluationStoreDTOTransformer,
+        private readonly DaysFromToFilterInterface     $daysFromToFilter
     ) {
     }
 
-    /**
-     * @throws TransformerInvalidArgumentException
-     */
-    public function index(): View
+    public function index(DateRequest $dateRequest): View
     {
         $userId = Auth::id();
-        $month = new DateTime('this month');
-        $dateFrom = new DateTime('first day of this month');
-        $dateTo = new DateTime('last day of this month');
+        $date = new DateTime($dateRequest->get('date'));
+
+        $dateMonthRange = new DateRangeDTO(
+            new DateTime('first day of ' . $date->format('Y-m-d')),
+            new DateTime('last day of ' . $date->format('Y-m-d'))
+        );
+
         $user = $this->userRepository->getElementById($userId);
 
-        $lessonsEvaluations = $this->evaluationRepository->getUserEvaluations($userId, $dateFrom, $dateTo);
+        $lessonsEvaluations = $this->evaluationRepository->getUserEvaluations($userId, $dateMonthRange);
+        $dateFromToCollection = $this->daysFromToFilter->filter($dateMonthRange);
 
         $evaluationDisplayDate = new EvaluationDisplayDateDTO(
-            $month->format('Y-m'),
-            $this->dateFromToFilter->filter($dateFrom, $dateTo)
+            $date,
+            $dateFromToCollection
         );
 
         return view(
             'evaluations.index',
-            compact('lessonsEvaluations', 'evaluationDisplayDate', 'user')
+            compact(
+                'lessonsEvaluations',
+                'evaluationDisplayDate',
+                'user'
+            )
         );
     }
 
-    /**
-     * @throws TransformerInvalidArgumentException
-     */
     public function store(EvaluationStoreRequest $request): RedirectResponse
     {
         $this->evaluationRepository

@@ -39,10 +39,17 @@
             @endif
             @if(\Illuminate\Support\Facades\Auth::user()->isStudent())
                 <li class="nav-item">
-                    <a href="{{ route("evaluations.index") }}" class="nav-link">
+                    <a
+                        href="{{ route("evaluations.index") }}"
+                       class="nav-link"
+                       onclick="event.preventDefault(); document.getElementById('evaluation-form').submit();">
+
                         <i class="fa fa-sort-numeric-asc nav-icon">
 
                         </i>
+                        <form id="evaluation-form" action="{{ route("evaluations.index") }}" method="GET" class="d-none">
+                            <input type="hidden" id="date"  name="date" value="{{ (new DateTime('this month'))->format('Y-m-d') }}"/>
+                        </form>
                         Evaluations
                     </a>
                 </li>

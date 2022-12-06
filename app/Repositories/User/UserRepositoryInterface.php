@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Student;
+namespace App\Repositories\User;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\UserModel;
@@ -8,7 +8,7 @@ use App\Service\Grading\DTO\StoreDTO\UserStoreDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
 
-interface StudentRepositoryInterface
+interface UserRepositoryInterface
 {
     /**
      * @throws TransformerInvalidArgumentException
@@ -24,14 +24,5 @@ interface StudentRepositoryInterface
      */
     public function getElementById(string $id): UserModel;
 
-    /**
-     * @throws TransformerInvalidArgumentException
-     */
-    public function getAllLessonsAsAttendingLessonsDTOCollection(string $userID): DataCollection;
-
     public function setUserTransformer(TransformerInterface $userTransformer): void;
-
-    public function setUserLessonTransformer(TransformerInterface $userLessonTransformer): void;
-
-    public function setLessonTransformer(TransformerInterface $lessonTransformer): void;
 }

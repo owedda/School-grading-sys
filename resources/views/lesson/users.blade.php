@@ -26,13 +26,13 @@
                 <thead>
                     <tr>
                         <th>
-                            {{ __('cruds.user.fields.username') }}
+                            Username
                         </th>
                         <th>
-                            {{ __('cruds.user.fields.name') }}
+                            Name
                         </th>
                         <th>
-                            {{ __('cruds.user.fields.last_name') }}
+                            Last name
                         </th>
                         <th>
                             Evaluation

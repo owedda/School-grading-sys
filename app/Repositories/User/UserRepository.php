@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories\Student;
+namespace App\Repositories\User;
 
 use App\Models\Lesson;
 use App\Models\User;
+use App\Models\UserLesson;
 use App\Models\UserTypeEnum;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\UserModel;
@@ -15,16 +16,12 @@ use App\Service\Grading\Filter\StudentAttendingLessonsFilterInterface;
 use App\Service\Grading\Transformers\TransformerInterface;
 use Illuminate\Support\Facades\Hash;
 
-final class StudentRepository implements StudentRepositoryInterface
+final class UserRepository implements UserRepositoryInterface
 {
     private TransformerInterface $userTransformer;
-    private TransformerInterface $userLessonTransformer;
-    private TransformerInterface $lessonTransformer;
 
     public function __construct(
-        private readonly User $user,
-        private readonly Lesson $lesson,
-        private readonly StudentAttendingLessonsFilterInterface $studentAttendingLessonsFilter
+        private readonly User $user
     ) {
     }
 
@@ -62,36 +59,9 @@ final class StudentRepository implements StudentRepositoryInterface
         return $this->userTransformer->transformArrayToObject($this->user::findOrFail($id)->toArray());
     }
 
-    /**
-     * @throws TransformerInvalidArgumentException
-     */
-    public function getAllLessonsAsAttendingLessonsDTOCollection(string $userID): DataCollection
-    {
-        $arrayUserWithUserLessons = $this->user
-            ::where('id', $userID)
-            ->with('userLessons')
-            ->get()
-            ->toArray();
-        $arrayUserLessons = array_column($arrayUserWithUserLessons, 'user_lessons');
-
-        $collectionUserHaveLessons = $this->userLessonTransformer->transformArrayToCollection($arrayUserLessons[0]);
-        $collectionAllLessons = $this->lessonTransformer->transformArrayToCollection($this->lesson->all()->toArray());
-
-        return $this->studentAttendingLessonsFilter->filter($collectionAllLessons, $collectionUserHaveLessons);
-    }
 
     public function setUserTransformer(TransformerInterface $userTransformer): void
     {
         $this->userTransformer = $userTransformer;
-    }
-
-    public function setUserLessonTransformer(TransformerInterface $userLessonTransformer): void
-    {
-        $this->userLessonTransformer = $userLessonTransformer;
-    }
-
-    public function setLessonTransformer(TransformerInterface $lessonTransformer): void
-    {
-        $this->lessonTransformer = $lessonTransformer;
     }
 }

@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\EvaluationController;
-use App\Http\Controllers\LessonController;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\UserLessonController;
+use App\Http\Controllers\Student\EvaluationController;
+use App\Http\Controllers\Teacher\LessonsController;
+use App\Http\Controllers\Teacher\StudentsController;
+use App\Http\Controllers\Teacher\UserLessonController;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 Route::group(['middleware' => ['auth', 'isStudent']], static function () {
     Route::controller(EvaluationController::class)
@@ -16,13 +17,11 @@ Route::group(['middleware' => ['auth', 'isStudent']], static function () {
         ->name('evaluations.')
         ->group(function () {
             Route::get('', 'index')->name('index');
-            Route::post('', 'store')->name('store');
-            Route::delete('{id}', 'destroy')->name('destroy');
         });
 });
 
 Route::group(['middleware' => ['auth', 'isTeacher']], static function () {
-    Route::controller(StudentController::class)
+    Route::controller(StudentsController::class)
         ->prefix('users')
         ->name('users.')
         ->group(function () {
@@ -33,7 +32,7 @@ Route::group(['middleware' => ['auth', 'isTeacher']], static function () {
             Route::delete('{id}', 'destroy')->name('destroy');
         });
 
-    Route::controller(LessonController::class)
+    Route::controller(LessonsController::class)
         ->prefix('lessons')
         ->name('lessons.')
         ->group(function () {
@@ -44,6 +43,14 @@ Route::group(['middleware' => ['auth', 'isTeacher']], static function () {
     Route::controller(UserLessonController::class)
         ->prefix('userLessons')
         ->name('userLessons.')
+        ->group(function () {
+            Route::post('', 'store')->name('store');
+            Route::delete('{id}', 'destroy')->name('destroy');
+        });
+
+    Route::controller(EvaluationController::class)
+        ->prefix('evaluations')
+        ->name('evaluations.')
         ->group(function () {
             Route::post('', 'store')->name('store');
             Route::delete('{id}', 'destroy')->name('destroy');
