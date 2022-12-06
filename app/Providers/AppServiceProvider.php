@@ -13,8 +13,10 @@ use App\Service\Grading\Transformers\RequestToDTO\EvaluationStoreDTOTransformer;
 use App\Service\Grading\Transformers\RequestToDTO\UserLessonStoreDTOTransformer;
 use App\Service\Grading\Transformers\RequestToDTO\UserStoreDTOTransformer;
 use App\Service\Grading\Transformers\TransformerToObjectInterface;
-use App\Service\Teacher\Student\StudentsService;
-use App\Service\Teacher\Student\StudentsServiceInterface;
+use App\Service\Teacher\Lessons\LessonsService;
+use App\Service\Teacher\Lessons\LessonsServiceInterface;
+use App\Service\Teacher\Students\StudentsService;
+use App\Service\Teacher\Students\StudentsServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -47,5 +49,6 @@ class AppServiceProvider extends ServiceProvider
             });
 
         $this->app->bind(StudentsServiceInterface::class, StudentsService::class);
+        $this->app->bind(LessonsServiceInterface::class, LessonsService::class);
     }
 }

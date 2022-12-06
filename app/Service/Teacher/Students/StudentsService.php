@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Teacher\Student;
+namespace App\Service\Teacher\Students;
 
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;

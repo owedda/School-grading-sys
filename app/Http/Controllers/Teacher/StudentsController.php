@@ -6,9 +6,8 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserStoreRequest;
-use App\Repositories\User\UserRepositoryInterface;
 use App\Service\Grading\Transformers\TransformerToObjectInterface;
-use App\Service\Teacher\Student\StudentsServiceInterface;
+use App\Service\Teacher\Students\StudentsServiceInterface;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Teacher\Student;
+namespace App\Service\Teacher\Students;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\UserModel;
