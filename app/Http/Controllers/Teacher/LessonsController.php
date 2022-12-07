@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Teacher;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DateRequest;
 use App\Http\Requests\EvaluationStoreRequest;
-use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
 use App\Service\Teacher\Lessons\LessonsServiceInterface;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -14,7 +13,6 @@ class LessonsController extends Controller
 {
     public function __construct(
         private readonly LessonsServiceInterface $lessonsService,
-        private readonly RequestModelTransformerInterface $evaluationRequestModelTransformer
     ) {
     }
 
@@ -38,11 +36,11 @@ class LessonsController extends Controller
 
     public function storeUserEvaluation(EvaluationStoreRequest $request): RedirectResponse
     {
-        $evaluationStoreRequestModel =
-            $this->evaluationRequestModelTransformer
+        $evaluationRequestModel = $this->lessonsService
+            ->getEvaluationRequestModelTransformer()
             ->transformArrayToObject($request->all());
 
-        $this->lessonsService->storeEvaluation($evaluationStoreRequestModel);
+        $this->lessonsService->storeEvaluation($evaluationRequestModel);
 
         return back();
     }

@@ -27,8 +27,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->app->bind(LessonsServiceInterface::class, LessonsService::class);
-
         $this->app->bind(DaysFromToFilterInterface::class, DaysFromToFilter::class);
         $this->app->bind(StudentAttendingLessonsFilterInterface::class, StudentAttendingLessonsFilter::class);
 
@@ -40,14 +38,15 @@ class AppServiceProvider extends ServiceProvider
             return $service;
         });
 
+        $this->app->bind(LessonsServiceInterface::class, function () {
+            /** @var LessonsService $service */
+            $service = $this->app->make(LessonsService::class);
+            $service->setEvaluationRequestModelTransformer(new EvaluationRequestModelTransformer());
+            return $service;
+        });
+
         $this->app->when(EvaluationController::class)
             ->needs(TransformerToObjectInterface::class)
-            ->give(function () {
-                return new EvaluationRequestModelTransformer();
-            });
-
-        $this->app->when(LessonsController::class)
-            ->needs(RequestModelTransformerInterface::class)
             ->give(function () {
                 return new EvaluationRequestModelTransformer();
             });

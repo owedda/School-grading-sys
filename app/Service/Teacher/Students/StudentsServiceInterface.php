@@ -25,7 +25,9 @@ interface StudentsServiceInterface
 
     public function destroyUserLesson(string $userLessonId): void;
 
-    public function setUserLessonRequestModelTransformer(RequestModelTransformerInterface $userLessonRequestModelTransformer);
+    public function setUserLessonRequestModelTransformer(
+        RequestModelTransformerInterface $userLessonRequestModelTransformer
+    ): void;
 
     public function getUserLessonRequestModelTransformer(): RequestModelTransformerInterface;
 

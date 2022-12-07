@@ -8,10 +8,13 @@ use App\Repositories\Evaluation\EvaluationRepositoryInterface;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\LessonModel;
+use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
 use App\Service\Grading\ValueObjects\RequestModel\EvaluationRequestModel;
 
 final class LessonsService implements LessonsServiceInterface
 {
+    private RequestModelTransformerInterface $evaluationRequestModelTransformer;
+
     public function __construct(
         private readonly LessonRepositoryInterface $lessonRepository,
         private readonly EvaluationRepositoryInterface $evaluationRepository
@@ -41,5 +44,17 @@ final class LessonsService implements LessonsServiceInterface
     public function destroyEvaluation(string $evaluationId): void
     {
         $this->evaluationRepository->deleteElementById($evaluationId);
+    }
+
+    public function getEvaluationRequestModelTransformer(): RequestModelTransformerInterface
+    {
+        return $this->evaluationRequestModelTransformer;
+    }
+
+    public function setEvaluationRequestModelTransformer(
+        RequestModelTransformerInterface $evaluationRequestModelTransformer
+    ): void {
+
+        $this->evaluationRequestModelTransformer = $evaluationRequestModelTransformer;
     }
 }

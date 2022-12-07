@@ -11,7 +11,6 @@ use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\UserModel;
 use App\Service\Grading\Filter\StudentAttendingLessonsFilterInterface;
 use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
-use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use App\Service\Grading\ValueObjects\RequestModel\UserLessonRequestModel;
 use App\Service\Grading\ValueObjects\RequestModel\UserRequestModel;
 
@@ -66,8 +65,9 @@ final class StudentsService implements StudentsServiceInterface
         $this->userLessonRepository->deleteElementById($userLessonId);
     }
 
-    public function setUserLessonRequestModelTransformer(RequestModelTransformerInterface $userLessonRequestModelTransformer): void
-    {
+    public function setUserLessonRequestModelTransformer(
+        RequestModelTransformerInterface $userLessonRequestModelTransformer
+    ): void {
         $this->userLessonRequestModelTransformer = $userLessonRequestModelTransformer;
     }
 
