@@ -5,7 +5,7 @@ namespace App\Repositories\User;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
-use App\Service\Grading\ValueObjects\DatabaseModel\UserModel;
+use App\Service\Grading\ValueObjects\Model\UserModel;
 use App\Service\Grading\ValueObjects\RequestModel\UserRequestModel;
 
 interface UserRepositoryInterface

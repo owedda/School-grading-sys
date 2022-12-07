@@ -4,7 +4,7 @@ namespace App\Service\Teacher\Students;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
-use App\Service\Grading\ValueObjects\DatabaseModel\UserModel;
+use App\Service\Grading\ValueObjects\Model\UserModel;
 use App\Service\Grading\ValueObjects\RequestModel\UserLessonRequestModel;
 use App\Service\Grading\ValueObjects\RequestModel\UserRequestModel;
 

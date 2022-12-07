@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\ValueObjects\DatabaseModel;
+namespace App\Service\Grading\ValueObjects\Model;
 
 final class UserLessonModel
 {

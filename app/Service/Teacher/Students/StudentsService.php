@@ -8,9 +8,8 @@ use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\Filter\StudentAttendingLessonsFilterInterface;
 use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
-use App\Service\Grading\ValueObjects\DatabaseModel\UserModel;
+use App\Service\Grading\ValueObjects\Model\UserModel;
 use App\Service\Grading\ValueObjects\RequestModel\UserLessonRequestModel;
 use App\Service\Grading\ValueObjects\RequestModel\UserRequestModel;
 
@@ -22,8 +21,7 @@ final class StudentsService implements StudentsServiceInterface
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
         private readonly LessonRepositoryInterface $lessonRepository,
-        private readonly UserLessonRepositoryInterface $userLessonRepository,
-        private readonly StudentAttendingLessonsFilterInterface $attendingLessonsFilter
+        private readonly UserLessonRepositoryInterface $userLessonRepository
     ) {
     }
 
@@ -39,10 +37,7 @@ final class StudentsService implements StudentsServiceInterface
 
     public function getStudentLessons(string $userId): DataCollection
     {
-        $userLessons = $this->userLessonRepository->getAllByUserId($userId);
-        $allLessons = $this->lessonRepository->getAll();
-
-        return $this->attendingLessonsFilter->filter($allLessons, $userLessons);
+        return $this->lessonRepository->getAllLessonsWithUserLessonsAttached($userId);
     }
 
     public function store(UserRequestModel $userRequestDTO): void

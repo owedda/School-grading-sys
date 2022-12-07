@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Service\Student\Evaluations;
 
-use _PHPStan_582a9cb8b\Nette\Utils\DateTime;
 use App\Constants\DateConstants;
-use App\Repositories\Evaluation\EvaluationRepositoryInterface;
-use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\UserLesson\UserLessonRepositoryInterface;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Filter\DaysFromToFilterInterface;
 use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
 use App\Service\Grading\ValueObjects\Custom\DateRange;
 use App\Service\Grading\ValueObjects\RequestModel\DateRequestModel;
 use App\Service\Grading\ValueObjects\ResponseModel\MonthResponseModel;
+use DateTime;
 
 final class EvaluationsService implements EvaluationsServiceInterface
 {
@@ -22,7 +21,7 @@ final class EvaluationsService implements EvaluationsServiceInterface
     private RequestModelTransformerInterface $dateRequestModelTransformer;
 
     public function __construct(
-        private readonly EvaluationRepositoryInterface $evaluationRepository,
+        private readonly UserLessonRepositoryInterface $userLessonRepository,
         private readonly DaysFromToFilterInterface $daysFromToFilter
     ) {
     }
@@ -31,7 +30,7 @@ final class EvaluationsService implements EvaluationsServiceInterface
     {
         $dateRange = $this->getDateRange($dateRequestModel);
 
-        return $this->evaluationRepository->getUserEvaluations($userId, $dateRange);
+        return $this->userLessonRepository->getUserEvaluations($userId, $dateRange);
     }
 
     public function getMonth(DateRequestModel $dateRequestModel): MonthResponseModel

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\Transformers\ModelToDatabaseModel;
+namespace App\Service\Grading\Transformers\EntityToModel;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
-use App\Service\Grading\ValueObjects\DatabaseModel\UserModel;
+use App\Service\Grading\ValueObjects\Model\LessonModel;
 
-final class UserModelTransformer implements TransformerInterface
+final class LessonModelTransformer implements TransformerInterface
 {
     /**
      * @throws TransformerInvalidArgumentException
@@ -18,24 +18,23 @@ final class UserModelTransformer implements TransformerInterface
     {
         $collection = new DataCollection();
 
-        foreach ($data as $user) {
-            $collection->add($this->transformArrayToObject($user));
+        foreach ($data as $lesson) {
+            $collection->add($this->transformArrayToObject($lesson));
         }
 
         return $collection;
     }
 
-    public function transformArrayToObject(array $data): UserModel
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
+    public function transformArrayToObject(array $data): LessonModel
     {
         $this->validateArray($data);
 
-        return new UserModel(
+        return new LessonModel(
             $data['id'],
-            $data['username'],
-            $data['email'],
-            $data['name'],
-            $data['last_name'],
-            $data['type'],
+            $data['name']
         );
     }
 
@@ -46,11 +45,7 @@ final class UserModelTransformer implements TransformerInterface
     {
         if (
             !array_key_exists('id', $data) ||
-            !array_key_exists('username', $data) ||
-            !array_key_exists('email', $data) ||
-            !array_key_exists('name', $data) ||
-            !array_key_exists('last_name', $data) ||
-            !array_key_exists('type', $data)
+            !array_key_exists('name', $data)
         ) {
             throw new TransformerInvalidArgumentException(__CLASS__);
         }

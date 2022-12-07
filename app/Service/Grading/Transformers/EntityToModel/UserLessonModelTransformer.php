@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\Transformers\ModelToDatabaseModel;
+namespace App\Service\Grading\Transformers\EntityToModel;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
-use App\Service\Grading\ValueObjects\DatabaseModel\EvaluationModel;
-use DateTime;
+use App\Service\Grading\ValueObjects\Model\UserLessonModel;
 
-final class EvaluationModelTransformer implements TransformerInterface
+final class UserLessonModelTransformer implements TransformerInterface
 {
     /**
      * @throws TransformerInvalidArgumentException
@@ -19,8 +18,8 @@ final class EvaluationModelTransformer implements TransformerInterface
     {
         $collection = new DataCollection();
 
-        foreach ($data as $evaluationDTO) {
-            $collection->add($this->transformArrayToObject($evaluationDTO));
+        foreach ($data as $userLesson) {
+            $collection->add($this->transformArrayToObject($userLesson));
         }
 
         return $collection;
@@ -29,13 +28,14 @@ final class EvaluationModelTransformer implements TransformerInterface
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function transformArrayToObject(array $data): EvaluationModel
+    public function transformArrayToObject(array $data): UserLessonModel
     {
         $this->validateArray($data);
 
-        return new EvaluationModel(
-            $data['value'],
-            (new DateTime($data['date']))->format('d'),
+        return new UserLessonModel(
+            $data['id'],
+            $data['user_id'],
+            $data['lesson_id']
         );
     }
 
@@ -45,9 +45,9 @@ final class EvaluationModelTransformer implements TransformerInterface
     private function validateArray(array $data): void
     {
         if (
-            !array_key_exists('value', $data) ||
-            !array_key_exists('date', $data) ||
-            !is_int($data['value'])
+            !array_key_exists('id', $data) ||
+            !array_key_exists('user_id', $data) ||
+            !array_key_exists('lesson_id', $data)
         ) {
             throw new TransformerInvalidArgumentException(__CLASS__);
         }

@@ -5,21 +5,12 @@ declare(strict_types=1);
 namespace App\Repositories\Evaluation;
 
 use App\Models\Evaluation;
-use App\Models\UserLesson;
-use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Transformers\TransformerInterface;
-use App\Service\Grading\ValueObjects\Custom\DateRange;
 use App\Service\Grading\ValueObjects\RequestModel\EvaluationRequestModel;
 
 final class EvaluationRepository implements EvaluationRepositoryInterface
 {
-    private TransformerInterface $lessonEvaluationsTransformer;
-
-    public function __construct(
-        private readonly Evaluation $evaluation,
-        private readonly UserLesson $userLesson
-    ) {
+    public function __construct(private readonly Evaluation $evaluation)
+    {
     }
 
     public function deleteElementById(string $id): void
@@ -34,29 +25,5 @@ final class EvaluationRepository implements EvaluationRepositoryInterface
         $evaluation->user_lesson_id = $requestDTO->getUserLessonId();
         $evaluation->date = $requestDTO->getDate();
         $evaluation->save();
-    }
-
-    /**
-     * @throws TransformerInvalidArgumentException
-     */
-    public function getUserEvaluations(string $userId, DateRange $dateRange): DataCollection
-    {
-        $arrayOfUserEvaluations = $this->userLesson
-            ::where('user_id', $userId)
-            ->with('lesson')
-            ->with('evaluations', function ($evaluations) use ($dateRange) {
-                $evaluations
-                    ->whereDate('date', '>=', $dateRange->getDateFrom())
-                    ->whereDate('date', '<=', $dateRange->getDateTo());
-            })
-            ->get()
-            ->toArray();
-
-        return $this->lessonEvaluationsTransformer->transformArrayToCollection($arrayOfUserEvaluations);
-    }
-
-    public function setLessonEvaluationsTransformer(TransformerInterface $lessonEvaluationsTransformer): void
-    {
-        $this->lessonEvaluationsTransformer = $lessonEvaluationsTransformer;
     }
 }

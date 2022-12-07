@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace App\Repositories\Lesson;
 
 use App\Models\Lesson;
-use App\Models\UserLesson;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
+use App\Service\Grading\Transformers\ResponseModel\UserAttendedLessonResponseModelTransformerInterface;
 use App\Service\Grading\Transformers\TransformerInterface;
-use App\Service\Grading\ValueObjects\DatabaseModel\LessonModel;
+use App\Service\Grading\ValueObjects\Model\LessonModel;
 
 final class LessonRepository implements LessonRepositoryInterface
 {
     private TransformerInterface $lessonTransformer;
-    private TransformerInterface $studentEvaluationDTOTransformer;
 
     public function __construct(
         private readonly Lesson $lesson,
-        private readonly UserLesson $userLesson
+        private readonly UserAttendedLessonResponseModelTransformerInterface $userAttendedLessonResponseModelTransformer
     ) {
     }
 
@@ -33,38 +32,30 @@ final class LessonRepository implements LessonRepositoryInterface
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function getElementById(string $id): LessonModel
+    public function getAllLessonsWithUserLessonsAttached(string $userId): DataCollection
     {
-        return $this->lessonTransformer->transformArrayToObject($this->lesson::findOrFail($id)->toArray());
+        $arrayLessonsWithUserLessons = $this->lesson
+            ::select()
+            ->with('userLesson', function ($userLessons) use ($userId) {
+                $userLessons->where('user_id', $userId);
+            })
+            ->get()
+            ->toArray();
+
+        return $this->userAttendedLessonResponseModelTransformer
+            ->transformArrayToCollection($arrayLessonsWithUserLessons);
     }
 
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function getUsersInConcreteLesson(string $lessonId, string $date): DataCollection
+    public function getElementById(string $id): LessonModel
     {
-        $arrayUserLessonsWithUsers = $this->userLesson
-            ::where('lesson_id', $lessonId)
-            ->with('user')
-            ->with('evaluation', function ($q) use ($date) {
-                $q->where('date', $date);
-            })
-            ->get()
-            ->toArray();
-
-        return new DataCollection(
-            $this->studentEvaluationDTOTransformer
-            ->transformArrayToCollection($arrayUserLessonsWithUsers)
-        );
+        return $this->lessonTransformer->transformArrayToObject($this->lesson::findOrFail($id)->toArray());
     }
 
     public function setLessonTransformer(TransformerInterface $lessonTransformer): void
     {
         $this->lessonTransformer = $lessonTransformer;
-    }
-
-    public function setStudentEvaluationDTOTransformer(TransformerInterface $studentEvaluationDTOTransformer): void
-    {
-        $this->studentEvaluationDTOTransformer = $studentEvaluationDTOTransformer;
     }
 }

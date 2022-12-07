@@ -4,8 +4,8 @@ namespace Service\Grading\Transformers\ModelToDataModel;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Transformers\ModelToDatabaseModel\LessonModelTransformer;
-use App\Service\Grading\ValueObjects\DatabaseModel\LessonModel;
+use App\Service\Grading\Transformers\EntityToModel\LessonModelTransformer;
+use App\Service\Grading\ValueObjects\Model\LessonModel;
 use PHPUnit\Framework\TestCase;
 
 class LessonTransformerTest extends TestCase

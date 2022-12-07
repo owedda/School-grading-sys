@@ -19,20 +19,20 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($usersAttendingLessonsCollection as $key => $userAttendingLesson)
+                    @foreach($userAttendedLessonsCollection as $userAttendingLesson)
                         <tr>
                             <td>
-                                {{ $userAttendingLesson->getLessonName() ?? '' }}
+                                {{ $userAttendingLesson->getLessonModel()->getName() ?? '' }}
                             </td>
                             <td>
-                                @if($userAttendingLesson->isInLesson())
-                                    <form action="{{ route('students.destroyUserLesson', $userAttendingLesson->getUserLessonId()) }}" method="POST">
+                                @if($userAttendingLesson->getUserLessonModel() !== null)
+                                    <form action="{{ route('students.destroyUserLesson', $userAttendingLesson->getUserLessonModel()->getId()) }}" method="POST">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="Delete">
                                     </form>
                                 @else
-                                    <form action="{{ route('students.storeUserLesson', ['user-id' => $user->getId(), 'lesson-id' => $userAttendingLesson->getLessonId()]) }}" method="POST">
+                                    <form action="{{ route('students.storeUserLesson', ['user-id' => $user->getId(), 'lesson-id' => $userAttendingLesson->getLessonModel()->getId()]) }}" method="POST">
                                         <input type="hidden" name="_method" value="POST">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-info" value="Add">

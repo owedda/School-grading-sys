@@ -7,7 +7,7 @@ namespace App\Service\Grading\Transformers\CustomToDTO;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DTO\CustomDTO\LessonEvaluationsDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Transformers\ModelToDatabaseModel\EvaluationModelTransformer;
+use App\Service\Grading\Transformers\EntityToModel\EvaluationModelTransformer;
 use App\Service\Grading\Transformers\TransformerInterface;
 
 final class LessonEvaluationsTransformer implements TransformerInterface

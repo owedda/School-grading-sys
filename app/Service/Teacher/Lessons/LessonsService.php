@@ -6,9 +6,10 @@ namespace App\Service\Teacher\Lessons;
 
 use App\Repositories\Evaluation\EvaluationRepositoryInterface;
 use App\Repositories\Lesson\LessonRepositoryInterface;
+use App\Repositories\UserLesson\UserLessonRepositoryInterface;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
-use App\Service\Grading\ValueObjects\DatabaseModel\LessonModel;
+use App\Service\Grading\ValueObjects\Model\LessonModel;
 use App\Service\Grading\ValueObjects\RequestModel\EvaluationRequestModel;
 
 final class LessonsService implements LessonsServiceInterface
@@ -17,6 +18,7 @@ final class LessonsService implements LessonsServiceInterface
 
     public function __construct(
         private readonly LessonRepositoryInterface $lessonRepository,
+        private readonly UserLessonRepositoryInterface $userLessonRepository,
         private readonly EvaluationRepositoryInterface $evaluationRepository
     ) {
     }
@@ -33,7 +35,7 @@ final class LessonsService implements LessonsServiceInterface
 
     public function getUsersInConcreteLesson(string $lessonId, string $date): DataCollection
     {
-        return $this->lessonRepository->getUsersInConcreteLesson($lessonId, $date);
+        return $this->userLessonRepository->getUsersInConcreteLesson($lessonId, $date);
     }
 
     public function storeEvaluation(EvaluationRequestModel $evaluation): void

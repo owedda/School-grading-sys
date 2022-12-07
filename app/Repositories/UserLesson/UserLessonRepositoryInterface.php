@@ -19,4 +19,6 @@ interface UserLessonRepositoryInterface
     public function getAllByUserId(string $userId): DataCollection;
 
     public function setUserLessonTransformer(TransformerInterface $userLessonTransformer): void;
+
+    public function getUsersInConcreteLesson(string $lessonId, string $date): DataCollection;
 }

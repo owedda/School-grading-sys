@@ -12,9 +12,9 @@ use App\Repositories\UserLesson\UserLessonRepository;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
 use App\Service\Grading\Transformers\CustomToDTO\LessonEvaluationsTransformer;
 use App\Service\Grading\Transformers\CustomToDTO\StudentEvaluationDTOTransformer;
-use App\Service\Grading\Transformers\ModelToDatabaseModel\LessonModelTransformer;
-use App\Service\Grading\Transformers\ModelToDatabaseModel\UserLessonModelTransformer;
-use App\Service\Grading\Transformers\ModelToDatabaseModel\UserModelTransformer;
+use App\Service\Grading\Transformers\EntityToModel\LessonModelTransformer;
+use App\Service\Grading\Transformers\EntityToModel\UserLessonModelTransformer;
+use App\Service\Grading\Transformers\EntityToModel\UserModelTransformer;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -29,14 +29,12 @@ class RepositoryServiceProvider extends ServiceProvider
             /** @var LessonRepository $repository */
             $repository = $this->app->make(LessonRepository::class);
             $repository->setLessonTransformer(new LessonModelTransformer());
-            $repository->setStudentEvaluationDTOTransformer(new StudentEvaluationDTOTransformer());
             return $repository;
         });
 
         $this->app->bind(EvaluationRepositoryInterface::class, function () {
             /** @var EvaluationRepository $repository */
             $repository = $this->app->make(EvaluationRepository::class);
-            $repository->setLessonEvaluationsTransformer(new LessonEvaluationsTransformer());
             return $repository;
         });
 
@@ -51,6 +49,8 @@ class RepositoryServiceProvider extends ServiceProvider
             /** @var UserLessonRepository $repository */
             $repository = $this->app->make(UserLessonRepository::class);
             $repository->setUserLessonTransformer(new UserLessonModelTransformer());
+            $repository->setStudentEvaluationDTOTransformer(new StudentEvaluationDTOTransformer());
+            $repository->setLessonEvaluationsTransformer(new LessonEvaluationsTransformer());
             return $repository;
         });
     }

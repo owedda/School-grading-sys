@@ -9,7 +9,7 @@ use App\Models\UserTypeEnum;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
-use App\Service\Grading\ValueObjects\DatabaseModel\UserModel;
+use App\Service\Grading\ValueObjects\Model\UserModel;
 use App\Service\Grading\ValueObjects\RequestModel\UserRequestModel;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,9 +17,8 @@ final class UserRepository implements UserRepositoryInterface
 {
     private TransformerInterface $userTransformer;
 
-    public function __construct(
-        private readonly User $user
-    ) {
+    public function __construct(private readonly User $user)
+    {
     }
 
     /**

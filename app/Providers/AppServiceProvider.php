@@ -2,18 +2,16 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\Student\EvaluationController;
-use App\Http\Controllers\Teacher\LessonsController;
 use App\Service\Grading\Filter\DaysFromToFilter;
 use App\Service\Grading\Filter\DaysFromToFilterInterface;
-use App\Service\Grading\Filter\StudentAttendingLessonsFilter;
-use App\Service\Grading\Filter\StudentAttendingLessonsFilterInterface;
+use App\Service\Grading\Transformers\EntityToModel\LessonModelTransformer;
+use App\Service\Grading\Transformers\EntityToModel\UserLessonModelTransformer;
 use App\Service\Grading\Transformers\RequestModel\DateRequestModelTransformer;
 use App\Service\Grading\Transformers\RequestModel\EvaluationRequestModelTransformer;
-use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
 use App\Service\Grading\Transformers\RequestModel\UserLessonRequestModelTransformer;
 use App\Service\Grading\Transformers\RequestModel\UserRequestModelTransformer;
-use App\Service\Grading\Transformers\TransformerToObjectInterface;
+use App\Service\Grading\Transformers\ResponseModel\UserAttendedLessonResponseModelTransformer;
+use App\Service\Grading\Transformers\ResponseModel\UserAttendedLessonResponseModelTransformerInterface;
 use App\Service\Student\Evaluations\EvaluationsService;
 use App\Service\Student\Evaluations\EvaluationsServiceInterface;
 use App\Service\Teacher\Lessons\LessonsService;
@@ -31,7 +29,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->bind(DaysFromToFilterInterface::class, DaysFromToFilter::class);
-        $this->app->bind(StudentAttendingLessonsFilterInterface::class, StudentAttendingLessonsFilter::class);
+
+        $this->app->bind(UserAttendedLessonResponseModelTransformerInterface::class, function () {
+            /** @var UserAttendedLessonResponseModelTransformer $transformer */
+            $transformer = $this->app->make(UserAttendedLessonResponseModelTransformer::class);
+            $transformer->setLessonTransformerToObject(new LessonModelTransformer());
+            $transformer->setUserLessonTransformerToObject(new UserLessonModelTransformer());
+            return $transformer;
+        });
 
         $this->app->bind(StudentsServiceInterface::class, function () {
             /** @var StudentsService $service */

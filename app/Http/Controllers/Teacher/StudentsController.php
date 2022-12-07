@@ -50,9 +50,9 @@ final class StudentsController extends Controller
     {
         $user = $this->studentService->getStudent($userId);
 
-        $usersAttendingLessonsCollection = $this->studentService->getStudentLessons($userId);
+        $userAttendedLessonsCollection = $this->studentService->getStudentLessons($userId);
 
-        return view('students.lessons', compact('usersAttendingLessonsCollection', 'user'));
+        return view('students.lessons', compact('userAttendedLessonsCollection', 'user'));
     }
 
     public function storeUserLesson(UserLessonStoreRequest $request): RedirectResponse

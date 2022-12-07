@@ -3,10 +3,10 @@
 namespace Service\Grading\Transformers;
 
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Transformers\ModelToDatabaseModel\EvaluationModelTransformer;
-use App\Service\Grading\Transformers\ModelToDatabaseModel\LessonModelTransformer;
-use App\Service\Grading\Transformers\ModelToDatabaseModel\UserLessonModelTransformer;
-use App\Service\Grading\Transformers\ModelToDatabaseModel\UserModelTransformer;
+use App\Service\Grading\Transformers\EntityToModel\EvaluationModelTransformer;
+use App\Service\Grading\Transformers\EntityToModel\LessonModelTransformer;
+use App\Service\Grading\Transformers\EntityToModel\UserLessonModelTransformer;
+use App\Service\Grading\Transformers\EntityToModel\UserModelTransformer;
 use App\Service\Grading\Transformers\TransformerInterface;
 use Generator;
 use PHPUnit\Framework\TestCase;
