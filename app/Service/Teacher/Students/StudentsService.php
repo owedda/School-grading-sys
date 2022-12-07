@@ -27,7 +27,7 @@ final class StudentsService implements StudentsServiceInterface
 
     public function getAll(): DataCollection
     {
-        return $this->userRepository->getAll();
+        return $this->userRepository->getAllStudents();
     }
 
     public function getStudent(string $userId): UserModel

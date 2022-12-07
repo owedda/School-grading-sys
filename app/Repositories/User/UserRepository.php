@@ -24,7 +24,7 @@ final class UserRepository implements UserRepositoryInterface
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function getAll(): DataCollection
+    public function getAllStudents(): DataCollection
     {
         $usersArray = $this->user::where('type', UserTypeEnum::Student->value)->get()->toArray();
         return $this->userTransformer->transformArrayToCollection($usersArray);
@@ -54,7 +54,6 @@ final class UserRepository implements UserRepositoryInterface
     {
         return $this->userTransformer->transformArrayToObject($this->user::findOrFail($id)->toArray());
     }
-
 
     public function setUserTransformer(TransformerInterface $userTransformer): void
     {

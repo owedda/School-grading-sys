@@ -13,7 +13,7 @@ interface UserRepositoryInterface
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function getAll(): DataCollection;
+    public function getAllStudents(): DataCollection;
 
     public function store(UserRequestModel $userRequestDTO): void;
 

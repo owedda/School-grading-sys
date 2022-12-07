@@ -13,7 +13,6 @@ use App\Service\Grading\ValueObjects\RequestModel\UserLessonRequestModel;
 
 final class UserLessonRepository implements UserLessonRepositoryInterface
 {
-    private TransformerInterface $userLessonTransformer;
     private TransformerInterface $studentEvaluationDTOTransformer;
     private TransformerInterface $lessonEvaluationsTransformer;
 
@@ -32,19 +31,6 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
         $userLesson->user_id = $requestModel->getUserId();
         $userLesson->lesson_id = $requestModel->getLessonId();
         $userLesson->save();
-    }
-
-    /**
-     * @throws TransformerInvalidArgumentException
-     */
-    public function getAllByUserId(string $userId): DataCollection
-    {
-        $arrayUserLessons = $this->userLesson
-            ::where('user_id', $userId)
-            ->get()
-            ->toArray();
-
-        return $this->userLessonTransformer->transformArrayToCollection($arrayUserLessons);
     }
 
     /**
@@ -84,11 +70,6 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
             ->toArray();
 
         return $this->lessonEvaluationsTransformer->transformArrayToCollection($arrayOfUserEvaluations);
-    }
-
-    public function setUserLessonTransformer(TransformerInterface $userLessonTransformer): void
-    {
-        $this->userLessonTransformer = $userLessonTransformer;
     }
 
     public function setStudentEvaluationDTOTransformer(TransformerInterface $studentEvaluationDTOTransformer): void

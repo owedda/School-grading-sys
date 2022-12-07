@@ -48,7 +48,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserLessonRepositoryInterface::class, function () {
             /** @var UserLessonRepository $repository */
             $repository = $this->app->make(UserLessonRepository::class);
-            $repository->setUserLessonTransformer(new UserLessonModelTransformer());
             $repository->setStudentEvaluationDTOTransformer(new StudentEvaluationDTOTransformer());
             $repository->setLessonEvaluationsTransformer(new LessonEvaluationsTransformer());
             return $repository;

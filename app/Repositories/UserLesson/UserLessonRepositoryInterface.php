@@ -5,6 +5,7 @@ namespace App\Repositories\UserLesson;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
+use App\Service\Grading\ValueObjects\Custom\DateRange;
 use App\Service\Grading\ValueObjects\RequestModel\UserLessonRequestModel;
 
 interface UserLessonRepositoryInterface
@@ -16,9 +17,14 @@ interface UserLessonRepositoryInterface
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function getAllByUserId(string $userId): DataCollection;
-
-    public function setUserLessonTransformer(TransformerInterface $userLessonTransformer): void;
-
     public function getUsersInConcreteLesson(string $lessonId, string $date): DataCollection;
+
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
+    public function getUserEvaluations(string $userId, DateRange $dateRange): DataCollection;
+
+    public function setStudentEvaluationDTOTransformer(TransformerInterface $studentEvaluationDTOTransformer): void;
+
+    public function setLessonEvaluationsTransformer(TransformerInterface $lessonEvaluationsTransformer): void;
 }
