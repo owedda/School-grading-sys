@@ -3,7 +3,7 @@
 
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route("users.create") }}">
+                <a class="btn btn-success" href="{{ route("students.create") }}">
                     Add Student
                 </a>
             </div>
@@ -52,11 +52,11 @@
                                 {{ $user->getEmail() ?? '' }}
                             </td>
                             <td>
-                                <a class="btn btn-xs btn-info" href="{{ route('users.lessons', ['userId'=>$user->getId()]) }}">
+                                <a class="btn btn-xs btn-info" href="{{ route('students.lessons', ['userId'=>$user->getId()]) }}">
                                     Add to a lesson
                                 </a>
 
-                                <form action="{{ route('users.destroy', $user->getId()) }}" method="POST" onsubmit="return confirm('Are you sure want to delete this student?');" style="display: inline-block;">
+                                <form action="{{ route('students.destroy', $user->getId()) }}" method="POST" onsubmit="return confirm('Are you sure want to delete this student?');" style="display: inline-block;">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="submit" class="btn btn-xs btn-danger" value="Delete">

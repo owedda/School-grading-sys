@@ -4,7 +4,10 @@ namespace App\Service\Teacher\Students;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\UserModel;
-use App\Service\Grading\DTO\StoreDTO\UserStoreDTO;
+use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
+use App\Service\Grading\Transformers\TransformerToObjectInterface;
+use App\Service\Grading\ValueObjects\RequestModel\UserLessonRequestModel;
+use App\Service\Grading\ValueObjects\RequestModel\UserRequestModel;
 
 interface StudentsServiceInterface
 {
@@ -14,7 +17,19 @@ interface StudentsServiceInterface
 
     public function getStudentLessons(string $userId): DataCollection;
 
-    public function store(UserStoreDTO $userRequestDTO): void;
+    public function store(UserRequestModel $userRequestDTO): void;
 
     public function delete(string $userId): void;
+
+    public function storeUserLesson(UserLessonRequestModel $userLessonRequestModel): void;
+
+    public function destroyUserLesson(string $userLessonId): void;
+
+    public function setUserLessonRequestModelTransformer(RequestModelTransformerInterface $userLessonRequestModelTransformer);
+
+    public function getUserLessonRequestModelTransformer(): RequestModelTransformerInterface;
+
+    public function getUserRequestModelTransformer(): RequestModelTransformerInterface;
+
+    public function setUserRequestModelTransformer(RequestModelTransformerInterface $userRequestModelTransformer): void;
 }

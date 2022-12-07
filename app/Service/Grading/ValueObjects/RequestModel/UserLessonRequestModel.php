@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\DTO\StoreDTO;
+namespace App\Service\Grading\ValueObjects\RequestModel;
 
-final class UserLessonStoreDTO
+final class UserLessonRequestModel
 {
     public function __construct(
         private readonly string $userId,

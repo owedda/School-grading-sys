@@ -6,9 +6,9 @@ namespace App\Repositories\UserLesson;
 
 use App\Models\UserLesson;
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DTO\StoreDTO\UserLessonStoreDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
+use App\Service\Grading\ValueObjects\RequestModel\UserLessonRequestModel;
 
 final class UserLessonRepository implements UserLessonRepositoryInterface
 {
@@ -24,11 +24,11 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
         $this->userLesson->destroy($id);
     }
 
-    public function save(UserLessonStoreDTO $requestDTO): void
+    public function save(UserLessonRequestModel $requestModel): void
     {
         $userLesson = new UserLesson();
-        $userLesson->user_id = $requestDTO->getUserId();
-        $userLesson->lesson_id = $requestDTO->getLessonId();
+        $userLesson->user_id = $requestModel->getUserId();
+        $userLesson->lesson_id = $requestModel->getLessonId();
         $userLesson->save();
     }
 

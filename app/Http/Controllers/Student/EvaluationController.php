@@ -20,9 +20,8 @@ class EvaluationController extends Controller
 {
     public function __construct(
         private readonly EvaluationRepositoryInterface $evaluationRepository,
-        private readonly UserRepositoryInterface       $userRepository,
-        private readonly TransformerToObjectInterface  $evaluationStoreDTOTransformer,
-        private readonly DaysFromToFilterInterface     $daysFromToFilter
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly DaysFromToFilterInterface $daysFromToFilter
     ) {
     }
 
@@ -54,22 +53,5 @@ class EvaluationController extends Controller
                 'user'
             )
         );
-    }
-
-    public function store(EvaluationStoreRequest $request): RedirectResponse
-    {
-        $this->evaluationRepository
-            ->save(
-                $this->evaluationStoreDTOTransformer
-                ->transformArrayToObject($request->only('value', 'user-lesson-id', 'date'))
-            );
-
-        return back();
-    }
-
-    public function destroy(string $evaluationId): RedirectResponse
-    {
-        $this->evaluationRepository->deleteElementById($evaluationId);
-        return back();
     }
 }

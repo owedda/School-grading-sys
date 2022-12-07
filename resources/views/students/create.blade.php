@@ -7,7 +7,7 @@
         </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route("users.store") }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route("students.store") }}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label class="required" for="username">Username</label>

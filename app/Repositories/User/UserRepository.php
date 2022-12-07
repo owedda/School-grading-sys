@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Repositories\User;
 
-use App\Models\Lesson;
 use App\Models\User;
-use App\Models\UserLesson;
 use App\Models\UserTypeEnum;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DataModel\UserModel;
-use App\Service\Grading\DTO\StoreDTO\UserStoreDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Filter\StudentAttendingLessonsFilterInterface;
 use App\Service\Grading\Transformers\TransformerInterface;
+use App\Service\Grading\ValueObjects\RequestModel\UserRequestModel;
 use Illuminate\Support\Facades\Hash;
 
 final class UserRepository implements UserRepositoryInterface
@@ -34,7 +31,7 @@ final class UserRepository implements UserRepositoryInterface
         return $this->userTransformer->transformArrayToCollection($usersArray);
     }
 
-    public function store(UserStoreDTO $userRequestDTO): void
+    public function store(UserRequestModel $userRequestDTO): void
     {
         $newUser = new User();
         $newUser->username = $userRequestDTO->getUsername();

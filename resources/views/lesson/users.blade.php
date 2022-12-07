@@ -43,7 +43,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($usersInConcreteLessonCollection as $key => $user)
+                @foreach($usersInConcreteLesson as $key => $user)
                     <tr>
                         <td>
                             {{ $user->getUsername() ?? '' }}
@@ -59,7 +59,7 @@
                         </td>
                         <td>
                             @if(is_null($user->getEvaluationValue()))
-                                <form method="POST" action="{{ route('evaluations.store') }}"  style="display: inline-block;">
+                                <form method="POST" action="{{ route('lessons.storeEvaluation') }}"  style="display: inline-block;">
                                     @csrf
                                     <input type="hidden" name="date" value="{{ $date }}">
                                     <input type="hidden" name="user-lesson-id" value={{ $user->getUserLessonId() }}>
@@ -67,7 +67,7 @@
                                     <input type="submit" class="btn btn-xs btn-success" value="Save">
                                 </form>
                             @else
-                                <form method="POST" action="{{ route('evaluations.destroy', ['id' => $user->getEvaluationId()]) }}"  style="display: inline-block;">
+                                <form method="POST" action="{{ route('lessons.destroyEvaluation', ['id' => $user->getEvaluationId()]) }}"  style="display: inline-block;">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="submit" class="btn btn-xs btn-danger" value="Remove">

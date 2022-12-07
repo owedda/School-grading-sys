@@ -4,16 +4,15 @@ namespace App\Repositories\Evaluation;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DTO\CustomDTO\DateRangeDTO;
-use App\Service\Grading\DTO\StoreDTO\EvaluationStoreDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
-use DateTime;
+use App\Service\Grading\ValueObjects\RequestModel\EvaluationRequestModel;
 
 interface EvaluationRepositoryInterface
 {
     public function deleteElementById(string $id): void;
 
-    public function save(EvaluationStoreDTO $requestDTO): void;
+    public function save(EvaluationRequestModel $requestDTO): void;
 
     /**
      * @throws TransformerInvalidArgumentException

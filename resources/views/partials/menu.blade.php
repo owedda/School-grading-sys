@@ -11,7 +11,7 @@
                     </a>
                     <ul class="nav-dropdown-items">
                             <li class="nav-item">
-                                <a href="{{ route("users.index") }}" class="nav-link">
+                                <a href="{{ route("students.index") }}" class="nav-link">
                                     <i class="fa fa-address-card-o nav-icon">
 
                                     </i>
@@ -19,7 +19,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route("users.create") }}" class="nav-link">
+                                <a href="{{ route("students.create") }}" class="nav-link">
                                     <i class="fa fa-plus-circle nav-icon">
 
                                     </i>

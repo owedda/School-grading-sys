@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserLessonStoreRequest;
 use App\Http\Requests\UserStoreRequest;
+use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
 use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use App\Service\Teacher\Students\StudentsServiceInterface;
 use Illuminate\Contracts\View\View;
@@ -14,8 +16,7 @@ use Illuminate\Http\RedirectResponse;
 final class StudentsController extends Controller
 {
     public function __construct(
-        private readonly StudentsServiceInterface     $studentService,
-        private readonly TransformerToObjectInterface $userTransformer
+        private readonly StudentsServiceInterface $studentService
     ) {
     }
 
@@ -23,6 +24,26 @@ final class StudentsController extends Controller
     {
         $users = $this->studentService->getAll();
         return view('students.index', compact('users'));
+    }
+
+    public function create(): View
+    {
+        return view('students.create');
+    }
+
+    public function store(UserStoreRequest $request): View
+    {
+        $studentInfo = $this->studentService->getUserRequestModelTransformer()->transformArrayToObject($request->all());
+
+        $this->studentService->store($studentInfo);
+
+        return view('students.create');
+    }
+
+    public function destroy(string $userId): RedirectResponse
+    {
+        $this->studentService->delete($userId);
+        return back();
     }
 
     public function showLessons(string $userId): View
@@ -34,23 +55,20 @@ final class StudentsController extends Controller
         return view('students.lessons', compact('usersAttendingLessonsCollection', 'user'));
     }
 
-    public function create(): View
+    public function storeUserLesson(UserLessonStoreRequest $request): RedirectResponse
     {
-        return view('students.create');
+        $userLessonRequestModel = $this->studentService
+            ->getUserLessonRequestModelTransformer()
+            ->transformArrayToObject($request->all());
+
+        $this->studentService->storeUserLesson($userLessonRequestModel);
+
+        return back();
     }
 
-    public function store(UserStoreRequest $request): View
+    public function destroyUserLesson(string $userLessonId): RedirectResponse
     {
-        $studentInfo = $this->userTransformer->transformArrayToObject($request->all());
-
-        $this->studentService->store($studentInfo);
-
-        return view('students.create');
-    }
-
-    public function destroy(string $userId): RedirectResponse
-    {
-        $this->studentService->delete($userId);
+        $this->studentService->destroyUserLesson($userLessonId);
         return back();
     }
 }

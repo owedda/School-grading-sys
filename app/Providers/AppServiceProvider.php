@@ -3,15 +3,15 @@
 namespace App\Providers;
 
 use App\Http\Controllers\Student\EvaluationController;
-use App\Http\Controllers\Teacher\StudentsController;
-use App\Http\Controllers\Teacher\UserLessonController;
+use App\Http\Controllers\Teacher\LessonsController;
 use App\Service\Grading\Filter\DaysFromToFilter;
 use App\Service\Grading\Filter\DaysFromToFilterInterface;
 use App\Service\Grading\Filter\StudentAttendingLessonsFilter;
 use App\Service\Grading\Filter\StudentAttendingLessonsFilterInterface;
-use App\Service\Grading\Transformers\RequestToDTO\EvaluationStoreDTOTransformer;
-use App\Service\Grading\Transformers\RequestToDTO\UserLessonStoreDTOTransformer;
-use App\Service\Grading\Transformers\RequestToDTO\UserStoreDTOTransformer;
+use App\Service\Grading\Transformers\RequestModel\EvaluationRequestModelTransformer;
+use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
+use App\Service\Grading\Transformers\RequestModel\UserLessonRequestModelTransformer;
+use App\Service\Grading\Transformers\RequestModel\UserRequestModelTransformer;
 use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use App\Service\Teacher\Lessons\LessonsService;
 use App\Service\Teacher\Lessons\LessonsServiceInterface;
@@ -27,28 +27,29 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->app->bind(LessonsServiceInterface::class, LessonsService::class);
+
         $this->app->bind(DaysFromToFilterInterface::class, DaysFromToFilter::class);
         $this->app->bind(StudentAttendingLessonsFilterInterface::class, StudentAttendingLessonsFilter::class);
+
+        $this->app->bind(StudentsServiceInterface::class, function () {
+            /** @var StudentsService $service */
+            $service = $this->app->make(StudentsService::class);
+            $service->setUserRequestModelTransformer(new UserRequestModelTransformer());
+            $service->setUserLessonRequestModelTransformer(new UserLessonRequestModelTransformer());
+            return $service;
+        });
 
         $this->app->when(EvaluationController::class)
             ->needs(TransformerToObjectInterface::class)
             ->give(function () {
-                return new EvaluationStoreDTOTransformer();
+                return new EvaluationRequestModelTransformer();
             });
 
-        $this->app->when(StudentsController::class)
-            ->needs(TransformerToObjectInterface::class)
+        $this->app->when(LessonsController::class)
+            ->needs(RequestModelTransformerInterface::class)
             ->give(function () {
-                return new UserStoreDTOTransformer();
+                return new EvaluationRequestModelTransformer();
             });
-
-        $this->app->when(UserLessonController::class)
-            ->needs(TransformerToObjectInterface::class)
-            ->give(function () {
-                return new UserLessonStoreDTOTransformer();
-            });
-
-        $this->app->bind(StudentsServiceInterface::class, StudentsService::class);
-        $this->app->bind(LessonsServiceInterface::class, LessonsService::class);
     }
 }

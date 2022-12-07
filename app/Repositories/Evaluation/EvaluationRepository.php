@@ -8,9 +8,9 @@ use App\Models\Evaluation;
 use App\Models\UserLesson;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DTO\CustomDTO\DateRangeDTO;
-use App\Service\Grading\DTO\StoreDTO\EvaluationStoreDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
+use App\Service\Grading\ValueObjects\RequestModel\EvaluationRequestModel;
 
 final class EvaluationRepository implements EvaluationRepositoryInterface
 {
@@ -27,7 +27,7 @@ final class EvaluationRepository implements EvaluationRepositoryInterface
         $this->evaluation->destroy($id);
     }
 
-    public function save(EvaluationStoreDTO $requestDTO): void
+    public function save(EvaluationRequestModel $requestDTO): void
     {
         $evaluation = new Evaluation();
         $evaluation->value = $requestDTO->getValue();

@@ -26,13 +26,13 @@
                             </td>
                             <td>
                                 @if($userAttendingLesson->isInLesson())
-                                    <form action="{{ route('userLessons.destroy', $userAttendingLesson->getUserLessonId()) }}" method="POST">
+                                    <form action="{{ route('students.destroyUserLesson', $userAttendingLesson->getUserLessonId()) }}" method="POST">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="Delete">
                                     </form>
                                 @else
-                                    <form action="{{ route('userLessons.store', ['user-id' => $user->getId(), 'lesson-id' => $userAttendingLesson->getLessonId()]) }}" method="POST">
+                                    <form action="{{ route('students.storeUserLesson', ['user-id' => $user->getId(), 'lesson-id' => $userAttendingLesson->getLessonId()]) }}" method="POST">
                                         <input type="hidden" name="_method" value="POST">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-info" value="Add">

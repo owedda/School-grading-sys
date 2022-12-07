@@ -8,5 +8,4 @@ use Illuminate\Log\Logger;
 
 final class LoggerCustom extends Logger implements LoggerCustomInterface
 {
-
 }
