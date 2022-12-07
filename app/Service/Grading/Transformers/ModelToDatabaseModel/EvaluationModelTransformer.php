@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\Transformers\CustomToDTO;
+namespace App\Service\Grading\Transformers\ModelToDatabaseModel;
 
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DTO\CustomDTO\EvaluationDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
+use App\Service\Grading\ValueObjects\DatabaseModel\EvaluationModel;
 use DateTime;
 
-final class EvaluationDTOTransformer implements TransformerInterface
+final class EvaluationModelTransformer implements TransformerInterface
 {
     /**
      * @throws TransformerInvalidArgumentException
@@ -29,11 +29,11 @@ final class EvaluationDTOTransformer implements TransformerInterface
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function transformArrayToObject(array $data): EvaluationDTO
+    public function transformArrayToObject(array $data): EvaluationModel
     {
         $this->validateArray($data);
 
-        return new EvaluationDTO(
+        return new EvaluationModel(
             $data['value'],
             (new DateTime($data['date']))->format('d'),
         );

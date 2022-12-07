@@ -7,9 +7,9 @@ namespace App\Repositories\Evaluation;
 use App\Models\Evaluation;
 use App\Models\UserLesson;
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DTO\CustomDTO\DateRangeDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
+use App\Service\Grading\ValueObjects\Custom\DateRange;
 use App\Service\Grading\ValueObjects\RequestModel\EvaluationRequestModel;
 
 final class EvaluationRepository implements EvaluationRepositoryInterface
@@ -39,7 +39,7 @@ final class EvaluationRepository implements EvaluationRepositoryInterface
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function getUserEvaluations(string $userId, DateRangeDTO $dateRange): DataCollection
+    public function getUserEvaluations(string $userId, DateRange $dateRange): DataCollection
     {
         $arrayOfUserEvaluations = $this->userLesson
             ::where('user_id', $userId)

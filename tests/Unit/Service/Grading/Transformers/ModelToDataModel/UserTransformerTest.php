@@ -3,20 +3,20 @@
 namespace Service\Grading\Transformers\ModelToDataModel;
 
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DataModel\UserModel;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Transformers\ModelToDataModel\UserTransformer;
+use App\Service\Grading\Transformers\ModelToDatabaseModel\UserModelTransformer;
+use App\Service\Grading\ValueObjects\DatabaseModel\UserModel;
 use PHPUnit\Framework\TestCase;
 
 class UserTransformerTest extends TestCase
 {
-    private UserTransformer $userTransformer;
+    private UserModelTransformer $userTransformer;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->userTransformer = new UserTransformer();
+        $this->userTransformer = new UserModelTransformer();
     }
 
     /**

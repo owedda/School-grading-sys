@@ -8,11 +8,14 @@ use App\Service\Grading\Filter\DaysFromToFilter;
 use App\Service\Grading\Filter\DaysFromToFilterInterface;
 use App\Service\Grading\Filter\StudentAttendingLessonsFilter;
 use App\Service\Grading\Filter\StudentAttendingLessonsFilterInterface;
+use App\Service\Grading\Transformers\RequestModel\DateRequestModelTransformer;
 use App\Service\Grading\Transformers\RequestModel\EvaluationRequestModelTransformer;
 use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
 use App\Service\Grading\Transformers\RequestModel\UserLessonRequestModelTransformer;
 use App\Service\Grading\Transformers\RequestModel\UserRequestModelTransformer;
 use App\Service\Grading\Transformers\TransformerToObjectInterface;
+use App\Service\Student\Evaluations\EvaluationsService;
+use App\Service\Student\Evaluations\EvaluationsServiceInterface;
 use App\Service\Teacher\Lessons\LessonsService;
 use App\Service\Teacher\Lessons\LessonsServiceInterface;
 use App\Service\Teacher\Students\StudentsService;
@@ -45,10 +48,11 @@ class AppServiceProvider extends ServiceProvider
             return $service;
         });
 
-        $this->app->when(EvaluationController::class)
-            ->needs(TransformerToObjectInterface::class)
-            ->give(function () {
-                return new EvaluationRequestModelTransformer();
-            });
+        $this->app->bind(EvaluationsServiceInterface::class, function () {
+            /** @var EvaluationsService $service */
+            $service = $this->app->make(EvaluationsService::class);
+            $service->setDateRequestModelTransformer(new DateRequestModelTransformer());
+            return $service;
+        });
     }
 }

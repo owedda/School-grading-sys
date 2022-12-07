@@ -3,20 +3,20 @@
 namespace Service\Grading\Transformers\CustomToDTO;
 
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DTO\CustomDTO\EvaluationDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Transformers\CustomToDTO\EvaluationDTOTransformer;
+use App\Service\Grading\Transformers\ModelToDatabaseModel\EvaluationModelTransformer;
+use App\Service\Grading\ValueObjects\DatabaseModel\EvaluationModel;
 use PHPUnit\Framework\TestCase;
 
 class EvaluationDTOTransformerTest extends TestCase
 {
-    private EvaluationDTOTransformer $evaluationDTOTransformer;
+    private EvaluationModelTransformer $evaluationDTOTransformer;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->evaluationDTOTransformer = new EvaluationDTOTransformer();
+        $this->evaluationDTOTransformer = new EvaluationModelTransformer();
     }
 
     /**
@@ -37,8 +37,8 @@ class EvaluationDTOTransformerTest extends TestCase
 
         $expected = new DataCollection();
         $expected->push(
-            new EvaluationDTO($dataArray[0]['value'], '20'),
-            new EvaluationDTO($dataArray[1]['value'], '12')
+            new EvaluationModel($dataArray[0]['value'], '20'),
+            new EvaluationModel($dataArray[1]['value'], '12')
         );
 
         $actual = $this->evaluationDTOTransformer->transformArrayToCollection($dataArray);

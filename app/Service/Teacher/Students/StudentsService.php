@@ -8,9 +8,9 @@ use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DataModel\UserModel;
 use App\Service\Grading\Filter\StudentAttendingLessonsFilterInterface;
 use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
+use App\Service\Grading\ValueObjects\DatabaseModel\UserModel;
 use App\Service\Grading\ValueObjects\RequestModel\UserLessonRequestModel;
 use App\Service\Grading\ValueObjects\RequestModel\UserRequestModel;
 

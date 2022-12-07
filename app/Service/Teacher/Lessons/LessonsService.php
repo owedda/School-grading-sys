@@ -7,8 +7,8 @@ namespace App\Service\Teacher\Lessons;
 use App\Repositories\Evaluation\EvaluationRepositoryInterface;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DataModel\LessonModel;
 use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
+use App\Service\Grading\ValueObjects\DatabaseModel\LessonModel;
 use App\Service\Grading\ValueObjects\RequestModel\EvaluationRequestModel;
 
 final class LessonsService implements LessonsServiceInterface

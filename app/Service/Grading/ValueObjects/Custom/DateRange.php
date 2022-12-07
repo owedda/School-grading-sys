@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\DTO\CustomDTO;
+namespace App\Service\Grading\ValueObjects\Custom;
 
 use DateTime;
 
-final class DateRangeDTO
+final class DateRange
 {
     public function __construct(
         private readonly DateTime $dateFrom,

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\Transformers\ModelToDataModel;
+namespace App\Service\Grading\Transformers\ModelToDatabaseModel;
 
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DataModel\UserLessonModel;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
+use App\Service\Grading\ValueObjects\DatabaseModel\LessonModel;
 
-final class UserLessonTransformer implements TransformerInterface
+final class LessonModelTransformer implements TransformerInterface
 {
     /**
      * @throws TransformerInvalidArgumentException
@@ -18,8 +18,8 @@ final class UserLessonTransformer implements TransformerInterface
     {
         $collection = new DataCollection();
 
-        foreach ($data as $userLesson) {
-            $collection->add($this->transformArrayToObject($userLesson));
+        foreach ($data as $lesson) {
+            $collection->add($this->transformArrayToObject($lesson));
         }
 
         return $collection;
@@ -28,14 +28,13 @@ final class UserLessonTransformer implements TransformerInterface
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function transformArrayToObject(array $data): UserLessonModel
+    public function transformArrayToObject(array $data): LessonModel
     {
         $this->validateArray($data);
 
-        return new UserLessonModel(
+        return new LessonModel(
             $data['id'],
-            $data['user_id'],
-            $data['lesson_id']
+            $data['name']
         );
     }
 
@@ -46,8 +45,7 @@ final class UserLessonTransformer implements TransformerInterface
     {
         if (
             !array_key_exists('id', $data) ||
-            !array_key_exists('user_id', $data) ||
-            !array_key_exists('lesson_id', $data)
+            !array_key_exists('name', $data)
         ) {
             throw new TransformerInvalidArgumentException(__CLASS__);
         }

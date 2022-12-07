@@ -3,10 +3,10 @@
 namespace Service\Grading\Transformers;
 
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Transformers\CustomToDTO\EvaluationDTOTransformer;
-use App\Service\Grading\Transformers\ModelToDataModel\LessonTransformer;
-use App\Service\Grading\Transformers\ModelToDataModel\UserLessonTransformer;
-use App\Service\Grading\Transformers\ModelToDataModel\UserTransformer;
+use App\Service\Grading\Transformers\ModelToDatabaseModel\EvaluationModelTransformer;
+use App\Service\Grading\Transformers\ModelToDatabaseModel\LessonModelTransformer;
+use App\Service\Grading\Transformers\ModelToDatabaseModel\UserLessonModelTransformer;
+use App\Service\Grading\Transformers\ModelToDatabaseModel\UserModelTransformer;
 use App\Service\Grading\Transformers\TransformerInterface;
 use Generator;
 use PHPUnit\Framework\TestCase;
@@ -32,8 +32,8 @@ class TransformerExceptionTest extends TestCase
 
     public function userTransformerDataProvider(): Generator
     {
-        yield 'UserTransformer testing if throws exception with incorrect array key' => [
-            'transformer' => new UserTransformer(),
+        yield 'UserModelTransformer testing if throws exception with incorrect array key' => [
+            'transformer' => new UserModelTransformer(),
             'dataArray' => [
                 '0' => [
                     'id' => '20dca277-fd64-4d85-ba60-2ce7a529b3a7',
@@ -57,8 +57,8 @@ class TransformerExceptionTest extends TestCase
 
     public function lessonTransformerDataProvider(): Generator
     {
-        yield 'LessonTransformer testing if throws exception with incorrect array key' => [
-            'transformer' => new LessonTransformer(),
+        yield 'LessonModelTransformer testing if throws exception with incorrect array key' => [
+            'transformer' => new LessonModelTransformer(),
             'dataArray' => [
                 '0' => [
                     'id' => '20dca277-fd64-4d85-ba60-2ce7a529b3a7',
@@ -74,8 +74,8 @@ class TransformerExceptionTest extends TestCase
 
     public function userLessonTransformerDataProvider(): Generator
     {
-        yield 'UserLessonTransformer testing if throws exception with incorrect array key' => [
-            'transformer' => new UserLessonTransformer(),
+        yield 'UserLessonModelTransformer testing if throws exception with incorrect array key' => [
+            'transformer' => new UserLessonModelTransformer(),
             'dataArray' => [
                 '0' => [
                     'id' => '20dca277-fd64-4d85-ba60-2ce7a529b3a7',
@@ -93,8 +93,8 @@ class TransformerExceptionTest extends TestCase
 
     public function evaluationDTOTransformerDataProvider(): Generator
     {
-        yield 'EvaluationDTOTransformer testing if throws exception with incorrect array key' => [
-            'transformer' => new EvaluationDTOTransformer(),
+        yield 'EvaluationModelTransformer testing if throws exception with incorrect array key' => [
+            'transformer' => new EvaluationModelTransformer(),
             'dataArray' => [
                 '0' => [
                     'value' => 10,
@@ -106,8 +106,8 @@ class TransformerExceptionTest extends TestCase
                 ]
             ]
         ];
-        yield 'EvaluationDTOTransformer testing if throws exception with incorrect array key value' => [
-            'transformer' => new EvaluationDTOTransformer(),
+        yield 'EvaluationModelTransformer testing if throws exception with incorrect array key value' => [
+            'transformer' => new EvaluationModelTransformer(),
             'dataArray' => [
                 '0' => [
                     'value' => '10',

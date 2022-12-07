@@ -7,15 +7,16 @@ namespace App\Service\Grading\Transformers\CustomToDTO;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\DTO\CustomDTO\LessonEvaluationsDTO;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
+use App\Service\Grading\Transformers\ModelToDatabaseModel\EvaluationModelTransformer;
 use App\Service\Grading\Transformers\TransformerInterface;
 
 final class LessonEvaluationsTransformer implements TransformerInterface
 {
-    private EvaluationDTOTransformer $evaluationDTOTransformer;
+    private EvaluationModelTransformer $evaluationDTOTransformer;
 
     public function __construct()
     {
-        $this->evaluationDTOTransformer = new EvaluationDTOTransformer();
+        $this->evaluationDTOTransformer = new EvaluationModelTransformer();
     }
 
     /**

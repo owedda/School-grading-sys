@@ -7,9 +7,9 @@ namespace App\Repositories\Lesson;
 use App\Models\Lesson;
 use App\Models\UserLesson;
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DataModel\LessonModel;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
+use App\Service\Grading\ValueObjects\DatabaseModel\LessonModel;
 
 final class LessonRepository implements LessonRepositoryInterface
 {

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Service\Grading\Filter;
 
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DataModel\LessonModel;
-use App\Service\Grading\DataModel\UserLessonModel;
 use App\Service\Grading\DTO\CustomDTO\AttendingLessonDTO;
+use App\Service\Grading\ValueObjects\DatabaseModel\LessonModel;
+use App\Service\Grading\ValueObjects\DatabaseModel\UserLessonModel;
 
 final class StudentAttendingLessonsFilter implements StudentAttendingLessonsFilterInterface
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\DTO\CustomDTO;
+namespace App\Service\Grading\ValueObjects\DatabaseModel;
 
-final class EvaluationDTO
+final class EvaluationModel
 {
     public function __construct(
         private readonly int $value,

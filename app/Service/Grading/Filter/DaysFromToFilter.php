@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Service\Grading\Filter;
 
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DTO\CustomDTO\DateRangeDTO;
+use App\Service\Grading\ValueObjects\Custom\DateRange;
 
 final class DaysFromToFilter implements DaysFromToFilterInterface
 {
     private const DAYFORMAT = 'd';
     private const ADDEDTIME = '+1 day';
 
-    public function filter(DateRangeDTO $dateRange): DataCollection
+    public function filter(DateRange $dateRange): DataCollection
     {
         $collection = new DataCollection();
 

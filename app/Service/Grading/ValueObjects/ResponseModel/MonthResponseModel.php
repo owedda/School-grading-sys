@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Grading\DTO\CustomDTO;
+namespace App\Service\Grading\ValueObjects\ResponseModel;
 
 use App\Service\Grading\Collections\DataCollection;
 use DateTime;
 
-final class EvaluationDisplayDateDTO
+final class MonthResponseModel
 {
     public function __construct(
         private readonly DateTime $date,

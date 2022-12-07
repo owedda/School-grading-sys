@@ -12,9 +12,9 @@ use App\Repositories\UserLesson\UserLessonRepository;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
 use App\Service\Grading\Transformers\CustomToDTO\LessonEvaluationsTransformer;
 use App\Service\Grading\Transformers\CustomToDTO\StudentEvaluationDTOTransformer;
-use App\Service\Grading\Transformers\ModelToDataModel\LessonTransformer;
-use App\Service\Grading\Transformers\ModelToDataModel\UserLessonTransformer;
-use App\Service\Grading\Transformers\ModelToDataModel\UserTransformer;
+use App\Service\Grading\Transformers\ModelToDatabaseModel\LessonModelTransformer;
+use App\Service\Grading\Transformers\ModelToDatabaseModel\UserLessonModelTransformer;
+use App\Service\Grading\Transformers\ModelToDatabaseModel\UserModelTransformer;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -28,7 +28,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(LessonRepositoryInterface::class, function () {
             /** @var LessonRepository $repository */
             $repository = $this->app->make(LessonRepository::class);
-            $repository->setLessonTransformer(new LessonTransformer());
+            $repository->setLessonTransformer(new LessonModelTransformer());
             $repository->setStudentEvaluationDTOTransformer(new StudentEvaluationDTOTransformer());
             return $repository;
         });
@@ -43,14 +43,14 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, function () {
             /** @var UserRepository $repository */
             $repository = $this->app->make(UserRepository::class);
-            $repository->setUserTransformer(new UserTransformer());
+            $repository->setUserTransformer(new UserModelTransformer());
             return $repository;
         });
 
         $this->app->bind(UserLessonRepositoryInterface::class, function () {
             /** @var UserLessonRepository $repository */
             $repository = $this->app->make(UserLessonRepository::class);
-            $repository->setUserLessonTransformer(new UserLessonTransformer());
+            $repository->setUserLessonTransformer(new UserLessonModelTransformer());
             return $repository;
         });
     }

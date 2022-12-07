@@ -7,9 +7,9 @@ namespace App\Repositories\User;
 use App\Models\User;
 use App\Models\UserTypeEnum;
 use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\DataModel\UserModel;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
+use App\Service\Grading\ValueObjects\DatabaseModel\UserModel;
 use App\Service\Grading\ValueObjects\RequestModel\UserRequestModel;
 use Illuminate\Support\Facades\Hash;
 
