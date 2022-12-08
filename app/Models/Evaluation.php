@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\DatabaseConstants;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,8 +33,8 @@ class Evaluation extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'value',
-        'user_lesson_id',
-        'date'
+        DatabaseConstants::EVALUATIONS_TABLE_VALUE,
+        DatabaseConstants::EVALUATIONS_TABLE_USER_LESSON_ID,
+        DatabaseConstants::EVALUATIONS_TABLE_DATE
     ];
 }

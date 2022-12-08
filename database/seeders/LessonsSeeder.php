@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Constants\DatabaseConstants;
 use App\Models\Lesson;
 use Illuminate\Database\Seeder;
 
@@ -11,32 +12,32 @@ class LessonsSeeder extends Seeder
     {
         $lessons = [
             [
-                'id'   => fake()->uuid(),
-                'name' => 'Mathematics',
+                DatabaseConstants::LESSONS_TABLE_ID   => fake()->uuid(),
+                DatabaseConstants::LESSONS_TABLE_NAME => 'Mathematics',
             ],
             [
-                'id'   => fake()->uuid(),
-                'name' => 'Physics',
+                DatabaseConstants::LESSONS_TABLE_ID   => fake()->uuid(),
+                DatabaseConstants::LESSONS_TABLE_NAME => 'Physics',
             ],
             [
-                'id'   => fake()->uuid(),
-                'name' => 'Biology',
+                DatabaseConstants::LESSONS_TABLE_ID   => fake()->uuid(),
+                DatabaseConstants::LESSONS_TABLE_NAME => 'Biology',
             ],
             [
-                'id'   => fake()->uuid(),
-                'name' => 'Spain',
+                DatabaseConstants::LESSONS_TABLE_ID   => fake()->uuid(),
+                DatabaseConstants::LESSONS_TABLE_NAME => 'Spain',
             ],
             [
-                'id'   => fake()->uuid(),
-                'name' => 'Computer science',
+                DatabaseConstants::LESSONS_TABLE_ID   => fake()->uuid(),
+                DatabaseConstants::LESSONS_TABLE_NAME => 'Computer science',
             ],
             [
-                'id'   => fake()->uuid(),
-                'name' => 'English',
+                DatabaseConstants::LESSONS_TABLE_ID   => fake()->uuid(),
+                DatabaseConstants::LESSONS_TABLE_NAME => 'English',
             ],
             [
-                'id'   => fake()->uuid(),
-                'name' => 'Geography',
+                DatabaseConstants::LESSONS_TABLE_ID   => fake()->uuid(),
+                DatabaseConstants::LESSONS_TABLE_NAME => 'Geography',
             ],
         ];
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories\UserLesson;
 
+use App\Constants\DatabaseConstants;
 use App\Models\UserLesson;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
@@ -39,10 +40,10 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
     public function getUsersInConcreteLesson(string $lessonId, string $date): DataCollection
     {
         $arrayUserLessonsWithUsers = $this->userLesson
-            ::where('lesson_id', $lessonId)
+            ::where(DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID, $lessonId)
             ->with('user')
             ->with('evaluation', function ($evaluation) use ($date) {
-                $evaluation->where('date', $date);
+                $evaluation->where(DatabaseConstants::EVALUATIONS_TABLE_DATE, $date);
             })
             ->get()
             ->toArray();
@@ -59,12 +60,12 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
     public function getUserEvaluations(string $userId, DateRange $dateRange): DataCollection
     {
         $arrayOfUserEvaluations = $this->userLesson
-            ::where('user_id', $userId)
+            ::where(DatabaseConstants::USER_LESSONS_TABLE_USER_ID, $userId)
             ->with('lesson')
             ->with('evaluations', function ($evaluations) use ($dateRange) {
                 $evaluations
-                    ->whereDate('date', '>=', $dateRange->getDateFrom())
-                    ->whereDate('date', '<=', $dateRange->getDateTo());
+                    ->whereDate(DatabaseConstants::EVALUATIONS_TABLE_DATE, '>=', $dateRange->getDateFrom())
+                    ->whereDate(DatabaseConstants::EVALUATIONS_TABLE_DATE, '<=', $dateRange->getDateTo());
             })
             ->get()
             ->toArray();

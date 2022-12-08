@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\DatabaseConstants;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,16 +30,15 @@ class Lesson extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name'
+        DatabaseConstants::LESSONS_TABLE_NAME
     ];
-
-    public function userLessons(): HasMany
-    {
-        return $this->hasMany(UserLesson::class, 'lesson_id', 'id');
-    }
 
     public function userLesson(): HasOne
     {
-        return $this->hasOne(UserLesson::class, 'lesson_id', 'id');
+        return $this->hasOne(
+            UserLesson::class,
+            DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID,
+            DatabaseConstants::LESSONS_TABLE_ID
+        );
     }
 }

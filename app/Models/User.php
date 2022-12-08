@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\DatabaseConstants;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -58,12 +59,12 @@ class User extends Authenticatable
     public $timestamps = false;
 
     protected $fillable = [
-        'username',
-        'name',
-        'last_name',
-        'type',
-        'email',
-        'password',
+        DatabaseConstants::USERS_TABLE_USERNAME,
+        DatabaseConstants::USERS_TABLE_NAME,
+        DatabaseConstants::USERS_TABLE_LAST_NAME,
+        DatabaseConstants::USERS_TABLE_TYPE,
+        DatabaseConstants::USERS_TABLE_EMAIL,
+        DatabaseConstants::USERS_TABLE_PASSWORD,
     ];
 
     public function isTeacher(): bool
@@ -76,17 +77,8 @@ class User extends Authenticatable
         return $this->type === UserTypeEnum::Student->value;
     }
 
-    public function userLessons(): HasMany
-    {
-        return $this->hasMany(UserLesson::class, 'user_id', 'id');
-    }
-
     protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
+        DatabaseConstants::USERS_TABLE_PASSWORD,
+        DatabaseConstants::USERS_TABLE_REMEMBER_TOKEN,
     ];
 }

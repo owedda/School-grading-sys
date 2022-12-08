@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories\User;
 
+use App\Constants\DatabaseConstants;
 use App\Models\User;
 use App\Models\UserTypeEnum;
 use App\Service\Grading\Collections\DataCollection;
@@ -26,7 +27,11 @@ final class UserRepository implements UserRepositoryInterface
      */
     public function getAllStudents(): DataCollection
     {
-        $usersArray = $this->user::where('type', UserTypeEnum::Student->value)->get()->toArray();
+        $usersArray = $this->user
+            ::where(DatabaseConstants::USERS_TABLE_TYPE, UserTypeEnum::Student->value)
+            ->get()
+            ->toArray();
+
         return $this->userTransformer->transformArrayToCollection($usersArray);
     }
 

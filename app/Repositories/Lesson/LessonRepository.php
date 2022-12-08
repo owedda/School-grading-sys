@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories\Lesson;
 
+use App\Constants\DatabaseConstants;
 use App\Models\Lesson;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
@@ -37,7 +38,7 @@ final class LessonRepository implements LessonRepositoryInterface
         $arrayLessonsWithUserLessons = $this->lesson
             ::select()
             ->with('userLesson', function ($userLessons) use ($userId) {
-                $userLessons->where('user_id', $userId);
+                $userLessons->where(DatabaseConstants::USER_LESSONS_TABLE_USER_ID, $userId);
             })
             ->get()
             ->toArray();

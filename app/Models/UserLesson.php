@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\DatabaseConstants;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,27 +40,44 @@ class UserLesson extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'user_id',
-        'lesson_id'
+        DatabaseConstants::USER_LESSONS_TABLE_USER_ID,
+        DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID
     ];
 
     public function lesson(): BelongsTo
     {
-        return $this->belongsTo(Lesson::class, 'lesson_id', 'id');
+        return $this->belongsTo(
+            Lesson::class,
+            DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID,
+            DatabaseConstants::LESSONS_TABLE_ID
+        );
     }
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+
+        return $this->belongsTo(
+            User::class,
+            DatabaseConstants::USER_LESSONS_TABLE_USER_ID,
+            DatabaseConstants::USERS_TABLE_ID
+        );
     }
 
     public function evaluation(): HasOne
     {
-        return $this->hasOne(Evaluation::class, 'user_lesson_id', 'id');
+        return $this->hasOne(
+            Evaluation::class,
+            DatabaseConstants::EVALUATIONS_TABLE_USER_LESSON_ID,
+            DatabaseConstants::USER_LESSONS_TABLE_ID
+        );
     }
 
     public function evaluations(): HasMany
     {
-        return $this->hasMany(Evaluation::class, 'user_lesson_id', 'id');
+        return $this->hasMany(
+            Evaluation::class,
+            DatabaseConstants::EVALUATIONS_TABLE_USER_LESSON_ID,
+            DatabaseConstants::USER_LESSONS_TABLE_ID
+        );
     }
 }
