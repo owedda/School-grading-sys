@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserLessonStoreRequest;
-use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserLessonRequest;
+use App\Http\Requests\UserRequest;
 use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
 use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use App\Service\Teacher\Students\StudentsServiceInterface;
@@ -31,7 +31,7 @@ final class StudentsController extends Controller
         return view('students.create');
     }
 
-    public function store(UserStoreRequest $request): View
+    public function store(UserRequest $request): View
     {
         $studentInfo = $this->studentService->getUserRequestModelTransformer()->transformArrayToObject($request->all());
 
@@ -55,7 +55,7 @@ final class StudentsController extends Controller
         return view('students.lessons', compact('userAttendedLessonsCollection', 'user'));
     }
 
-    public function storeUserLesson(UserLessonStoreRequest $request): RedirectResponse
+    public function storeUserLesson(UserLessonRequest $request): RedirectResponse
     {
         $userLessonRequestModel = $this->studentService
             ->getUserLessonRequestModelTransformer()

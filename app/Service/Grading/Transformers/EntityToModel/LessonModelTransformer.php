@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Grading\Transformers\EntityToModel;
 
+use App\Constants\DatabaseConstants;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
@@ -33,8 +34,8 @@ final class LessonModelTransformer implements TransformerInterface
         $this->validateArray($data);
 
         return new LessonModel(
-            $data['id'],
-            $data['name']
+            $data[DatabaseConstants::LESSONS_TABLE_ID],
+            $data[DatabaseConstants::LESSONS_TABLE_NAME]
         );
     }
 
@@ -44,8 +45,8 @@ final class LessonModelTransformer implements TransformerInterface
     private function validateArray(array $data): void
     {
         if (
-            !array_key_exists('id', $data) ||
-            !array_key_exists('name', $data)
+            !array_key_exists(DatabaseConstants::LESSONS_TABLE_ID, $data) ||
+            !array_key_exists(DatabaseConstants::LESSONS_TABLE_NAME, $data)
         ) {
             throw new TransformerInvalidArgumentException(__CLASS__);
         }

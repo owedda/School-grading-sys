@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DateRequest;
-use App\Http\Requests\EvaluationStoreRequest;
+use App\Http\Requests\EvaluationRequest;
 use App\Service\Teacher\Lessons\LessonsServiceInterface;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -24,17 +24,20 @@ class LessonsController extends Controller
 
     public function showUsers(DateRequest $request, string $lessonId): View
     {
-        $date = $request->get('date');
+        $dateRequestModel = $this->lessonsService
+            ->getDateRequestModelTransformer()
+            ->transformArrayToObject($request->all());
+
         $lesson = $this->lessonsService->getLesson($lessonId);
-        $usersInConcreteLesson = $this->lessonsService->getUsersInConcreteLesson($lessonId, $date);
+        $usersInConcreteLesson = $this->lessonsService->getUsersInConcreteLesson($lessonId, $dateRequestModel);
 
         return view(
             'lesson.users',
-            compact('usersInConcreteLesson', 'lesson', 'date')
+            compact('usersInConcreteLesson', 'lesson', 'dateRequestModel')
         );
     }
 
-    public function storeUserEvaluation(EvaluationStoreRequest $request): RedirectResponse
+    public function storeUserEvaluation(EvaluationRequest $request): RedirectResponse
     {
         $evaluationRequestModel = $this->lessonsService
             ->getEvaluationRequestModelTransformer()

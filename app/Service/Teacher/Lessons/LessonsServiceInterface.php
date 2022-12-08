@@ -4,6 +4,7 @@ namespace App\Service\Teacher\Lessons;
 
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
+use App\Service\Grading\ValueObjects\RequestModel\DateRequestModel;
 use App\Service\Grading\ValueObjects\RequestModel\EvaluationRequestModel;
 
 interface LessonsServiceInterface
@@ -12,7 +13,7 @@ interface LessonsServiceInterface
 
     public function getLesson(string $id);
 
-    public function getUsersInConcreteLesson(string $lessonId, string $date): DataCollection;
+    public function getUsersInConcreteLesson(string $lessonId, DateRequestModel $dateRequestModel): DataCollection;
 
     public function storeEvaluation(EvaluationRequestModel $evaluation): void;
 
@@ -23,4 +24,8 @@ interface LessonsServiceInterface
     public function setEvaluationRequestModelTransformer(
         RequestModelTransformerInterface $evaluationRequestModelTransformer
     ): void;
+
+    public function getDateRequestModelTransformer(): RequestModelTransformerInterface;
+
+    public function setDateRequestModelTransformer(RequestModelTransformerInterface $dateRequestModelTransformer): void;
 }

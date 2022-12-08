@@ -1,29 +1,32 @@
 @extends('layouts.main')
 @section('content')
 
-<div class="card">
-    <div class="card-header">
-        {{ $lesson->getName() }}
-    </div>
-
-    <div class="card-body">
-
-        <form method="GET" action="{{ route('lessons.users', ['lessonId' => $lesson->getId()]) }}"  style="display: inline-block;">
-            @csrf
-            <input type="date" id="date"  name="date" value="{{ $date }}"/>
-            <input type="submit" class="btn btn-xs btn-info" value="Update">
-        </form>
-
-        <div align="right">
-            Selected date: {{ $date }}
+    <div class="card">
+        <div class="card-header">
+            {{ $lesson->getName() }}
         </div>
-    </div>
+
+        <div class="card-body">
+
+            <form method="GET" action="{{ route('lessons.users', ['lessonId' => $lesson->getId()]) }}"
+                  style="display: inline-block;">
+                @csrf
+                <input type="date" id="date" name="date"
+                       value="{{ $dateRequestModel->getDate()->format(\App\Constants\DateConstants::DATE_FORMAT_FULL) }}"/>
+                <input type="submit" class="btn btn-xs btn-info" value="Update">
+            </form>
+
+            <div align="right">
+                Selected
+                date: {{ $dateRequestModel->getDate()->format(\App\Constants\DateConstants::DATE_FORMAT_FULL) }}
+            </div>
+        </div>
 
 
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-User">
-                <thead>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class=" table table-bordered table-striped table-hover datatable datatable-User">
+                    <thead>
                     <tr>
                         <th>
                             Username
@@ -41,48 +44,55 @@
                             &nbsp;
                         </th>
                     </tr>
-                </thead>
-                <tbody>
-                @foreach($usersInConcreteLesson as $key => $user)
-                    <tr>
-                        <td>
-                            {{ $user->getUsername() ?? '' }}
-                        </td>
-                        <td>
-                            {{ $user->getName() ?? '' }}
-                        </td>
-                        <td>
-                            {{ $user->getLastName() ?? '' }}
-                        </td>
-                        <td>
-                            {{ $user->getEvaluationValue() ?? '' }}
-                        </td>
-                        <td>
-                            @if(is_null($user->getEvaluationValue()))
-                                <form method="POST" action="{{ route('lessons.storeEvaluation') }}"  style="display: inline-block;">
-                                    @csrf
-                                    <input type="hidden" name="date" value="{{ $date }}">
-                                    <input type="hidden" name="user-lesson-id" value={{ $user->getUserLessonId() }}>
-                                    <input type="number" id="number" type="number" name="value" min="1" max="10" required>
-                                    <input type="submit" class="btn btn-xs btn-success" value="Save">
-                                </form>
-                            @else
-                                <form method="POST" action="{{ route('lessons.destroyEvaluation', ['id' => $user->getEvaluationId()]) }}"  style="display: inline-block;">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <input type="submit" class="btn btn-xs btn-danger" value="Remove">
-                                </form>
-                            @endif
+                    </thead>
+                    <tbody>
+                    @foreach($usersInConcreteLesson as $userInLesson)
+                        <tr>
+                            <td>
+                                {{ $userInLesson->getUser()->getUsername() ?? '' }}
+                            </td>
+                            <td>
+                                {{ $userInLesson->getUser()->getName() ?? '' }}
+                            </td>
+                            <td>
+                                {{ $userInLesson->getUser()->getLastName() ?? '' }}
+                            </td>
+                            <td>
+                                @if($userInLesson->getEvaluation() !== null)
+                                    {{ $userInLesson->getEvaluation()->getValue() }}
+                               @endif
+                            </td>
+                            <td>
+                                @if($userInLesson->getEvaluation() === null)
+                                    <form method="POST" action="{{ route('lessons.storeEvaluation') }}"
+                                          style="display: inline-block;">
+                                        @csrf
+                                        <input type="hidden" name="date"
+                                               value="{{ $dateRequestModel->getDate()->format(\App\Constants\DateConstants::DATE_FORMAT_FULL) }}">
+                                        <input type="hidden" name="user-lesson-id"
+                                               value={{ $userInLesson->getUserLesson()->getId() }}>
+                                        <input type="number" id="number" name="value" min="1" max="10"
+                                               required>
+                                        <input type="submit" class="btn btn-xs btn-success" value="Save">
+                                    </form>
+                                @else
+                                    <form method="POST"
+                                          action="{{ route('lessons.destroyEvaluation', ['id' => $userInLesson->getEvaluation()->getId()]) }}"
+                                          style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="submit" class="btn btn-xs btn-danger" value="Remove">
+                                    </form>
+                                @endif
 
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
-
 
 @endsection
 

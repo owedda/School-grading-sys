@@ -14,13 +14,15 @@
         <div class="card-header">
             Month:
             <div>
-                <form method="GET" action="{{ route('evaluations.index')}}"  style="display: inline-block;">
-                    <input type="hidden" id="date"  name="date" value="{{ $month->getDate()->modify('-1 month')->format('Y-m-d') }}"/>
+                <form method="GET" action="{{ route('evaluations.index')}}" style="display: inline-block;">
+                    <input type="hidden" id="date" name="date"
+                           value="{{ $month->getDate()->modify('-1 month')->format('Y-m-d') }}"/>
                     <input type="submit" class="btn btn-xs btn-danger" value="Previous">
                 </form>
 
-                <form method="GET" action="{{ route('evaluations.index')}}"  style="display: inline-block;">
-                    <input type="hidden" id="date"  name="date" value="{{ $month->getDate()->modify('+2 month')->format('Y-m-d') }}"/>
+                <form method="GET" action="{{ route('evaluations.index')}}" style="display: inline-block;">
+                    <input type="hidden" id="date" name="date"
+                           value="{{ $month->getDate()->modify('+2 month')->format('Y-m-d') }}"/>
                     <input type="submit" class="btn btn-xs btn-success" value="Next">
                 </form>
             </div>
@@ -42,30 +44,21 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($evaluations as $key => $lesson)
+                    @foreach($evaluations as $lessonEvaluation)
                         <tr>
                             <td>
-                                {{ $lesson->getLessonName() }}
+                                {{ $lessonEvaluation->getLesson()->getName() }}
                             </td>
 
-                            @if(is_null($lesson->getEvaluations()))
-                                @foreach($month->getDaysCollection() as $day)
-                                        <th>
-
-                                        </th>
-                                @endforeach
-                            @else
-                                @foreach($month->getDaysCollection() as $day)
-                                    <th>
-                                        @foreach($lesson->getEvaluations() as $key => $evaluation)
-                                            @if($evaluation->getDay() === $day)
-                                                {{ $evaluation->getValue() }}
-                                            @endif
-                                        @endforeach
-                                    </th>
-                                @endforeach
-                            @endif
-
+                            @foreach($month->getDaysCollection() as $day)
+                                <th>
+                                    @foreach($lessonEvaluation->getEvaluations() as $evaluation)
+                                        @if($evaluation->getDate()->format(\App\Constants\DateConstants::DAY_FORMAT) === $day)
+                                            {{ $evaluation->getValue() }}
+                                        @endif
+                                    @endforeach
+                                </th>
+                            @endforeach
                         </tr>
                     @endforeach
                     </tbody>

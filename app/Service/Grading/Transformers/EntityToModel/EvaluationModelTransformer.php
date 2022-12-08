@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Grading\Transformers\EntityToModel;
 
+use App\Constants\DatabaseConstants;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
@@ -34,8 +35,9 @@ final class EvaluationModelTransformer implements TransformerInterface
         $this->validateArray($data);
 
         return new EvaluationModel(
-            $data['value'],
-            (new DateTime($data['date']))->format('d'),
+            $data[DatabaseConstants::EVALUATIONS_TABLE_ID],
+            $data[DatabaseConstants::EVALUATIONS_TABLE_VALUE],
+            new DateTime($data[DatabaseConstants::EVALUATIONS_TABLE_DATE]),
         );
     }
 
@@ -45,9 +47,9 @@ final class EvaluationModelTransformer implements TransformerInterface
     private function validateArray(array $data): void
     {
         if (
-            !array_key_exists('value', $data) ||
-            !array_key_exists('date', $data) ||
-            !is_int($data['value'])
+            !array_key_exists(DatabaseConstants::EVALUATIONS_TABLE_VALUE, $data) ||
+            !array_key_exists(DatabaseConstants::EVALUATIONS_TABLE_DATE, $data) ||
+            !is_int($data[DatabaseConstants::EVALUATIONS_TABLE_VALUE])
         ) {
             throw new TransformerInvalidArgumentException(__CLASS__);
         }

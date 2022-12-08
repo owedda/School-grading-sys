@@ -36,15 +36,9 @@ final class UserAttendedLessonResponseModelTransformer implements UserAttendedLe
     public function transformArrayToObject(array $data): UserAttendedLessonResponseModel
     {
         if (isset($data['user_lesson'])) {
-            return new UserAttendedLessonResponseModel(
-                $this->getLessonModel($data),
-                $this->getUserLessonModel($data['user_lesson'])
-            );
+            return $this->getUserAttendingLesson($data);
         }
-
-        return new UserAttendedLessonResponseModel(
-            $this->getLessonModel($data)
-        );
+        return $this->getUserNotAttendingLesson($data);
     }
 
     /**
@@ -53,6 +47,27 @@ final class UserAttendedLessonResponseModelTransformer implements UserAttendedLe
     private function getLessonModel(array $data): LessonModel
     {
         return $this->lessonTransformerToObject->transformArrayToObject($data);
+    }
+
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
+    private function getUserAttendingLesson(array $data): UserAttendedLessonResponseModel
+    {
+        return new UserAttendedLessonResponseModel(
+            $this->getLessonModel($data),
+            $this->getUserLessonModel($data['user_lesson'])
+        );
+    }
+
+    /**
+     * @throws TransformerInvalidArgumentException
+     */
+    private function getUserNotAttendingLesson(array $data): UserAttendedLessonResponseModel
+    {
+        return new UserAttendedLessonResponseModel(
+            $this->getLessonModel($data)
+        );
     }
 
     /**

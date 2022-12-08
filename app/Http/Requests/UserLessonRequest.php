@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Constants\RequestConstants;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DateRequest extends FormRequest
+class UserLessonRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,7 +15,8 @@ class DateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            RequestConstants::DATE_REQUEST_DATE => 'required|date'
+            RequestConstants::USER_LESSON_REQUEST_USER_ID => 'required|uuid',
+            RequestConstants::USER_LESSON_REQUEST_LESSON_ID => 'required|uuid',
         ];
     }
 }

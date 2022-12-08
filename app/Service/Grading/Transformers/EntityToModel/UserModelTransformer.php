@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Grading\Transformers\EntityToModel;
 
+use App\Constants\DatabaseConstants;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
 use App\Service\Grading\Transformers\TransformerInterface;
@@ -30,12 +31,12 @@ final class UserModelTransformer implements TransformerInterface
         $this->validateArray($data);
 
         return new UserModel(
-            $data['id'],
-            $data['username'],
-            $data['email'],
-            $data['name'],
-            $data['last_name'],
-            $data['type'],
+            $data[DatabaseConstants::USERS_TABLE_ID],
+            $data[DatabaseConstants::USERS_TABLE_USERNAME],
+            $data[DatabaseConstants::USERS_TABLE_EMAIL],
+            $data[DatabaseConstants::USERS_TABLE_NAME],
+            $data[DatabaseConstants::USERS_TABLE_LAST_NAME],
+            $data[DatabaseConstants::USERS_TABLE_TYPE],
         );
     }
 
@@ -45,12 +46,12 @@ final class UserModelTransformer implements TransformerInterface
     private function validateArray(array $data): void
     {
         if (
-            !array_key_exists('id', $data) ||
-            !array_key_exists('username', $data) ||
-            !array_key_exists('email', $data) ||
-            !array_key_exists('name', $data) ||
-            !array_key_exists('last_name', $data) ||
-            !array_key_exists('type', $data)
+            !array_key_exists(DatabaseConstants::USERS_TABLE_ID, $data) ||
+            !array_key_exists(DatabaseConstants::USERS_TABLE_USERNAME, $data) ||
+            !array_key_exists(DatabaseConstants::USERS_TABLE_EMAIL, $data) ||
+            !array_key_exists(DatabaseConstants::USERS_TABLE_NAME, $data) ||
+            !array_key_exists(DatabaseConstants::USERS_TABLE_LAST_NAME, $data) ||
+            !array_key_exists(DatabaseConstants::USERS_TABLE_TYPE, $data)
         ) {
             throw new TransformerInvalidArgumentException(__CLASS__);
         }

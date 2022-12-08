@@ -5,20 +5,23 @@ declare(strict_types=1);
 namespace App\Repositories\UserLesson;
 
 use App\Constants\DatabaseConstants;
+use App\Constants\RelationshipConstants;
 use App\Models\UserLesson;
 use App\Service\Grading\Collections\DataCollection;
 use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Transformers\TransformerInterface;
+use App\Service\Grading\Transformers\ResponseModel\LessonEvaluationsResponseModelTransformerInterface;
+use App\Service\Grading\Transformers\ResponseModel\StudentEvaluationResponseModelTransformerInterface;
 use App\Service\Grading\ValueObjects\Custom\DateRange;
 use App\Service\Grading\ValueObjects\RequestModel\UserLessonRequestModel;
+use DateTime;
 
 final class UserLessonRepository implements UserLessonRepositoryInterface
 {
-    private TransformerInterface $studentEvaluationDTOTransformer;
-    private TransformerInterface $lessonEvaluationsTransformer;
-
-    public function __construct(private readonly UserLesson $userLesson)
-    {
+    public function __construct(
+        private readonly UserLesson $userLesson,
+        private readonly StudentEvaluationResponseModelTransformerInterface $studentEvaluationResponseModelTransformer,
+        private readonly LessonEvaluationsResponseModelTransformerInterface $lessonEvaluationsResponseModelTransformer
+    ) {
     }
 
     public function deleteElementById(string $id): void
@@ -37,19 +40,19 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
     /**
      * @throws TransformerInvalidArgumentException
      */
-    public function getUsersInConcreteLesson(string $lessonId, string $date): DataCollection
+    public function getUsersInConcreteLesson(string $lessonId, DateTime $date): DataCollection
     {
         $arrayUserLessonsWithUsers = $this->userLesson
             ::where(DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID, $lessonId)
-            ->with('user')
-            ->with('evaluation', function ($evaluation) use ($date) {
+            ->with(RelationshipConstants::USERLESSON_USER)
+            ->with(RelationshipConstants::USERLESSON_EVALUATION, function ($evaluation) use ($date) {
                 $evaluation->where(DatabaseConstants::EVALUATIONS_TABLE_DATE, $date);
             })
             ->get()
             ->toArray();
 
         return new DataCollection(
-            $this->studentEvaluationDTOTransformer
+            $this->studentEvaluationResponseModelTransformer
                 ->transformArrayToCollection($arrayUserLessonsWithUsers)
         );
     }
@@ -61,8 +64,8 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
     {
         $arrayOfUserEvaluations = $this->userLesson
             ::where(DatabaseConstants::USER_LESSONS_TABLE_USER_ID, $userId)
-            ->with('lesson')
-            ->with('evaluations', function ($evaluations) use ($dateRange) {
+            ->with(RelationshipConstants::USERLESSON_LESSON)
+            ->with(RelationshipConstants::USERLESSON_EVALUATIONS, function ($evaluations) use ($dateRange) {
                 $evaluations
                     ->whereDate(DatabaseConstants::EVALUATIONS_TABLE_DATE, '>=', $dateRange->getDateFrom())
                     ->whereDate(DatabaseConstants::EVALUATIONS_TABLE_DATE, '<=', $dateRange->getDateTo());
@@ -70,16 +73,6 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
             ->get()
             ->toArray();
 
-        return $this->lessonEvaluationsTransformer->transformArrayToCollection($arrayOfUserEvaluations);
-    }
-
-    public function setStudentEvaluationDTOTransformer(TransformerInterface $studentEvaluationDTOTransformer): void
-    {
-        $this->studentEvaluationDTOTransformer = $studentEvaluationDTOTransformer;
-    }
-
-    public function setLessonEvaluationsTransformer(TransformerInterface $lessonEvaluationsTransformer): void
-    {
-        $this->lessonEvaluationsTransformer = $lessonEvaluationsTransformer;
+        return $this->lessonEvaluationsResponseModelTransformer->transformArrayToCollection($arrayOfUserEvaluations);
     }
 }
