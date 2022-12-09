@@ -7,8 +7,6 @@ namespace App\Http\Controllers\Teacher;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserLessonRequest;
 use App\Http\Requests\UserRequest;
-use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
-use App\Service\Grading\Transformers\TransformerToObjectInterface;
 use App\Service\Teacher\Students\StudentsServiceInterface;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -22,8 +20,8 @@ final class StudentsController extends Controller
 
     public function index(): View
     {
-        $users = $this->studentService->getAll();
-        return view('students.index', compact('users'));
+        $students = $this->studentService->getAll();
+        return view('students.index', compact('students'));
     }
 
     public function create(): View
@@ -33,10 +31,9 @@ final class StudentsController extends Controller
 
     public function store(UserRequest $request): View
     {
-        $studentInfo = $this->studentService->getUserRequestModelTransformer()->transformArrayToObject($request->all());
+        $studentInfo = $request->all();
 
         $this->studentService->store($studentInfo);
-
         return view('students.create');
     }
 
@@ -48,20 +45,14 @@ final class StudentsController extends Controller
 
     public function showLessons(string $userId): View
     {
-        $user = $this->studentService->getStudent($userId);
-
-        $userAttendedLessonsCollection = $this->studentService->getStudentLessons($userId);
-
-        return view('students.lessons', compact('userAttendedLessonsCollection', 'user'));
+        $studentLessons = $this->studentService->getStudentLessons($userId);
+        return view('students.lessons', compact('studentLessons'));
     }
 
     public function storeUserLesson(UserLessonRequest $request): RedirectResponse
     {
-        $userLessonRequestModel = $this->studentService
-            ->getUserLessonRequestModelTransformer()
-            ->transformArrayToObject($request->all());
-
-        $this->studentService->storeUserLesson($userLessonRequestModel);
+        $userLessonArray = $request->all();
+        $this->studentService->storeUserLesson($userLessonArray);
 
         return back();
     }

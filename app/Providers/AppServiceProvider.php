@@ -2,28 +2,28 @@
 
 namespace App\Providers;
 
-use App\Service\Grading\Filter\DaysFromToFilter;
-use App\Service\Grading\Filter\DaysFromToFilterInterface;
-use App\Service\Grading\Transformers\EntityToModel\EvaluationModelTransformer;
-use App\Service\Grading\Transformers\EntityToModel\LessonModelTransformer;
-use App\Service\Grading\Transformers\EntityToModel\UserLessonModelTransformer;
-use App\Service\Grading\Transformers\EntityToModel\UserModelTransformer;
-use App\Service\Grading\Transformers\RequestModel\DateRequestModelTransformer;
-use App\Service\Grading\Transformers\RequestModel\EvaluationRequestModelTransformer;
-use App\Service\Grading\Transformers\RequestModel\UserLessonRequestModelTransformer;
-use App\Service\Grading\Transformers\RequestModel\UserRequestModelTransformer;
-use App\Service\Grading\Transformers\ResponseModel\LessonEvaluationsResponseModelTransformer;
-use App\Service\Grading\Transformers\ResponseModel\LessonEvaluationsResponseModelTransformerInterface;
-use App\Service\Grading\Transformers\ResponseModel\StudentEvaluationResponseModelTransformer;
-use App\Service\Grading\Transformers\ResponseModel\StudentEvaluationResponseModelTransformerInterface;
-use App\Service\Grading\Transformers\ResponseModel\UserAttendedLessonResponseModelTransformer;
-use App\Service\Grading\Transformers\ResponseModel\UserAttendedLessonResponseModelTransformerInterface;
+use App\Service\Shared\Transformers\EntityToModel\EvaluationModelTransformer;
+use App\Service\Shared\Transformers\EntityToModel\LessonModelTransformer;
+use App\Service\Shared\Transformers\EntityToModel\UserLessonModelTransformer;
+use App\Service\Shared\Transformers\EntityToModel\UserModelTransformer;
+use App\Service\Shared\Transformers\RequestModel\DateRequestModelTransformer;
+use App\Service\Shared\Transformers\RequestModel\EvaluationRequestModelTransformer;
+use App\Service\Shared\Transformers\RequestModel\UserLessonRequestModelTransformer;
+use App\Service\Shared\Transformers\RequestModel\UserRequestModelTransformer;
 use App\Service\Student\Evaluations\EvaluationsService;
 use App\Service\Student\Evaluations\EvaluationsServiceInterface;
+use App\Service\Student\Evaluations\Filter\DaysFromToFilter;
+use App\Service\Student\Evaluations\Filter\DaysFromToFilterInterface;
+use App\Service\Student\Evaluations\Transformers\LessonEvaluationsTransformer;
+use App\Service\Student\Evaluations\Transformers\LessonEvaluationsTransformerInterface;
 use App\Service\Teacher\Lessons\LessonsService;
 use App\Service\Teacher\Lessons\LessonsServiceInterface;
+use App\Service\Teacher\Lessons\Transformers\StudentEvaluationResponseModelTransformer;
+use App\Service\Teacher\Lessons\Transformers\StudentEvaluationResponseModelTransformerInterface;
 use App\Service\Teacher\Students\StudentsService;
 use App\Service\Teacher\Students\StudentsServiceInterface;
+use App\Service\Teacher\Students\Transformers\UserAttendedLessonResponseModelTransformer;
+use App\Service\Teacher\Students\Transformers\UserAttendedLessonResponseModelTransformerInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -53,9 +53,9 @@ class AppServiceProvider extends ServiceProvider
             return $transformer;
         });
 
-        $this->app->bind(LessonEvaluationsResponseModelTransformerInterface::class, function () {
-            /** @var LessonEvaluationsResponseModelTransformer $transformer */
-            $transformer = $this->app->make(LessonEvaluationsResponseModelTransformer::class);
+        $this->app->bind(LessonEvaluationsTransformerInterface::class, function () {
+            /** @var LessonEvaluationsTransformer $transformer */
+            $transformer = $this->app->make(LessonEvaluationsTransformer::class);
             $transformer->setEvaluationTransformer(new EvaluationModelTransformer());
             $transformer->setUserLessonTransformer(new UserLessonModelTransformer());
             $transformer->setLessonTransformer(new LessonModelTransformer());
@@ -67,6 +67,7 @@ class AppServiceProvider extends ServiceProvider
             $service = $this->app->make(StudentsService::class);
             $service->setUserRequestModelTransformer(new UserRequestModelTransformer());
             $service->setUserLessonRequestModelTransformer(new UserLessonRequestModelTransformer());
+            $service->setUserTransformer(new UserModelTransformer());
             return $service;
         });
 
@@ -75,6 +76,7 @@ class AppServiceProvider extends ServiceProvider
             $service = $this->app->make(LessonsService::class);
             $service->setEvaluationRequestModelTransformer(new EvaluationRequestModelTransformer());
             $service->setDateRequestModelTransformer(new DateRequestModelTransformer());
+            $service->setLessonTransformer(new LessonModelTransformer());
             return $service;
         });
 

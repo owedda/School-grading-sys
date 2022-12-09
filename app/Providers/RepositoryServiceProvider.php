@@ -10,8 +10,8 @@ use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepository;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
-use App\Service\Grading\Transformers\EntityToModel\LessonModelTransformer;
-use App\Service\Grading\Transformers\EntityToModel\UserModelTransformer;
+use App\Service\Shared\Transformers\EntityToModel\LessonModelTransformer;
+use App\Service\Shared\Transformers\EntityToModel\UserModelTransformer;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -22,30 +22,9 @@ class RepositoryServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->app->bind(LessonRepositoryInterface::class, function () {
-            /** @var LessonRepository $repository */
-            $repository = $this->app->make(LessonRepository::class);
-            $repository->setLessonTransformer(new LessonModelTransformer());
-            return $repository;
-        });
-
-        $this->app->bind(EvaluationRepositoryInterface::class, function () {
-            /** @var EvaluationRepository $repository */
-            $repository = $this->app->make(EvaluationRepository::class);
-            return $repository;
-        });
-
-        $this->app->bind(UserRepositoryInterface::class, function () {
-            /** @var UserRepository $repository */
-            $repository = $this->app->make(UserRepository::class);
-            $repository->setUserTransformer(new UserModelTransformer());
-            return $repository;
-        });
-
-        $this->app->bind(UserLessonRepositoryInterface::class, function () {
-            /** @var UserLessonRepository $repository */
-            $repository = $this->app->make(UserLessonRepository::class);
-            return $repository;
-        });
+        $this->app->bind(LessonRepositoryInterface::class, LessonRepository::class);
+        $this->app->bind(EvaluationRepositoryInterface::class, EvaluationRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(UserLessonRepositoryInterface::class, UserLessonRepository::class);
     }
 }

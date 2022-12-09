@@ -2,18 +2,13 @@
 
 namespace App\Service\Student\Evaluations;
 
-use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
-use App\Service\Grading\ValueObjects\RequestModel\DateRequestModel;
-use App\Service\Grading\ValueObjects\ResponseModel\MonthResponseModel;
+use App\Service\Shared\Transformers\RequestModel\RequestModelTransformerInterface;
+use App\Service\Student\Evaluations\DTO\ResponseModel\EvaluationsResponseModel;
+use App\Service\Teacher\Lessons\DTO\Custom\UserPartial;
 
 interface EvaluationsServiceInterface
 {
-    public function getUserEvaluations(string $userId, DateRequestModel $dateRequestModel): DataCollection;
-
-    public function getMonth(DateRequestModel $dateRequestModel): MonthResponseModel;
-
-    public function getDateRequestModelTransformer(): RequestModelTransformerInterface;
+    public function getEvaluationsResponseModel(UserPartial $user, array $date): EvaluationsResponseModel;
 
     public function setDateRequestModelTransformer(RequestModelTransformerInterface $dateRequestModelTransformer): void;
 }

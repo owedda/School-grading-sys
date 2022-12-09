@@ -2,10 +2,10 @@
 
 namespace Service\Grading\Transformers\CustomToDTO;
 
-use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Transformers\EntityToModel\EvaluationModelTransformer;
-use App\Service\Grading\ValueObjects\Model\EvaluationModel;
+use App\Service\Shared\Collections\DataCollection;
+use App\Service\Shared\DTO\Model\EvaluationModel;
+use App\Service\Shared\Exception\TransformerInvalidArgumentException;
+use App\Service\Shared\Transformers\EntityToModel\EvaluationModelTransformer;
 use PHPUnit\Framework\TestCase;
 
 class EvaluationDTOTransformerTest extends TestCase

@@ -2,12 +2,12 @@
 
 namespace Service\Grading\Transformers;
 
-use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Transformers\EntityToModel\EvaluationModelTransformer;
-use App\Service\Grading\Transformers\EntityToModel\LessonModelTransformer;
-use App\Service\Grading\Transformers\EntityToModel\UserLessonModelTransformer;
-use App\Service\Grading\Transformers\EntityToModel\UserModelTransformer;
-use App\Service\Grading\Transformers\TransformerInterface;
+use App\Service\Shared\Exception\TransformerInvalidArgumentException;
+use App\Service\Shared\Transformers\EntityToModel\EvaluationModelTransformer;
+use App\Service\Shared\Transformers\EntityToModel\LessonModelTransformer;
+use App\Service\Shared\Transformers\EntityToModel\UserLessonModelTransformer;
+use App\Service\Shared\Transformers\EntityToModel\UserModelTransformer;
+use App\Service\Shared\Transformers\TransformerInterface;
 use Generator;
 use PHPUnit\Framework\TestCase;
 

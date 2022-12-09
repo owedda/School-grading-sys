@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Evaluation;
 
-use App\Service\Grading\ValueObjects\RequestModel\EvaluationRequestModel;
+use App\Service\Shared\DTO\RequestModel\EvaluationRequestModel;
 
 interface EvaluationRepositoryInterface
 {

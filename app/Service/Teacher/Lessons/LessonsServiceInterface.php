@@ -2,30 +2,27 @@
 
 namespace App\Service\Teacher\Lessons;
 
-use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
-use App\Service\Grading\ValueObjects\RequestModel\DateRequestModel;
-use App\Service\Grading\ValueObjects\RequestModel\EvaluationRequestModel;
+use App\Service\Shared\Collections\DataCollection;
+use App\Service\Shared\DTO\RequestModel\EvaluationRequestModel;
+use App\Service\Shared\Transformers\RequestModel\RequestModelTransformerInterface;
+use App\Service\Shared\Transformers\TransformerInterface;
+use App\Service\Teacher\Lessons\DTO\ResponseModel\UsersResponseModel;
 
 interface LessonsServiceInterface
 {
-    public function getAll(): DataCollection;
+    public function getAllLessons(): DataCollection;
 
-    public function getLesson(string $id);
-
-    public function getUsersInConcreteLesson(string $lessonId, DateRequestModel $dateRequestModel): DataCollection;
-
-    public function storeEvaluation(EvaluationRequestModel $evaluation): void;
+    public function getUsersResponseModel(string $lessonId, array $date): UsersResponseModel;
 
     public function destroyEvaluation(string $evaluationId): void;
 
-    public function getEvaluationRequestModelTransformer(): RequestModelTransformerInterface;
+    public function storeEvaluation(array $evaluation): void;
 
     public function setEvaluationRequestModelTransformer(
         RequestModelTransformerInterface $evaluationRequestModelTransformer
     ): void;
 
-    public function getDateRequestModelTransformer(): RequestModelTransformerInterface;
-
     public function setDateRequestModelTransformer(RequestModelTransformerInterface $dateRequestModelTransformer): void;
+
+    public function setLessonTransformer(TransformerInterface $lessonTransformer): void;
 }

@@ -2,27 +2,11 @@
 
 namespace App\Repositories\Lesson;
 
-use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Transformers\TransformerInterface;
-use App\Service\Grading\ValueObjects\Model\LessonModel;
-
 interface LessonRepositoryInterface
 {
-    /**
-     * @throws TransformerInvalidArgumentException
-     */
-    public function getAll(): DataCollection;
+    public function getAll(): array;
 
-    /**
-     * @throws TransformerInvalidArgumentException
-     */
-    public function getAllLessonsWithUserLessonsAttached(string $userId): DataCollection;
+    public function getAllLessonsWithUserLessonsAttached(string $userId): array;
 
-    /**
-     * @throws TransformerInvalidArgumentException
-     */
-    public function getElementById(string $id): LessonModel;
-
-    public function setLessonTransformer(TransformerInterface $lessonTransformer): void;
+    public function getElementById(string $id): array;
 }

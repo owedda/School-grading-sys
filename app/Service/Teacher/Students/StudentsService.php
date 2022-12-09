@@ -7,42 +7,44 @@ namespace App\Service\Teacher\Students;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
-use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
-use App\Service\Grading\ValueObjects\Model\UserModel;
-use App\Service\Grading\ValueObjects\RequestModel\UserLessonRequestModel;
-use App\Service\Grading\ValueObjects\RequestModel\UserRequestModel;
+use App\Service\Shared\Collections\DataCollection;
+use App\Service\Shared\DTO\Model\UserModel;
+use App\Service\Shared\Transformers\RequestModel\RequestModelTransformerInterface;
+use App\Service\Shared\Transformers\TransformerInterface;
+use App\Service\Teacher\Students\DTO\ResponseModel\StudentLessonsResponseModel;
+use App\Service\Teacher\Students\Transformers\UserAttendedLessonResponseModelTransformerInterface;
 
 final class StudentsService implements StudentsServiceInterface
 {
     private RequestModelTransformerInterface $userRequestModelTransformer;
     private RequestModelTransformerInterface $userLessonRequestModelTransformer;
+    private TransformerInterface $userTransformer;
 
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
         private readonly LessonRepositoryInterface $lessonRepository,
-        private readonly UserLessonRepositoryInterface $userLessonRepository
+        private readonly UserLessonRepositoryInterface $userLessonRepository,
+        private readonly UserAttendedLessonResponseModelTransformerInterface $userAttendedLessonResponseModelTransformer
     ) {
     }
 
     public function getAll(): DataCollection
     {
-        return $this->userRepository->getAllStudents();
+        $studentsArray = $this->userRepository->getAllStudents();
+        return $this->userTransformer->transformArrayToCollection($studentsArray);
     }
 
-    public function getStudent(string $userId): UserModel
+    public function getStudentLessons(string $userId): StudentLessonsResponseModel
     {
-        return $this->userRepository->getElementById($userId);
+        $student = $this->getStudent($userId);
+        $userAttendedLessonResponseModelCollection = $this->getUserAttendedLessonResponseModel($userId);
+        return new StudentLessonsResponseModel($student, $userAttendedLessonResponseModelCollection);
     }
 
-    public function getStudentLessons(string $userId): DataCollection
+    public function store(array $user): void
     {
-        return $this->lessonRepository->getAllLessonsWithUserLessonsAttached($userId);
-    }
-
-    public function store(UserRequestModel $userRequestDTO): void
-    {
-        $this->userRepository->store($userRequestDTO);
+        $userRequestModel = $this->userRequestModelTransformer->transformArrayToObject($user);
+        $this->userRepository->store($userRequestModel);
     }
 
     public function delete(string $userId): void
@@ -50,8 +52,9 @@ final class StudentsService implements StudentsServiceInterface
         $this->userRepository->deleteById($userId);
     }
 
-    public function storeUserLesson(UserLessonRequestModel $userLessonRequestModel): void
+    public function storeUserLesson(array $userLesson): void
     {
+        $userLessonRequestModel = $this->userLessonRequestModelTransformer->transformArrayToObject($userLesson);
         $this->userLessonRepository->save($userLessonRequestModel);
     }
 
@@ -60,24 +63,31 @@ final class StudentsService implements StudentsServiceInterface
         $this->userLessonRepository->deleteElementById($userLessonId);
     }
 
+    private function getStudent(string $userId): UserModel
+    {
+        $userArray = $this->userRepository->getElementById($userId);
+        return $this->userTransformer->transformArrayToObject($userArray);
+    }
+
+    private function getUserAttendedLessonResponseModel(string $userId): DataCollection
+    {
+        $userAttendedLessonsArray = $this->lessonRepository->getAllLessonsWithUserLessonsAttached($userId);
+        return $this->userAttendedLessonResponseModelTransformer->transformArrayToCollection($userAttendedLessonsArray);
+    }
+
     public function setUserLessonRequestModelTransformer(
         RequestModelTransformerInterface $userLessonRequestModelTransformer
     ): void {
         $this->userLessonRequestModelTransformer = $userLessonRequestModelTransformer;
     }
 
-    public function getUserLessonRequestModelTransformer(): RequestModelTransformerInterface
-    {
-        return $this->userLessonRequestModelTransformer;
-    }
-
-    public function getUserRequestModelTransformer(): RequestModelTransformerInterface
-    {
-        return $this->userRequestModelTransformer;
-    }
-
     public function setUserRequestModelTransformer(RequestModelTransformerInterface $userRequestModelTransformer): void
     {
         $this->userRequestModelTransformer = $userRequestModelTransformer;
+    }
+
+    public function setUserTransformer(TransformerInterface $userTransformer): void
+    {
+        $this->userTransformer = $userTransformer;
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories\Evaluation;
 
 use App\Models\Evaluation;
-use App\Service\Grading\ValueObjects\RequestModel\EvaluationRequestModel;
+use App\Service\Shared\DTO\RequestModel\EvaluationRequestModel;
 
 final class EvaluationRepository implements EvaluationRepositoryInterface
 {

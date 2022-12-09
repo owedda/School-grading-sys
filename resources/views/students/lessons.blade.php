@@ -2,7 +2,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            {{ $user->getName() }} lessons
+            {{ $studentLessons->getUser()->getName() }} lessons
         </div>
 
         <div class="card-body">
@@ -19,20 +19,24 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($userAttendedLessonsCollection as $userAttendingLesson)
+                    @foreach($studentLessons->getLessons() as $lesson)
                         <tr>
                             <td>
-                                {{ $userAttendingLesson->getLessonModel()->getName() ?? '' }}
+                                {{ $lesson->getLessonModel()->getName() ?? '' }}
                             </td>
                             <td>
-                                @if($userAttendingLesson->getUserLessonModel() !== null)
-                                    <form action="{{ route('students.destroyUserLesson', $userAttendingLesson->getUserLessonModel()->getId()) }}" method="POST">
+                                @if($lesson->getUserLessonModel() !== null)
+                                    <form
+                                        action="{{ route('students.destroyUserLesson', $lesson->getUserLessonModel()->getId()) }}"
+                                        method="POST">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="Delete">
                                     </form>
                                 @else
-                                    <form action="{{ route('students.storeUserLesson', ['user-id' => $user->getId(), 'lesson-id' => $userAttendingLesson->getLessonModel()->getId()]) }}" method="POST">
+                                    <form
+                                        action="{{ route('students.storeUserLesson', ['user-id' => $studentLessons->getUser()->getId(), 'lesson-id' => $lesson->getLessonModel()->getId()]) }}"
+                                        method="POST">
                                         <input type="hidden" name="_method" value="POST">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-info" value="Add">

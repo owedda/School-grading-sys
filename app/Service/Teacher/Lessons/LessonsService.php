@@ -7,42 +7,47 @@ namespace App\Service\Teacher\Lessons;
 use App\Repositories\Evaluation\EvaluationRepositoryInterface;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
-use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\Transformers\RequestModel\RequestModelTransformerInterface;
-use App\Service\Grading\ValueObjects\Model\LessonModel;
-use App\Service\Grading\ValueObjects\RequestModel\DateRequestModel;
-use App\Service\Grading\ValueObjects\RequestModel\EvaluationRequestModel;
+use App\Service\Shared\Collections\DataCollection;
+use App\Service\Shared\DTO\Model\LessonModel;
+use App\Service\Shared\DTO\RequestModel\DateRequestModel;
+use App\Service\Shared\Transformers\RequestModel\RequestModelTransformerInterface;
+use App\Service\Shared\Transformers\TransformerInterface;
+use App\Service\Teacher\Lessons\DTO\ResponseModel\UsersResponseModel;
+use App\Service\Teacher\Lessons\Transformers\StudentEvaluationResponseModelTransformerInterface;
 
 final class LessonsService implements LessonsServiceInterface
 {
     private RequestModelTransformerInterface $evaluationRequestModelTransformer;
     private RequestModelTransformerInterface $dateRequestModelTransformer;
+    private TransformerInterface $lessonTransformer;
 
     public function __construct(
         private readonly LessonRepositoryInterface $lessonRepository,
         private readonly UserLessonRepositoryInterface $userLessonRepository,
-        private readonly EvaluationRepositoryInterface $evaluationRepository
+        private readonly EvaluationRepositoryInterface $evaluationRepository,
+        private readonly StudentEvaluationResponseModelTransformerInterface $studentEvaluationResponseModelTransformer
     ) {
     }
 
-    public function getAll(): DataCollection
+    public function getAllLessons(): DataCollection
     {
-        return $this->lessonRepository->getAll();
+        $lessonsArray = $this->lessonRepository->getAll();
+        return $this->lessonTransformer->transformArrayToCollection($lessonsArray);
     }
 
-    public function getLesson(string $id): LessonModel
+    public function getUsersResponseModel(string $lessonId, array $date): UsersResponseModel
     {
-        return $this->lessonRepository->getElementById($id);
+        $dateRequestModel = $this->dateRequestModelTransformer->transformArrayToObject($date);
+        $usersEvaluations = $this->getUsersEvaluations($lessonId, $dateRequestModel);
+        $lesson = $this->getLesson($lessonId);
+
+        return new UsersResponseModel($usersEvaluations, $lesson, $dateRequestModel->getDate());
     }
 
-    public function getUsersInConcreteLesson(string $lessonId, DateRequestModel $dateRequestModel): DataCollection
+    public function storeEvaluation(array $evaluation): void
     {
-        return $this->userLessonRepository->getUsersInConcreteLesson($lessonId, $dateRequestModel->getDate());
-    }
-
-    public function storeEvaluation(EvaluationRequestModel $evaluation): void
-    {
-        $this->evaluationRepository->save($evaluation);
+        $evaluationRequestModel = $this->evaluationRequestModelTransformer->transformArrayToObject($evaluation);
+        $this->evaluationRepository->save($evaluationRequestModel);
     }
 
     public function destroyEvaluation(string $evaluationId): void
@@ -50,9 +55,18 @@ final class LessonsService implements LessonsServiceInterface
         $this->evaluationRepository->deleteElementById($evaluationId);
     }
 
-    public function getEvaluationRequestModelTransformer(): RequestModelTransformerInterface
+    private function getLesson(string $id): LessonModel
     {
-        return $this->evaluationRequestModelTransformer;
+        $lessonArray = $this->lessonRepository->getElementById($id);
+        return $this->lessonTransformer->transformArrayToObject($lessonArray);
+    }
+
+    private function getUsersEvaluations(string $lessonId, DateRequestModel $dateRequestModel): DataCollection
+    {
+        $usersEvaluationsArray = $this->userLessonRepository
+            ->getUsersWithEvaluationsInConcreteLesson($lessonId, $dateRequestModel->getDate());
+
+        return $this->studentEvaluationResponseModelTransformer->transformArrayToCollection($usersEvaluationsArray);
     }
 
     public function setEvaluationRequestModelTransformer(
@@ -67,8 +81,8 @@ final class LessonsService implements LessonsServiceInterface
         $this->dateRequestModelTransformer = $dateRequestModelTransformer;
     }
 
-    public function getDateRequestModelTransformer(): RequestModelTransformerInterface
+    public function setLessonTransformer(TransformerInterface $lessonTransformer): void
     {
-        return $this->dateRequestModelTransformer;
+        $this->lessonTransformer = $lessonTransformer;
     }
 }

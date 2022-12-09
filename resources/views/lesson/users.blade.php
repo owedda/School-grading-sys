@@ -3,22 +3,22 @@
 
     <div class="card">
         <div class="card-header">
-            {{ $lesson->getName() }}
+            {{ $usersResponseModel->getLesson()->getName() }}
         </div>
 
         <div class="card-body">
 
-            <form method="GET" action="{{ route('lessons.users', ['lessonId' => $lesson->getId()]) }}"
+            <form method="GET" action="{{ route('lessons.users', ['lessonId' => $usersResponseModel->getLesson()->getId()]) }}"
                   style="display: inline-block;">
                 @csrf
                 <input type="date" id="date" name="date"
-                       value="{{ $dateRequestModel->getDate()->format(\App\Constants\DateConstants::DATE_FORMAT_FULL) }}"/>
+                       value="{{ $usersResponseModel->getDate()->format(\App\Constants\DateConstants::DATE_FORMAT_FULL) }}"/>
                 <input type="submit" class="btn btn-xs btn-info" value="Update">
             </form>
 
             <div align="right">
                 Selected
-                date: {{ $dateRequestModel->getDate()->format(\App\Constants\DateConstants::DATE_FORMAT_FULL) }}
+                date: {{ $usersResponseModel->getDate()->format(\App\Constants\DateConstants::DATE_FORMAT_FULL) }}
             </div>
         </div>
 
@@ -46,38 +46,38 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($usersInConcreteLesson as $userInLesson)
+                    @foreach($usersResponseModel->getUsersEvaluations() as $user)
                         <tr>
                             <td>
-                                {{ $userInLesson->getUser()->getUsername() ?? '' }}
+                                {{ $user->getUser()->getUsername() ?? '' }}
                             </td>
                             <td>
-                                {{ $userInLesson->getUser()->getName() ?? '' }}
+                                {{ $user->getUser()->getName() ?? '' }}
                             </td>
                             <td>
-                                {{ $userInLesson->getUser()->getLastName() ?? '' }}
+                                {{ $user->getUser()->getLastName() ?? '' }}
                             </td>
                             <td>
-                                @if($userInLesson->getEvaluation() !== null)
-                                    {{ $userInLesson->getEvaluation()->getValue() }}
+                                @if($user->getEvaluation() !== null)
+                                    {{ $user->getEvaluation()->getValue() }}
                                @endif
                             </td>
                             <td>
-                                @if($userInLesson->getEvaluation() === null)
+                                @if($user->getEvaluation() === null)
                                     <form method="POST" action="{{ route('lessons.storeEvaluation') }}"
                                           style="display: inline-block;">
                                         @csrf
                                         <input type="hidden" name="date"
-                                               value="{{ $dateRequestModel->getDate()->format(\App\Constants\DateConstants::DATE_FORMAT_FULL) }}">
+                                               value="{{ $usersResponseModel->getDate()->format(\App\Constants\DateConstants::DATE_FORMAT_FULL) }}">
                                         <input type="hidden" name="user-lesson-id"
-                                               value={{ $userInLesson->getUserLesson()->getId() }}>
+                                               value={{ $user->getUserLesson()->getId() }}>
                                         <input type="number" id="number" name="value" min="1" max="10"
                                                required>
                                         <input type="submit" class="btn btn-xs btn-success" value="Save">
                                     </form>
                                 @else
                                     <form method="POST"
-                                          action="{{ route('lessons.destroyEvaluation', ['id' => $userInLesson->getEvaluation()->getId()]) }}"
+                                          action="{{ route('lessons.destroyEvaluation', ['id' => $user->getEvaluation()->getId()]) }}"
                                           style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">

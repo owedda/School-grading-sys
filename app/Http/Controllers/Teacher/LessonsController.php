@@ -18,32 +18,22 @@ class LessonsController extends Controller
 
     public function index(): View
     {
-        $lessons = $this->lessonsService->getAll();
+        $lessons = $this->lessonsService->getAllLessons();
         return view('lesson.index', compact('lessons'));
     }
 
     public function showUsers(DateRequest $request, string $lessonId): View
     {
-        $dateRequestModel = $this->lessonsService
-            ->getDateRequestModelTransformer()
-            ->transformArrayToObject($request->all());
+        $date = $request->all();
+        $usersResponseModel = $this->lessonsService->getUsersResponseModel($lessonId, $date);
 
-        $lesson = $this->lessonsService->getLesson($lessonId);
-        $usersInConcreteLesson = $this->lessonsService->getUsersInConcreteLesson($lessonId, $dateRequestModel);
-
-        return view(
-            'lesson.users',
-            compact('usersInConcreteLesson', 'lesson', 'dateRequestModel')
-        );
+        return view('lesson.users', compact('usersResponseModel'));
     }
 
     public function storeUserEvaluation(EvaluationRequest $request): RedirectResponse
     {
-        $evaluationRequestModel = $this->lessonsService
-            ->getEvaluationRequestModelTransformer()
-            ->transformArrayToObject($request->all());
-
-        $this->lessonsService->storeEvaluation($evaluationRequestModel);
+        $evaluation = $request->all();
+        $this->lessonsService->storeEvaluation($evaluation);
 
         return back();
     }

@@ -2,10 +2,10 @@
 
 namespace Service\Grading\Transformers\ModelToDataModel;
 
-use App\Service\Grading\Collections\DataCollection;
-use App\Service\Grading\Exception\TransformerInvalidArgumentException;
-use App\Service\Grading\Transformers\EntityToModel\UserLessonModelTransformer;
-use App\Service\Grading\ValueObjects\Model\UserLessonModel;
+use App\Service\Shared\Collections\DataCollection;
+use App\Service\Shared\DTO\Model\UserLessonModel;
+use App\Service\Shared\Exception\TransformerInvalidArgumentException;
+use App\Service\Shared\Transformers\EntityToModel\UserLessonModelTransformer;
 use PHPUnit\Framework\TestCase;
 
 class UserLessonTransformerTest extends TestCase
