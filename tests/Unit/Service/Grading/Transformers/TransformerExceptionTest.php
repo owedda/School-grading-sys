@@ -2,12 +2,12 @@
 
 namespace Service\Grading\Transformers;
 
-use App\Service\Shared\Exception\TransformerInvalidArgumentException;
-use App\Service\Shared\Transformers\EntityToModel\EvaluationModelTransformer;
-use App\Service\Shared\Transformers\EntityToModel\LessonModelTransformer;
-use App\Service\Shared\Transformers\EntityToModel\UserLessonModelTransformer;
-use App\Service\Shared\Transformers\EntityToModel\UserModelTransformer;
-use App\Service\Shared\Transformers\TransformerInterface;
+use App\Service\Shared\Exception\ValidatorException;
+use App\Service\Shared\Transformer\EntityToModel\EvaluationModelTransformer;
+use App\Service\Shared\Transformer\EntityToModel\LessonModelTransformer;
+use App\Service\Shared\Transformer\EntityToModel\UserLessonModelTransformer;
+use App\Service\Shared\Transformer\EntityToModel\UserModelTransformer;
+use App\Service\Shared\Transformer\TransformerInterface;
 use Generator;
 use PHPUnit\Framework\TestCase;
 
@@ -24,10 +24,10 @@ class TransformerExceptionTest extends TestCase
         array $dataArray
     ): void {
 
-        $this->expectException(TransformerInvalidArgumentException::class);
+        $this->expectException(ValidatorException::class);
         $this->expectExceptionMessage($transformer::class . ' calling with incorrect array argument');
 
-        $actual = $transformer->transformArrayToCollection($dataArray);
+        $actual = $transformer->transformToCollection($dataArray);
     }
 
     public function userTransformerDataProvider(): Generator

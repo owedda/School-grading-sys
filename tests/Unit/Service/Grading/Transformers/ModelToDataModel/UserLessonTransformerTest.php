@@ -2,10 +2,10 @@
 
 namespace Service\Grading\Transformers\ModelToDataModel;
 
-use App\Service\Shared\Collections\DataCollection;
+use App\Service\Shared\Collection\DataCollection;
 use App\Service\Shared\DTO\Model\UserLessonModel;
-use App\Service\Shared\Exception\TransformerInvalidArgumentException;
-use App\Service\Shared\Transformers\EntityToModel\UserLessonModelTransformer;
+use App\Service\Shared\Exception\ValidatorException;
+use App\Service\Shared\Transformer\EntityToModel\UserLessonModelTransformer;
 use PHPUnit\Framework\TestCase;
 
 class UserLessonTransformerTest extends TestCase
@@ -20,7 +20,7 @@ class UserLessonTransformerTest extends TestCase
     }
 
     /**
-     * @throws TransformerInvalidArgumentException
+     * @throws ValidatorException
      */
     public function testTransformArrayToCollectionReturnsCollectionCorrect(): void
     {
@@ -43,7 +43,7 @@ class UserLessonTransformerTest extends TestCase
             new UserLessonModel($dataArray[1]['id'], $dataArray[1]['user_id'], $dataArray[1]['lesson_id'])
         );
 
-        $actual = $this->userLessonTransformer->transformArrayToCollection($dataArray);
+        $actual = $this->userLessonTransformer->transformToCollection($dataArray);
         $this->assertEquals($expected, $actual);
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Student\Evaluations\DTO\Custom;
 
-use App\Service\Shared\Collections\DataCollection;
+use App\Service\Shared\Collection\DataCollection;
 use App\Service\Shared\DTO\Model\LessonModel;
 use App\Service\Shared\DTO\Model\UserLessonModel;
 

@@ -3,7 +3,7 @@
 namespace App\Repositories\User;
 
 use App\Service\Shared\DTO\RequestModel\UserRequestModel;
-use App\Service\Shared\Transformers\TransformerInterface;
+use App\Service\Shared\Transformer\TransformerInterface;
 
 interface UserRepositoryInterface
 {

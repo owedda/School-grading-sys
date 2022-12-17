@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Teacher\Students\DTO\ResponseModel;
 
-use App\Service\Shared\Collections\DataCollection;
+use App\Service\Shared\Collection\DataCollection;
 use App\Service\Shared\DTO\Model\UserModel;
 
 final class StudentLessonsResponseModel

@@ -7,17 +7,17 @@ namespace App\Service\Teacher\Students;
 use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
-use App\Service\Shared\Collections\DataCollection;
+use App\Service\Shared\Collection\DataCollection;
 use App\Service\Shared\DTO\Model\UserModel;
-use App\Service\Shared\Transformers\RequestModel\RequestModelTransformerInterface;
-use App\Service\Shared\Transformers\TransformerInterface;
+use App\Service\Shared\Transformer\TransformerInterface;
+use App\Service\Shared\Transformer\TransformerToObjectInterface;
 use App\Service\Teacher\Students\DTO\ResponseModel\StudentLessonsResponseModel;
-use App\Service\Teacher\Students\Transformers\UserAttendedLessonResponseModelTransformerInterface;
+use App\Service\Teacher\Students\Transformer\UserAttendedLessonResponseModelTransformerInterface;
 
 final class StudentsService implements StudentsServiceInterface
 {
-    private RequestModelTransformerInterface $userRequestModelTransformer;
-    private RequestModelTransformerInterface $userLessonRequestModelTransformer;
+    private TransformerToObjectInterface $userRequestModelTransformer;
+    private TransformerToObjectInterface $userLessonRequestModelTransformer;
     private TransformerInterface $userTransformer;
 
     public function __construct(
@@ -31,7 +31,8 @@ final class StudentsService implements StudentsServiceInterface
     public function getAll(): DataCollection
     {
         $studentsArray = $this->userRepository->getAllStudents();
-        return $this->userTransformer->transformArrayToCollection($studentsArray);
+        //TODO try catch
+        return $this->userTransformer->transformToCollection($studentsArray);
     }
 
     public function getStudentLessons(string $userId): StudentLessonsResponseModel
@@ -43,7 +44,7 @@ final class StudentsService implements StudentsServiceInterface
 
     public function store(array $user): void
     {
-        $userRequestModel = $this->userRequestModelTransformer->transformArrayToObject($user);
+        $userRequestModel = $this->userRequestModelTransformer->transformToObject($user);
         $this->userRepository->store($userRequestModel);
     }
 
@@ -54,7 +55,7 @@ final class StudentsService implements StudentsServiceInterface
 
     public function storeUserLesson(array $userLesson): void
     {
-        $userLessonRequestModel = $this->userLessonRequestModelTransformer->transformArrayToObject($userLesson);
+        $userLessonRequestModel = $this->userLessonRequestModelTransformer->transformToObject($userLesson);
         $this->userLessonRepository->save($userLessonRequestModel);
     }
 
@@ -66,22 +67,24 @@ final class StudentsService implements StudentsServiceInterface
     private function getStudent(string $userId): UserModel
     {
         $userArray = $this->userRepository->getElementById($userId);
-        return $this->userTransformer->transformArrayToObject($userArray);
+        //TODO try catch
+        return $this->userTransformer->transformToObject($userArray);
     }
 
     private function getUserAttendedLessonResponseModel(string $userId): DataCollection
     {
         $userAttendedLessonsArray = $this->lessonRepository->getAllLessonsWithUserLessonsAttached($userId);
-        return $this->userAttendedLessonResponseModelTransformer->transformArrayToCollection($userAttendedLessonsArray);
+        //TODO try catch
+        return $this->userAttendedLessonResponseModelTransformer->transformToCollection($userAttendedLessonsArray);
     }
 
     public function setUserLessonRequestModelTransformer(
-        RequestModelTransformerInterface $userLessonRequestModelTransformer
+        TransformerToObjectInterface $userLessonRequestModelTransformer
     ): void {
         $this->userLessonRequestModelTransformer = $userLessonRequestModelTransformer;
     }
 
-    public function setUserRequestModelTransformer(RequestModelTransformerInterface $userRequestModelTransformer): void
+    public function setUserRequestModelTransformer(TransformerToObjectInterface $userRequestModelTransformer): void
     {
         $this->userRequestModelTransformer = $userRequestModelTransformer;
     }

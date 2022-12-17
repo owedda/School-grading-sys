@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Shared\Transformers\RequestModel;
+namespace App\Service\Shared\Transformer\RequestModel;
 
 use App\Constants\RequestConstants;
 use App\Service\Shared\DTO\RequestModel\UserRequestModel;
+use App\Service\Shared\Transformer\TransformerToObjectInterface;
 
-final class UserRequestModelTransformer implements RequestModelTransformerInterface
+final class UserRequestModelTransformer implements TransformerToObjectInterface
 {
-    public function transformArrayToObject(array $data): UserRequestModel
+    public function transformToObject(array $data): UserRequestModel
     {
         return new UserRequestModel(
             $data[RequestConstants::USER_REQUEST_USERNAME],

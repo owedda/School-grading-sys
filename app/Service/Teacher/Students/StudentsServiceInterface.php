@@ -2,9 +2,9 @@
 
 namespace App\Service\Teacher\Students;
 
-use App\Service\Shared\Collections\DataCollection;
-use App\Service\Shared\Transformers\RequestModel\RequestModelTransformerInterface;
-use App\Service\Shared\Transformers\TransformerInterface;
+use App\Service\Shared\Collection\DataCollection;
+use App\Service\Shared\Transformer\TransformerInterface;
+use App\Service\Shared\Transformer\TransformerToObjectInterface;
 use App\Service\Teacher\Students\DTO\ResponseModel\StudentLessonsResponseModel;
 
 interface StudentsServiceInterface
@@ -22,10 +22,10 @@ interface StudentsServiceInterface
     public function destroyUserLesson(string $userLessonId): void;
 
     public function setUserLessonRequestModelTransformer(
-        RequestModelTransformerInterface $userLessonRequestModelTransformer
+        TransformerToObjectInterface $userLessonRequestModelTransformer
     ): void;
 
-    public function setUserRequestModelTransformer(RequestModelTransformerInterface $userRequestModelTransformer): void;
+    public function setUserRequestModelTransformer(TransformerToObjectInterface $userRequestModelTransformer): void;
 
     public function setUserTransformer(TransformerInterface $userTransformer): void;
 }

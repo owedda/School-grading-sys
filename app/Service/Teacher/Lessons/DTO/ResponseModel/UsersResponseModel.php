@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Teacher\Lessons\DTO\ResponseModel;
 
-use App\Service\Shared\Collections\DataCollection;
+use App\Service\Shared\Collection\DataCollection;
 use App\Service\Shared\DTO\Model\LessonModel;
 use DateTime;
 

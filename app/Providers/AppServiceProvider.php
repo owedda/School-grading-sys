@@ -2,28 +2,34 @@
 
 namespace App\Providers;
 
-use App\Service\Shared\Transformers\EntityToModel\EvaluationModelTransformer;
-use App\Service\Shared\Transformers\EntityToModel\LessonModelTransformer;
-use App\Service\Shared\Transformers\EntityToModel\UserLessonModelTransformer;
-use App\Service\Shared\Transformers\EntityToModel\UserModelTransformer;
-use App\Service\Shared\Transformers\RequestModel\DateRequestModelTransformer;
-use App\Service\Shared\Transformers\RequestModel\EvaluationRequestModelTransformer;
-use App\Service\Shared\Transformers\RequestModel\UserLessonRequestModelTransformer;
-use App\Service\Shared\Transformers\RequestModel\UserRequestModelTransformer;
+use App\Service\Shared\Transformer\EntityToModel\EvaluationModelTransformer;
+use App\Service\Shared\Transformer\EntityToModel\LessonModelTransformer;
+use App\Service\Shared\Transformer\EntityToModel\UserLessonModelTransformer;
+use App\Service\Shared\Transformer\EntityToModel\UserModelTransformer;
+use App\Service\Shared\Transformer\RequestModel\DateRequestModelTransformer;
+use App\Service\Shared\Transformer\RequestModel\EvaluationRequestModelTransformer;
+use App\Service\Shared\Transformer\RequestModel\UserLessonRequestModelTransformer;
+use App\Service\Shared\Transformer\RequestModel\UserRequestModelTransformer;
+use App\Service\Shared\Validator\Model\EvaluationModelValidator;
+use App\Service\Shared\Validator\Model\LessonModelValidator;
+use App\Service\Shared\Validator\Model\UserLessonModelValidator;
+use App\Service\Shared\Validator\Model\ValidatorInterface;
 use App\Service\Student\Evaluations\EvaluationsService;
 use App\Service\Student\Evaluations\EvaluationsServiceInterface;
 use App\Service\Student\Evaluations\Filter\DaysFromToFilter;
 use App\Service\Student\Evaluations\Filter\DaysFromToFilterInterface;
-use App\Service\Student\Evaluations\Transformers\LessonEvaluationsTransformer;
-use App\Service\Student\Evaluations\Transformers\LessonEvaluationsTransformerInterface;
+use App\Service\Student\Evaluations\Transformer\LessonEvaluationsTransformer;
+use App\Service\Student\Evaluations\Transformer\LessonEvaluationsTransformerInterface;
+use App\Service\Student\Evaluations\Validator\LessonEvaluationsValidator;
+use App\Service\Student\Evaluations\Validator\LessonEvaluationsValidatorInterface;
 use App\Service\Teacher\Lessons\LessonsService;
 use App\Service\Teacher\Lessons\LessonsServiceInterface;
-use App\Service\Teacher\Lessons\Transformers\StudentEvaluationResponseModelTransformer;
-use App\Service\Teacher\Lessons\Transformers\StudentEvaluationResponseModelTransformerInterface;
+use App\Service\Teacher\Lessons\Transformer\StudentEvaluationResponseModelTransformer;
+use App\Service\Teacher\Lessons\Transformer\StudentEvaluationResponseModelTransformerInterface;
 use App\Service\Teacher\Students\StudentsService;
 use App\Service\Teacher\Students\StudentsServiceInterface;
-use App\Service\Teacher\Students\Transformers\UserAttendedLessonResponseModelTransformer;
-use App\Service\Teacher\Students\Transformers\UserAttendedLessonResponseModelTransformerInterface;
+use App\Service\Teacher\Students\Transformer\UserAttendedLessonResponseModelTransformer;
+use App\Service\Teacher\Students\Transformer\UserAttendedLessonResponseModelTransformerInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -36,27 +42,36 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(DaysFromToFilterInterface::class, DaysFromToFilter::class);
 
+        $this->app->bind(LessonEvaluationsValidatorInterface::class, function () {
+            /** @var LessonEvaluationsValidator $validator */
+            $validator = $this->app->make(LessonEvaluationsValidator::class);
+            $validator->setEvaluationModelValidator(new EvaluationModelValidator());
+            $validator->setLessonModelValidator(new LessonModelValidator());
+            $validator->setUserLessonModelValidator(new UserLessonModelValidator());
+            return $validator;
+        });
+
         $this->app->bind(UserAttendedLessonResponseModelTransformerInterface::class, function () {
             /** @var UserAttendedLessonResponseModelTransformer $transformer */
             $transformer = $this->app->make(UserAttendedLessonResponseModelTransformer::class);
-            $transformer->setLessonTransformerToObject(new LessonModelTransformer());
-            $transformer->setUserLessonTransformerToObject(new UserLessonModelTransformer());
+            $transformer->setLessonTransformer(new LessonModelTransformer());
+            $transformer->setUserLessonTransformer(new UserLessonModelTransformer());
             return $transformer;
         });
 
         $this->app->bind(StudentEvaluationResponseModelTransformerInterface::class, function () {
             /** @var StudentEvaluationResponseModelTransformer $transformer */
             $transformer = $this->app->make(StudentEvaluationResponseModelTransformer::class);
-            $transformer->setUserTransformerToObject(new UserModelTransformer());
-            $transformer->setEvaluationTransformerToObject(new EvaluationModelTransformer());
-            $transformer->setUserLessonTransformerToObject(new UserLessonModelTransformer());
+            $transformer->setUserTransformer(new UserModelTransformer());
+            $transformer->setEvaluationTransformer(new EvaluationModelTransformer(new EvaluationModelValidator()));
+            $transformer->setUserLessonTransformer(new UserLessonModelTransformer());
             return $transformer;
         });
 
         $this->app->bind(LessonEvaluationsTransformerInterface::class, function () {
             /** @var LessonEvaluationsTransformer $transformer */
             $transformer = $this->app->make(LessonEvaluationsTransformer::class);
-            $transformer->setEvaluationTransformer(new EvaluationModelTransformer());
+            $transformer->setEvaluationTransformer(new EvaluationModelTransformer(new EvaluationModelValidator()));
             $transformer->setUserLessonTransformer(new UserLessonModelTransformer());
             $transformer->setLessonTransformer(new LessonModelTransformer());
             return $transformer;

@@ -10,8 +10,8 @@ use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepository;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
-use App\Service\Shared\Transformers\EntityToModel\LessonModelTransformer;
-use App\Service\Shared\Transformers\EntityToModel\UserModelTransformer;
+use App\Service\Shared\Transformer\EntityToModel\LessonModelTransformer;
+use App\Service\Shared\Transformer\EntityToModel\UserModelTransformer;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

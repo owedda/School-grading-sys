@@ -2,10 +2,10 @@
 
 namespace Service\Grading\Transformers\CustomToDTO;
 
-use App\Service\Shared\Collections\DataCollection;
+use App\Service\Shared\Collection\DataCollection;
 use App\Service\Shared\DTO\Model\EvaluationModel;
-use App\Service\Shared\Exception\TransformerInvalidArgumentException;
-use App\Service\Shared\Transformers\EntityToModel\EvaluationModelTransformer;
+use App\Service\Shared\Exception\ValidatorException;
+use App\Service\Shared\Transformer\EntityToModel\EvaluationModelTransformer;
 use PHPUnit\Framework\TestCase;
 
 class EvaluationDTOTransformerTest extends TestCase
@@ -20,7 +20,7 @@ class EvaluationDTOTransformerTest extends TestCase
     }
 
     /**
-     * @throws TransformerInvalidArgumentException
+     * @throws ValidatorException
      */
     public function testTransformArrayToCollectionReturnsCollectionCorrect(): void
     {
@@ -41,7 +41,7 @@ class EvaluationDTOTransformerTest extends TestCase
             new EvaluationModel($dataArray[1]['value'], '12')
         );
 
-        $actual = $this->evaluationDTOTransformer->transformArrayToCollection($dataArray);
+        $actual = $this->evaluationDTOTransformer->transformToCollection($dataArray);
         $this->assertEquals($expected, $actual);
     }
 }

@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Shared\Transformers\RequestModel;
+namespace App\Service\Shared\Transformer\RequestModel;
 
 use App\Constants\RequestConstants;
 use App\Service\Shared\DTO\RequestModel\EvaluationRequestModel;
+use App\Service\Shared\Transformer\TransformerToObjectInterface;
 
-final class EvaluationRequestModelTransformer implements RequestModelTransformerInterface
+final class EvaluationRequestModelTransformer implements TransformerToObjectInterface
 {
-    public function transformArrayToObject(array $data): EvaluationRequestModel
+    public function transformToObject(array $data): EvaluationRequestModel
     {
         return new EvaluationRequestModel(
             (int)$data[RequestConstants::EVALUATION_REQUEST_VALUE],
