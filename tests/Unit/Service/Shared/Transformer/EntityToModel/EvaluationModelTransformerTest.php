@@ -21,7 +21,7 @@ class EvaluationModelTransformerTest extends TestCase
 
         $this->evaluationModelTransformer = new EvaluationModelTransformer();
         $this->exampleArray = [
-            DatabaseConstants::EVALUATIONS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+            DatabaseConstants::EVALUATIONS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
             DatabaseConstants::EVALUATIONS_TABLE_VALUE => 5,
             DatabaseConstants::EVALUATIONS_TABLE_DATE => '2022-10-10',
         ];

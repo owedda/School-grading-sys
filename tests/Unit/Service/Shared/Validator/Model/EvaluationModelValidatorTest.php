@@ -19,7 +19,7 @@ class EvaluationModelValidatorTest extends TestCase
 
         $this->validator = new EvaluationModelValidator();
         $this->exampleData = [
-            DatabaseConstants::EVALUATIONS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+            DatabaseConstants::EVALUATIONS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
             DatabaseConstants::EVALUATIONS_TABLE_VALUE => 5,
             DatabaseConstants::EVALUATIONS_TABLE_DATE => '2022-10-10',
         ];
@@ -53,7 +53,7 @@ class EvaluationModelValidatorTest extends TestCase
         $data = [
             $this->exampleData,
             [
-                DatabaseConstants::EVALUATIONS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+                DatabaseConstants::EVALUATIONS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
                 DatabaseConstants::EVALUATIONS_TABLE_DATE => '2022-10-10',
             ],
         ];
@@ -85,13 +85,13 @@ class EvaluationModelValidatorTest extends TestCase
         ];
         yield 'Where array doesnt contain ["' . DatabaseConstants::EVALUATIONS_TABLE_VALUE . '"]' => [
             $data = [
-                DatabaseConstants::EVALUATIONS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+                DatabaseConstants::EVALUATIONS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
                 DatabaseConstants::EVALUATIONS_TABLE_DATE => '2022-10-10',
             ]
         ];
         yield 'Where array doesnt contain ["' . DatabaseConstants::EVALUATIONS_TABLE_DATE . '"]' => [
             $data = [
-                DatabaseConstants::EVALUATIONS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+                DatabaseConstants::EVALUATIONS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
                 DatabaseConstants::EVALUATIONS_TABLE_VALUE => 5,
             ]
         ];

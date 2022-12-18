@@ -19,7 +19,7 @@ class LessonModelValidatorTest extends TestCase
 
         $this->validator = new LessonModelValidator();
         $this->exampleData = [
-            DatabaseConstants::LESSONS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+            DatabaseConstants::LESSONS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
             DatabaseConstants::LESSONS_TABLE_NAME => 'Math',
         ];
     }
@@ -82,7 +82,7 @@ class LessonModelValidatorTest extends TestCase
         ];
         yield 'Where array doesnt contain ["' . DatabaseConstants::LESSONS_TABLE_NAME . '"]' => [
             $data = [
-                DatabaseConstants::LESSONS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15'
+                DatabaseConstants::LESSONS_TABLE_ID => '00000000-0000-0000-0000-000000000000'
             ]
         ];
     }

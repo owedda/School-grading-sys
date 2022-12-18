@@ -20,7 +20,7 @@ class EvaluationRequestModelTest extends TestCase
         $this->evaluationRequestModelTransformer = new EvaluationRequestModelTransformer();
         $this->exampleArray = [
             RequestConstants::EVALUATION_REQUEST_VALUE => 10,
-            RequestConstants::EVALUATION_REQUEST_USER_LESSON_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+            RequestConstants::EVALUATION_REQUEST_USER_LESSON_ID => '00000000-0000-0000-0000-000000000000',
             RequestConstants::EVALUATION_REQUEST_DATE => '2022-12-12',
         ];
         $this->evaluationRequestModel = new EvaluationRequestModel(

@@ -19,7 +19,7 @@ class UserModelValidatorTest extends TestCase
 
         $this->validator = new UserModelValidator();
         $this->exampleData = [
-            DatabaseConstants::USERS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+            DatabaseConstants::USERS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
             DatabaseConstants::USERS_TABLE_USERNAME => 'Test',
             DatabaseConstants::USERS_TABLE_EMAIL => 'test@mail.com',
             DatabaseConstants::USERS_TABLE_NAME => 'Test',
@@ -56,7 +56,7 @@ class UserModelValidatorTest extends TestCase
         $data = [
             $this->exampleData,
             [
-                DatabaseConstants::USERS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+                DatabaseConstants::USERS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
                 DatabaseConstants::USERS_TABLE_USERNAME => 'Test',
                 DatabaseConstants::USERS_TABLE_EMAIL => 'test@mail.com',
                 DatabaseConstants::USERS_TABLE_NAME => 'Test',
@@ -94,7 +94,7 @@ class UserModelValidatorTest extends TestCase
         ];
         yield 'Where array doesnt contain ["' . DatabaseConstants::USERS_TABLE_USERNAME . '"]' => [
             $data = [
-                DatabaseConstants::USERS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+                DatabaseConstants::USERS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
                 DatabaseConstants::USERS_TABLE_EMAIL => 'test@mail.com',
                 DatabaseConstants::USERS_TABLE_NAME => 'Test',
                 DatabaseConstants::USERS_TABLE_LAST_NAME => 'Test',
@@ -103,7 +103,7 @@ class UserModelValidatorTest extends TestCase
         ];
         yield 'Where array doesnt contain ["' . DatabaseConstants::USERS_TABLE_EMAIL . '"]' => [
             $data = [
-                DatabaseConstants::USERS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+                DatabaseConstants::USERS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
                 DatabaseConstants::USERS_TABLE_USERNAME => 'Test',
                 DatabaseConstants::USERS_TABLE_NAME => 'Test',
                 DatabaseConstants::USERS_TABLE_LAST_NAME => 'Test',
@@ -112,7 +112,7 @@ class UserModelValidatorTest extends TestCase
         ];
         yield 'Where array doesnt contain ["' . DatabaseConstants::USERS_TABLE_NAME . '"]' => [
             $data = [
-                DatabaseConstants::USERS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+                DatabaseConstants::USERS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
                 DatabaseConstants::USERS_TABLE_USERNAME => 'Test',
                 DatabaseConstants::USERS_TABLE_EMAIL => 'test@mail.com',
                 DatabaseConstants::USERS_TABLE_LAST_NAME => 'Test',
@@ -121,7 +121,7 @@ class UserModelValidatorTest extends TestCase
         ];
         yield 'Where array doesnt contain ["' . DatabaseConstants::USERS_TABLE_LAST_NAME . '"]' => [
             $data = [
-                DatabaseConstants::USERS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+                DatabaseConstants::USERS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
                 DatabaseConstants::USERS_TABLE_USERNAME => 'Test',
                 DatabaseConstants::USERS_TABLE_EMAIL => 'test@mail.com',
                 DatabaseConstants::USERS_TABLE_NAME => 'Test',
@@ -130,7 +130,7 @@ class UserModelValidatorTest extends TestCase
         ];
         yield 'Where array doesnt contain ["' . DatabaseConstants::USERS_TABLE_TYPE . '"]' => [
             $data = [
-                DatabaseConstants::USERS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+                DatabaseConstants::USERS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
                 DatabaseConstants::USERS_TABLE_USERNAME => 'Test',
                 DatabaseConstants::USERS_TABLE_EMAIL => 'test@mail.com',
                 DatabaseConstants::USERS_TABLE_NAME => 'Test',

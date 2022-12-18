@@ -20,9 +20,9 @@ class UserLessonModelTransformerTest extends TestCase
 
         $this->userLessonModelTransformer = new UserLessonModelTransformer();
         $this->exampleArray = [
-            DatabaseConstants::USER_LESSONS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
-            DatabaseConstants::USER_LESSONS_TABLE_USER_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
-            DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+            DatabaseConstants::USER_LESSONS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
+            DatabaseConstants::USER_LESSONS_TABLE_USER_ID => '00000000-0000-0000-0000-000000000001',
+            DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID => '00000000-0000-0000-0000-000000000002',
         ];
         $this->userLessonModel = new UserLessonModel(
             $this->exampleArray[DatabaseConstants::USER_LESSONS_TABLE_ID],

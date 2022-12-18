@@ -6,6 +6,6 @@ namespace App\Service\Shared\Collection;
 
 use Illuminate\Support\Collection;
 
-final class DataCollection extends Collection
+class DataCollection extends Collection
 {
 }

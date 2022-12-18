@@ -21,7 +21,7 @@ class UserModelTransformerTest extends TestCase
 
         $this->userModelTransformer = new UserModelTransformer();
         $this->exampleArray = [
-            DatabaseConstants::USERS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+            DatabaseConstants::USERS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
             DatabaseConstants::USERS_TABLE_USERNAME => 'Test',
             DatabaseConstants::USERS_TABLE_EMAIL => 'test@mail.com',
             DatabaseConstants::USERS_TABLE_NAME => 'Test',

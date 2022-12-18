@@ -20,7 +20,7 @@ class LessonModelTransformerTest extends TestCase
 
         $this->lessonModelTransformer = new LessonModelTransformer();
         $this->exampleArray = [
-            DatabaseConstants::LESSONS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+            DatabaseConstants::LESSONS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
             DatabaseConstants::LESSONS_TABLE_NAME => 'Math',
         ];
         $this->lessonModel = new LessonModel(

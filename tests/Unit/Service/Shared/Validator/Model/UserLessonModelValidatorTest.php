@@ -19,9 +19,9 @@ class UserLessonModelValidatorTest extends TestCase
 
         $this->validator = new UserLessonModelValidator();
         $this->exampleData = [
-            DatabaseConstants::USER_LESSONS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
-            DatabaseConstants::USER_LESSONS_TABLE_USER_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
-            DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+            DatabaseConstants::USER_LESSONS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
+            DatabaseConstants::USER_LESSONS_TABLE_USER_ID => '00000000-0000-0000-0000-000000000001',
+            DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID => '00000000-0000-0000-0000-000000000002',
         ];
     }
 
@@ -53,8 +53,8 @@ class UserLessonModelValidatorTest extends TestCase
         $data = [
             $this->exampleData,
             [
-                DatabaseConstants::USER_LESSONS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
-                DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
+                DatabaseConstants::USER_LESSONS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
+                DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID => '00000000-0000-0000-0000-000000000001',
             ],
         ];
 
@@ -79,20 +79,20 @@ class UserLessonModelValidatorTest extends TestCase
     {
         yield 'Where array doesnt contain ["' . DatabaseConstants::USER_LESSONS_TABLE_ID . '"]' => [
             $data = [
-                DatabaseConstants::USER_LESSONS_TABLE_USER_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
-                DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15'
+                DatabaseConstants::USER_LESSONS_TABLE_USER_ID => '00000000-0000-0000-0000-000000000001',
+                DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID => '00000000-0000-0000-0000-000000000002'
             ]
         ];
         yield 'Where array doesnt contain ["' . DatabaseConstants::USER_LESSONS_TABLE_USER_ID . '"]' => [
             $data = [
-                DatabaseConstants::USER_LESSONS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
-                DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15'
+                DatabaseConstants::USER_LESSONS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
+                DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID => '00000000-0000-0000-0000-000000000002'
             ]
         ];
         yield 'Where array doesnt contain ["' . DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID . '"]' => [
             $data = [
-                DatabaseConstants::USER_LESSONS_TABLE_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15',
-                DatabaseConstants::USER_LESSONS_TABLE_USER_ID => 'd3de92e5-ed47-4d49-8811-134c7b293a15'
+                DatabaseConstants::USER_LESSONS_TABLE_ID => '00000000-0000-0000-0000-000000000000',
+                DatabaseConstants::USER_LESSONS_TABLE_USER_ID => '00000000-0000-0000-0000-000000000001'
             ]
         ];
     }
