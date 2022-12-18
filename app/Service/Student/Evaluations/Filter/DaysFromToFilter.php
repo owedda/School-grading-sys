@@ -16,7 +16,11 @@ final class DaysFromToFilter implements DaysFromToFilterInterface
     {
         $collection = new DataCollection();
 
-        for ($date = clone $dateRange->getDateFrom(); $date <= $dateRange->getDateTo(); $date->modify(self::ADDEDTIME)) {
+        for (
+            $date = clone $dateRange->getDateFrom();
+            $date <= $dateRange->getDateTo();
+            $date->modify(self::ADDEDTIME)
+        ) {
             $collection->add($date->format(DateConstants::DAY_FORMAT));
         }
 

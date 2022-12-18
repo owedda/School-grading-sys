@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Service\Student\Evaluations\Validator;
 
 use App\Constants\RelationshipConstants;
-use App\Service\Shared\Validator\Model\ValidatorInterface;
-use App\Constants\DatabaseConstants;
 use App\Service\Shared\Exception\ValidatorException;
+use App\Service\Shared\Validator\Model\ValidatorInterface;
 
 final class LessonEvaluationsValidator implements LessonEvaluationsValidatorInterface
 {
@@ -21,6 +20,10 @@ final class LessonEvaluationsValidator implements LessonEvaluationsValidatorInte
     public function validate(array $data): void
     {
         foreach ($data as $item) {
+            if (is_array($item) === false) {
+                throw new ValidatorException(__CLASS__);
+            }
+
             $this->userLessonModelValidator->validateElement($item);
             $this->lessonModelValidator->validateElement($item[RelationshipConstants::USERLESSON_LESSON]);
             if (empty($item[RelationshipConstants::USERLESSON_EVALUATIONS]) === false) {

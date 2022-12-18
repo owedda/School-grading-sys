@@ -20,6 +20,10 @@ final class StudentEvaluationsValidator implements StudentEvaluationsValidatorIn
     public function validate(array $data): void
     {
         foreach ($data as $item) {
+            if (is_array($item) === false) {
+                throw new ValidatorException(__CLASS__);
+            }
+
             $this->userLessonModelValidator->validateElement($item);
             $this->userModelValidator->validateElement($item[RelationshipConstants::USERLESSON_USER]);
             if (isset($item[RelationshipConstants::USERLESSON_EVALUATIONS])) {

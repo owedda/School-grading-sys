@@ -11,7 +11,6 @@ use PHPUnit\Framework\TestCase;
 
 class DaysFromToFilterTest extends TestCase
 {
-
     public function testFilterWhenCorrect()
     {
         $dateRange = new DateRange(new DateTime('2022-12-01'), new DateTime('2022-12-04'));

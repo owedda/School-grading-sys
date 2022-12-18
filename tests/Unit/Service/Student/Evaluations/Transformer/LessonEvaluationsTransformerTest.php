@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class LessonEvaluationsTransformerTest extends TestCase
 {
+    private const EVALUATIONS_COUNT = 2;
     private LessonEvaluationsTransformer $lessonEvaluationsTransformer;
     private LessonEvaluations $lessonEvaluations;
     private array $exampleArray;
@@ -66,23 +67,26 @@ class LessonEvaluationsTransformerTest extends TestCase
             $this->exampleArray[RelationshipConstants::USERLESSON_LESSON][DatabaseConstants::LESSONS_TABLE_NAME],
         );
 
-        $evaluations = new DataCollection();
-        $evaluations->add(
-            new EvaluationModel(
-                $this->exampleArray[RelationshipConstants::USERLESSON_EVALUATIONS][0][DatabaseConstants::EVALUATIONS_TABLE_ID],
-                $this->exampleArray[RelationshipConstants::USERLESSON_EVALUATIONS][0][DatabaseConstants::EVALUATIONS_TABLE_VALUE],
-                new DateTime($this->exampleArray[RelationshipConstants::USERLESSON_EVALUATIONS][0][DatabaseConstants::EVALUATIONS_TABLE_DATE])
-            )
-        );
-        $evaluations->add(
-            new EvaluationModel(
-                $this->exampleArray[RelationshipConstants::USERLESSON_EVALUATIONS][1][DatabaseConstants::EVALUATIONS_TABLE_ID],
-                $this->exampleArray[RelationshipConstants::USERLESSON_EVALUATIONS][1][DatabaseConstants::EVALUATIONS_TABLE_VALUE],
-                new DateTime($this->exampleArray[RelationshipConstants::USERLESSON_EVALUATIONS][1][DatabaseConstants::EVALUATIONS_TABLE_DATE])
-            )
-        );
+        $evaluations = $this->getEvaluations();
 
         $this->lessonEvaluations = new LessonEvaluations($userLessonModel, $lessonModel, $evaluations);
+    }
+
+    private function getEvaluations(): DataCollection
+    {
+        $evaluations = new DataCollection();
+
+        for ($i = 0; $i < self::EVALUATIONS_COUNT; $i++) {
+            $evaluations->add(
+                new EvaluationModel(
+                    $this->exampleArray[RelationshipConstants::USERLESSON_EVALUATIONS][$i][DatabaseConstants::EVALUATIONS_TABLE_ID],
+                    $this->exampleArray[RelationshipConstants::USERLESSON_EVALUATIONS][$i][DatabaseConstants::EVALUATIONS_TABLE_VALUE],
+                    new DateTime($this->exampleArray[RelationshipConstants::USERLESSON_EVALUATIONS][$i][DatabaseConstants::EVALUATIONS_TABLE_DATE])
+                )
+            );
+        }
+
+        return $evaluations;
     }
 
     public function testTransformToObjectWhenCorrect(): void

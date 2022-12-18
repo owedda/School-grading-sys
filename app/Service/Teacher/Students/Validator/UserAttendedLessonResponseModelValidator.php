@@ -19,6 +19,10 @@ final class UserAttendedLessonResponseModelValidator implements UserAttendedLess
     public function validate(array $data): void
     {
         foreach ($data as $item) {
+            if (is_array($item) === false) {
+                throw new ValidatorException(__CLASS__);
+            }
+
             $this->lessonModelValidator->validateElement($item);
             if (isset($item[RelationshipConstants::LESSON_USERLESSON])) {
                 $this->userLessonModelValidator->validateMany($item[RelationshipConstants::LESSON_USERLESSON]);
