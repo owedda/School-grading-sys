@@ -4,7 +4,7 @@ namespace App\Service\Teacher\Lessons\Transformer;
 
 use App\Service\Shared\Transformer\TransformerInterface;
 
-interface StudentEvaluationResponseModelTransformerInterface extends TransformerInterface
+interface StudentEvaluationsTransformerInterface extends TransformerInterface
 {
     public function setUserTransformer(TransformerInterface $userTransformer): void;
 

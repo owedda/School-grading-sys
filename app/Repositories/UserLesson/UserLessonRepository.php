@@ -7,6 +7,7 @@ namespace App\Repositories\UserLesson;
 use App\Constants\DatabaseConstants;
 use App\Constants\RelationshipConstants;
 use App\Models\UserLesson;
+use App\Models\UserTypeEnum;
 use App\Service\Shared\DTO\RequestModel\UserLessonRequestModel;
 use App\Service\Student\Evaluations\DTO\Custom\DateRange;
 use DateTime;
@@ -31,11 +32,13 @@ final class UserLessonRepository implements UserLessonRepositoryInterface
         $userLesson->save();
     }
 
-    public function getUsersWithEvaluationsInConcreteLesson(string $lessonId, DateTime $date): array
+    public function getStudentsWithEvaluationsInConcreteLesson(string $lessonId, DateTime $date): array
     {
         return $this->userLesson
             ::where(DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID, $lessonId)
-            ->with(RelationshipConstants::USERLESSON_USER)
+            ->with(RelationshipConstants::USERLESSON_USER, function ($user) {
+                $user->where(DatabaseConstants::USERS_TABLE_TYPE, UserTypeEnum::Student);
+            })
             ->with(RelationshipConstants::USERLESSON_EVALUATION, function ($evaluation) use ($date) {
                 $evaluation->where(DatabaseConstants::EVALUATIONS_TABLE_DATE, $date);
             })

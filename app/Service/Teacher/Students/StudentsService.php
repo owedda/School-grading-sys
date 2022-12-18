@@ -9,21 +9,28 @@ use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
 use App\Service\Shared\Collection\DataCollection;
 use App\Service\Shared\DTO\Model\UserModel;
+use App\Service\Shared\Exception\ValidatorException;
 use App\Service\Shared\Transformer\TransformerInterface;
 use App\Service\Shared\Transformer\TransformerToObjectInterface;
+use App\Service\Shared\Validator\Model\ValidatorInterface;
 use App\Service\Teacher\Students\DTO\ResponseModel\StudentLessonsResponseModel;
 use App\Service\Teacher\Students\Transformer\UserAttendedLessonResponseModelTransformerInterface;
+use App\Service\Teacher\Students\Validator\UserAttendedLessonResponseModelValidatorInterface;
+use Psr\Log\LoggerInterface;
 
 final class StudentsService implements StudentsServiceInterface
 {
     private TransformerToObjectInterface $userRequestModelTransformer;
     private TransformerToObjectInterface $userLessonRequestModelTransformer;
     private TransformerInterface $userTransformer;
+    private ValidatorInterface $userModelValidator;
 
     public function __construct(
+        private readonly LoggerInterface $logger,
         private readonly UserRepositoryInterface $userRepository,
         private readonly LessonRepositoryInterface $lessonRepository,
         private readonly UserLessonRepositoryInterface $userLessonRepository,
+        private readonly UserAttendedLessonResponseModelValidatorInterface $userAttendedLessonResponseModelValidator,
         private readonly UserAttendedLessonResponseModelTransformerInterface $userAttendedLessonResponseModelTransformer
     ) {
     }
@@ -31,7 +38,13 @@ final class StudentsService implements StudentsServiceInterface
     public function getAll(): DataCollection
     {
         $studentsArray = $this->userRepository->getAllStudents();
-        //TODO try catch
+
+        try {
+            $this->userModelValidator->validateMany($studentsArray);
+        } catch (ValidatorException $exception) {
+            $this->logger->error($exception);
+        }
+
         return $this->userTransformer->transformToCollection($studentsArray);
     }
 
@@ -67,14 +80,26 @@ final class StudentsService implements StudentsServiceInterface
     private function getStudent(string $userId): UserModel
     {
         $userArray = $this->userRepository->getElementById($userId);
-        //TODO try catch
+
+        try {
+            $this->userModelValidator->validateElement($userArray);
+        } catch (ValidatorException $exception) {
+            $this->logger->error($exception);
+        }
+
         return $this->userTransformer->transformToObject($userArray);
     }
 
     private function getUserAttendedLessonResponseModel(string $userId): DataCollection
     {
         $userAttendedLessonsArray = $this->lessonRepository->getAllLessonsWithUserLessonsAttached($userId);
-        //TODO try catch
+
+        try {
+            $this->userAttendedLessonResponseModelValidator->validate($userAttendedLessonsArray);
+        } catch (ValidatorException $exception) {
+            $this->logger->error($exception);
+        }
+
         return $this->userAttendedLessonResponseModelTransformer->transformToCollection($userAttendedLessonsArray);
     }
 
@@ -92,5 +117,10 @@ final class StudentsService implements StudentsServiceInterface
     public function setUserTransformer(TransformerInterface $userTransformer): void
     {
         $this->userTransformer = $userTransformer;
+    }
+
+    public function setUserModelValidator(ValidatorInterface $userModelValidator): void
+    {
+        $this->userModelValidator = $userModelValidator;
     }
 }

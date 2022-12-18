@@ -46,7 +46,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($usersResponseModel->getUsersEvaluations() as $user)
+                    @foreach($usersResponseModel->getStudentsEvaluations() as $user)
                         <tr>
                             <td>
                                 {{ $user->getUser()->getUsername() ?? '' }}

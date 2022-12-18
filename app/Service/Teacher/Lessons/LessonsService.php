@@ -10,39 +10,52 @@ use App\Repositories\UserLesson\UserLessonRepositoryInterface;
 use App\Service\Shared\Collection\DataCollection;
 use App\Service\Shared\DTO\Model\LessonModel;
 use App\Service\Shared\DTO\RequestModel\DateRequestModel;
+use App\Service\Shared\Exception\ValidatorException;
 use App\Service\Shared\Transformer\TransformerInterface;
 use App\Service\Shared\Transformer\TransformerToObjectInterface;
+use App\Service\Shared\Validator\Model\ValidatorInterface;
 use App\Service\Teacher\Lessons\DTO\ResponseModel\UsersResponseModel;
-use App\Service\Teacher\Lessons\Transformer\StudentEvaluationResponseModelTransformerInterface;
+use App\Service\Teacher\Lessons\Transformer\StudentEvaluationsTransformerInterface;
+use App\Service\Teacher\Lessons\Validator\StudentEvaluationsValidatorInterface;
+use Psr\Log\LoggerInterface;
 
 final class LessonsService implements LessonsServiceInterface
 {
     private TransformerToObjectInterface $evaluationRequestModelTransformer;
     private TransformerToObjectInterface $dateRequestModelTransformer;
     private TransformerInterface $lessonTransformer;
+    private ValidatorInterface $lessonModelValidator;
 
     public function __construct(
         private readonly LessonRepositoryInterface $lessonRepository,
         private readonly UserLessonRepositoryInterface $userLessonRepository,
         private readonly EvaluationRepositoryInterface $evaluationRepository,
-        private readonly StudentEvaluationResponseModelTransformerInterface $studentEvaluationResponseModelTransformer
+        private readonly StudentEvaluationsTransformerInterface $studentEvaluationResponseModelTransformer,
+        private readonly StudentEvaluationsValidatorInterface $studentEvaluationResponseModelValidator,
+        private readonly LoggerInterface $logger
     ) {
     }
 
     public function getAllLessons(): DataCollection
     {
         $lessonsArray = $this->lessonRepository->getAll();
-        //TODO try catch
+
+        try {
+            $this->lessonModelValidator->validateMany($lessonsArray);
+        } catch (ValidatorException $exception) {
+            $this->logger->error($exception);
+        }
+
         return $this->lessonTransformer->transformToCollection($lessonsArray);
     }
 
     public function getUsersResponseModel(string $lessonId, array $date): UsersResponseModel
     {
         $dateRequestModel = $this->dateRequestModelTransformer->transformToObject($date);
-        $usersEvaluations = $this->getUsersEvaluations($lessonId, $dateRequestModel);
+        $studentsEvaluations = $this->getStudentsEvaluations($lessonId, $dateRequestModel);
         $lesson = $this->getLesson($lessonId);
 
-        return new UsersResponseModel($usersEvaluations, $lesson, $dateRequestModel->getDate());
+        return new UsersResponseModel($studentsEvaluations, $lesson, $dateRequestModel->getDate());
     }
 
     public function storeEvaluation(array $evaluation): void
@@ -59,16 +72,27 @@ final class LessonsService implements LessonsServiceInterface
     private function getLesson(string $id): LessonModel
     {
         $lessonArray = $this->lessonRepository->getElementById($id);
-        //TODO try catch
+
+        try {
+            $this->lessonModelValidator->validateElement($lessonArray);
+        } catch (ValidatorException $exception) {
+            $this->logger->error($exception);
+        }
+
         return $this->lessonTransformer->transformToObject($lessonArray);
     }
 
-    private function getUsersEvaluations(string $lessonId, DateRequestModel $dateRequestModel): DataCollection
+    private function getStudentsEvaluations(string $lessonId, DateRequestModel $dateRequestModel): DataCollection
     {
         $usersEvaluationsArray = $this->userLessonRepository
-            ->getUsersWithEvaluationsInConcreteLesson($lessonId, $dateRequestModel->getDate());
+            ->getStudentsWithEvaluationsInConcreteLesson($lessonId, $dateRequestModel->getDate());
 
-        //TODO try catch
+        try {
+            $this->studentEvaluationResponseModelValidator->validate($usersEvaluationsArray);
+        } catch (ValidatorException $exception) {
+            $this->logger->error($exception);
+        }
+
         return $this->studentEvaluationResponseModelTransformer->transformToCollection($usersEvaluationsArray);
     }
 
@@ -87,5 +111,10 @@ final class LessonsService implements LessonsServiceInterface
     public function setLessonTransformer(TransformerInterface $lessonTransformer): void
     {
         $this->lessonTransformer = $lessonTransformer;
+    }
+
+    public function setLessonModelValidator(ValidatorInterface $lessonModelValidator): void
+    {
+        $this->lessonModelValidator = $lessonModelValidator;
     }
 }

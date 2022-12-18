@@ -18,6 +18,7 @@ use App\Service\Student\Evaluations\Transformer\LessonEvaluationsTransformerInte
 use App\Service\Student\Evaluations\Validator\LessonEvaluationsValidatorInterface;
 use App\Service\Teacher\Lessons\DTO\Custom\UserPartial;
 use DateTime;
+use Psr\Log\LoggerInterface;
 
 final class EvaluationsService implements EvaluationsServiceInterface
 {
@@ -26,6 +27,7 @@ final class EvaluationsService implements EvaluationsServiceInterface
     private TransformerToObjectInterface $dateRequestModelTransformer;
 
     public function __construct(
+        private readonly LoggerInterface $logger,
         private readonly UserLessonRepositoryInterface $userLessonRepository,
         private readonly DaysFromToFilterInterface $daysFromToFilter,
         private readonly LessonEvaluationsTransformerInterface $lessonEvaluationsTransformer,
@@ -50,7 +52,7 @@ final class EvaluationsService implements EvaluationsServiceInterface
         try {
             $this->lessonEvaluationsValidator->validate($lessonEvaluationsArray);
         } catch (ValidatorException $exception) {
-            echo($exception);
+            $this->logger->error($exception);
         }
 
         return $this->lessonEvaluationsTransformer->transformToCollection($lessonEvaluationsArray);

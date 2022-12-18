@@ -7,7 +7,7 @@ namespace App\Service\Shared\Validator\Model;
 use App\Constants\DatabaseConstants;
 use App\Service\Shared\Exception\ValidatorException;
 
-final class UserLessonModelValidator implements ValidatorInterface
+final class UserModelValidator implements ValidatorInterface
 {
     /**
      * @throws ValidatorException
@@ -28,9 +28,12 @@ final class UserLessonModelValidator implements ValidatorInterface
     public function validateElement(array $data): void
     {
         if (
-            isset($data[DatabaseConstants::USER_LESSONS_TABLE_ID]) === false ||
-            isset($data[DatabaseConstants::USER_LESSONS_TABLE_USER_ID]) === false ||
-            isset($data[DatabaseConstants::USER_LESSONS_TABLE_LESSON_ID]) === false
+            isset($data[DatabaseConstants::USERS_TABLE_ID]) === false ||
+            isset($data[DatabaseConstants::USERS_TABLE_USERNAME]) === false ||
+            isset($data[DatabaseConstants::USERS_TABLE_NAME]) === false ||
+            isset($data[DatabaseConstants::USERS_TABLE_LAST_NAME]) === false ||
+            isset($data[DatabaseConstants::USERS_TABLE_TYPE]) === false ||
+            isset($data[DatabaseConstants::USERS_TABLE_EMAIL]) === false
         ) {
             throw new ValidatorException(__CLASS__);
         }

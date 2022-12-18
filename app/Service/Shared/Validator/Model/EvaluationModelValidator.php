@@ -15,6 +15,9 @@ final class EvaluationModelValidator implements ValidatorInterface
     public function validateMany(array $data): void
     {
         foreach ($data as $element) {
+            if (is_array($element) === false) {
+                throw new ValidatorException(__CLASS__);
+            }
             $this->validateElement($element);
         }
     }

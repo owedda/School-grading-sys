@@ -11,15 +11,15 @@ use DateTime;
 final class UsersResponseModel
 {
     public function __construct(
-        private readonly DataCollection $usersEvaluations,
+        private readonly DataCollection $studentsEvaluations,
         private readonly LessonModel $lesson,
         private readonly DateTime $date
     ) {
     }
 
-    public function getUsersEvaluations(): DataCollection
+    public function getStudentsEvaluations(): DataCollection
     {
-        return $this->usersEvaluations;
+        return $this->studentsEvaluations;
     }
 
     public function getLesson(): LessonModel

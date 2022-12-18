@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Student\Evaluations\Validator;
+namespace App\Service\Teacher\Lessons\Validator;
 
 use App\Constants\RelationshipConstants;
-use App\Service\Shared\Validator\Model\ValidatorInterface;
-use App\Constants\DatabaseConstants;
 use App\Service\Shared\Exception\ValidatorException;
+use App\Service\Shared\Validator\Model\ValidatorInterface;
 
-final class LessonEvaluationsValidator implements LessonEvaluationsValidatorInterface
+final class StudentEvaluationsValidator implements StudentEvaluationsValidatorInterface
 {
+    private ValidatorInterface $userModelValidator;
     private ValidatorInterface $userLessonModelValidator;
     private ValidatorInterface $evaluationModelValidator;
-    private ValidatorInterface $lessonModelValidator;
 
     /**
      * @throws ValidatorException
@@ -22,11 +21,16 @@ final class LessonEvaluationsValidator implements LessonEvaluationsValidatorInte
     {
         foreach ($data as $item) {
             $this->userLessonModelValidator->validateElement($item);
-            $this->lessonModelValidator->validateElement($item[RelationshipConstants::USERLESSON_LESSON]);
-            if (empty($item[RelationshipConstants::USERLESSON_EVALUATIONS]) === false) {
-                $this->evaluationModelValidator->validateMany($item[RelationshipConstants::USERLESSON_EVALUATIONS]);
+            $this->userModelValidator->validateElement($item[RelationshipConstants::USERLESSON_USER]);
+            if (isset($item[RelationshipConstants::USERLESSON_EVALUATIONS])) {
+                $this->evaluationModelValidator->validateElement($item[RelationshipConstants::USERLESSON_EVALUATION]);
             }
         }
+    }
+
+    public function setUserModelValidator(ValidatorInterface $userModelValidator): void
+    {
+        $this->userModelValidator = $userModelValidator;
     }
 
     public function setUserLessonModelValidator(ValidatorInterface $userLessonModelValidator): void
@@ -37,10 +41,5 @@ final class LessonEvaluationsValidator implements LessonEvaluationsValidatorInte
     public function setEvaluationModelValidator(ValidatorInterface $evaluationModelValidator): void
     {
         $this->evaluationModelValidator = $evaluationModelValidator;
-    }
-
-    public function setLessonModelValidator(ValidatorInterface $lessonModelValidator): void
-    {
-        $this->lessonModelValidator = $lessonModelValidator;
     }
 }

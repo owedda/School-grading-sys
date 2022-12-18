@@ -9,11 +9,10 @@ use App\Service\Shared\Collection\DataCollection;
 use App\Service\Shared\DTO\Model\EvaluationModel;
 use App\Service\Shared\DTO\Model\UserLessonModel;
 use App\Service\Shared\DTO\Model\UserModel;
-use App\Service\Shared\Exception\ValidatorException;
 use App\Service\Shared\Transformer\TransformerInterface;
-use App\Service\Teacher\Lessons\DTO\ResponseModel\StudentEvaluationResponseModel;
+use App\Service\Teacher\Lessons\DTO\Custom\StudentEvaluations;
 
-final class StudentEvaluationResponseModelTransformer implements StudentEvaluationResponseModelTransformerInterface
+final class StudentEvaluationsTransformer implements StudentEvaluationsTransformerInterface
 {
     private TransformerInterface $userTransformer;
     private TransformerInterface $evaluationTransformer;
@@ -30,7 +29,7 @@ final class StudentEvaluationResponseModelTransformer implements StudentEvaluati
         return $collection;
     }
 
-    public function transformToObject(array $data): StudentEvaluationResponseModel
+    public function transformToObject(array $data): StudentEvaluations
     {
         $userLessonModel = $this->userLessonTransformer->transformToObject($data);
         $userModel = $this->userTransformer
@@ -43,7 +42,7 @@ final class StudentEvaluationResponseModelTransformer implements StudentEvaluati
         array $data,
         UserModel $userModel,
         UserLessonModel $userLessonModel
-    ): StudentEvaluationResponseModel {
+    ): StudentEvaluations {
 
         if (isset($data[RelationshipConstants::USERLESSON_EVALUATION])) {
             return $this->getStudentWithEvaluation($userModel, $userLessonModel, $data);
@@ -55,13 +54,13 @@ final class StudentEvaluationResponseModelTransformer implements StudentEvaluati
         UserModel $userModel,
         UserLessonModel $userLessonModel,
         array $data
-    ): StudentEvaluationResponseModel {
+    ): StudentEvaluations {
 
         /** @var EvaluationModel $evaluationModel */
         $evaluationModel = $this->evaluationTransformer
             ->transformToObject($data[RelationshipConstants::USERLESSON_EVALUATION]);
 
-        return new StudentEvaluationResponseModel(
+        return new StudentEvaluations(
             $userModel,
             $userLessonModel,
             $evaluationModel
@@ -71,9 +70,9 @@ final class StudentEvaluationResponseModelTransformer implements StudentEvaluati
     private function getStudentWithNoEvaluation(
         UserModel $userModel,
         UserLessonModel $userLessonModel
-    ): StudentEvaluationResponseModel {
+    ): StudentEvaluations {
 
-        return new StudentEvaluationResponseModel(
+        return new StudentEvaluations(
             $userModel,
             $userLessonModel
         );

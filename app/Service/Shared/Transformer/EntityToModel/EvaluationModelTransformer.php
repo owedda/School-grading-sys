@@ -7,9 +7,7 @@ namespace App\Service\Shared\Transformer\EntityToModel;
 use App\Constants\DatabaseConstants;
 use App\Service\Shared\Collection\DataCollection;
 use App\Service\Shared\DTO\Model\EvaluationModel;
-use App\Service\Shared\Exception\ValidatorException;
 use App\Service\Shared\Transformer\TransformerInterface;
-use App\Service\Shared\Validator\Model\ValidatorInterface;
 use DateTime;
 
 final class EvaluationModelTransformer implements TransformerInterface

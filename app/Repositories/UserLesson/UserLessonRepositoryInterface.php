@@ -12,7 +12,7 @@ interface UserLessonRepositoryInterface
 
     public function save(UserLessonRequestModel $requestModel): void;
 
-    public function getUsersWithEvaluationsInConcreteLesson(string $lessonId, DateTime $date): array;
+    public function getStudentsWithEvaluationsInConcreteLesson(string $lessonId, DateTime $date): array;
 
     public function getUserEvaluations(string $userId, DateRange $dateRange): array;
 }

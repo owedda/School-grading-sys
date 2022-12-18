@@ -33,18 +33,4 @@ final class UserModelTransformer implements TransformerInterface
             $data[DatabaseConstants::USERS_TABLE_TYPE],
         );
     }
-
-//    private function validateArray(array $data): void
-//    {
-//        if (
-//            !array_key_exists(DatabaseConstants::USERS_TABLE_ID, $data) ||
-//            !array_key_exists(DatabaseConstants::USERS_TABLE_USERNAME, $data) ||
-//            !array_key_exists(DatabaseConstants::USERS_TABLE_EMAIL, $data) ||
-//            !array_key_exists(DatabaseConstants::USERS_TABLE_NAME, $data) ||
-//            !array_key_exists(DatabaseConstants::USERS_TABLE_LAST_NAME, $data) ||
-//            !array_key_exists(DatabaseConstants::USERS_TABLE_TYPE, $data)
-//        ) {
-//            throw new ValidatorException(__CLASS__);
-//        }
-//    }
 }

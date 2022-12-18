@@ -13,6 +13,7 @@ use App\Service\Shared\Transformer\RequestModel\UserRequestModelTransformer;
 use App\Service\Shared\Validator\Model\EvaluationModelValidator;
 use App\Service\Shared\Validator\Model\LessonModelValidator;
 use App\Service\Shared\Validator\Model\UserLessonModelValidator;
+use App\Service\Shared\Validator\Model\UserModelValidator;
 use App\Service\Shared\Validator\Model\ValidatorInterface;
 use App\Service\Student\Evaluations\EvaluationsService;
 use App\Service\Student\Evaluations\EvaluationsServiceInterface;
@@ -24,12 +25,16 @@ use App\Service\Student\Evaluations\Validator\LessonEvaluationsValidator;
 use App\Service\Student\Evaluations\Validator\LessonEvaluationsValidatorInterface;
 use App\Service\Teacher\Lessons\LessonsService;
 use App\Service\Teacher\Lessons\LessonsServiceInterface;
-use App\Service\Teacher\Lessons\Transformer\StudentEvaluationResponseModelTransformer;
-use App\Service\Teacher\Lessons\Transformer\StudentEvaluationResponseModelTransformerInterface;
+use App\Service\Teacher\Lessons\Transformer\StudentEvaluationsTransformer;
+use App\Service\Teacher\Lessons\Transformer\StudentEvaluationsTransformerInterface;
+use App\Service\Teacher\Lessons\Validator\StudentEvaluationsValidator;
+use App\Service\Teacher\Lessons\Validator\StudentEvaluationsValidatorInterface;
 use App\Service\Teacher\Students\StudentsService;
 use App\Service\Teacher\Students\StudentsServiceInterface;
 use App\Service\Teacher\Students\Transformer\UserAttendedLessonResponseModelTransformer;
 use App\Service\Teacher\Students\Transformer\UserAttendedLessonResponseModelTransformerInterface;
+use App\Service\Teacher\Students\Validator\UserAttendedLessonResponseModelValidator;
+use App\Service\Teacher\Students\Validator\UserAttendedLessonResponseModelValidatorInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -51,6 +56,23 @@ class AppServiceProvider extends ServiceProvider
             return $validator;
         });
 
+        $this->app->bind(StudentEvaluationsValidatorInterface::class, function () {
+            /** @var StudentEvaluationsValidator $validator */
+            $validator = $this->app->make(StudentEvaluationsValidator::class);
+            $validator->setEvaluationModelValidator(new EvaluationModelValidator());
+            $validator->setUserModelValidator(new UserModelValidator());
+            $validator->setUserLessonModelValidator(new UserLessonModelValidator());
+            return $validator;
+        });
+
+        $this->app->bind(UserAttendedLessonResponseModelValidatorInterface::class, function () {
+            /** @var UserAttendedLessonResponseModelValidator $validator */
+            $validator = $this->app->make(UserAttendedLessonResponseModelValidator::class);
+            $validator->setLessonModelValidator(new LessonModelValidator());
+            $validator->setUserLessonModelValidator(new UserLessonModelValidator());
+            return $validator;
+        });
+
         $this->app->bind(UserAttendedLessonResponseModelTransformerInterface::class, function () {
             /** @var UserAttendedLessonResponseModelTransformer $transformer */
             $transformer = $this->app->make(UserAttendedLessonResponseModelTransformer::class);
@@ -59,9 +81,9 @@ class AppServiceProvider extends ServiceProvider
             return $transformer;
         });
 
-        $this->app->bind(StudentEvaluationResponseModelTransformerInterface::class, function () {
-            /** @var StudentEvaluationResponseModelTransformer $transformer */
-            $transformer = $this->app->make(StudentEvaluationResponseModelTransformer::class);
+        $this->app->bind(StudentEvaluationsTransformerInterface::class, function () {
+            /** @var StudentEvaluationsTransformer $transformer */
+            $transformer = $this->app->make(StudentEvaluationsTransformer::class);
             $transformer->setUserTransformer(new UserModelTransformer());
             $transformer->setEvaluationTransformer(new EvaluationModelTransformer(new EvaluationModelValidator()));
             $transformer->setUserLessonTransformer(new UserLessonModelTransformer());
@@ -83,6 +105,7 @@ class AppServiceProvider extends ServiceProvider
             $service->setUserRequestModelTransformer(new UserRequestModelTransformer());
             $service->setUserLessonRequestModelTransformer(new UserLessonRequestModelTransformer());
             $service->setUserTransformer(new UserModelTransformer());
+            $service->setUserModelValidator(new UserModelValidator());
             return $service;
         });
 
@@ -92,6 +115,7 @@ class AppServiceProvider extends ServiceProvider
             $service->setEvaluationRequestModelTransformer(new EvaluationRequestModelTransformer());
             $service->setDateRequestModelTransformer(new DateRequestModelTransformer());
             $service->setLessonTransformer(new LessonModelTransformer());
+            $service->setLessonModelValidator(new LessonModelValidator());
             return $service;
         });
 

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Teacher\Lessons\DTO\ResponseModel;
+namespace App\Service\Teacher\Lessons\DTO\Custom;
 
 use App\Service\Shared\DTO\Model\EvaluationModel;
 use App\Service\Shared\DTO\Model\UserLessonModel;
 use App\Service\Shared\DTO\Model\UserModel;
 
-final class StudentEvaluationResponseModel
+final class StudentEvaluations
 {
     public function __construct(
         private readonly UserModel $user,
