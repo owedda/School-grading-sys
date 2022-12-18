@@ -46,7 +46,7 @@ class EvaluationsServiceTest extends TestCase
         $this->service->setDateRequestModelTransformer($this->dateRequestModelTransformer);
     }
 
-    public function testGetEvaluationsResponseModelMethodsAreCalled(): void
+    public function testGetEvaluationsResponseModelCallsAllFunctionsWhenCorrect(): void
     {
         $user = new UserPartial('d3de92e5-ed47-4d49-8811-134c7b293a15', 'Test123');
         $dateArray = ['2022-12-12'];
