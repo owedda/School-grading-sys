@@ -16,12 +16,4 @@ interface LessonsServiceInterface
     public function destroyEvaluation(string $evaluationId): void;
 
     public function storeEvaluation(array $evaluation): void;
-
-    public function setEvaluationRequestModelTransformer(
-        TransformerToObjectInterface $evaluationRequestModelTransformer
-    ): void;
-
-    public function setDateRequestModelTransformer(TransformerToObjectInterface $dateRequestModelTransformer): void;
-
-    public function setLessonTransformer(TransformerInterface $lessonTransformer): void;
 }

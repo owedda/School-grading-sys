@@ -9,6 +9,4 @@ use App\Service\Teacher\Lessons\DTO\Custom\UserPartial;
 interface EvaluationsServiceInterface
 {
     public function getEvaluationsResponseModel(UserPartial $user, array $date): EvaluationsResponseModel;
-
-    public function setDateRequestModelTransformer(TransformerToObjectInterface $dateRequestModelTransformer): void;
 }

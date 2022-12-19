@@ -20,12 +20,4 @@ interface StudentsServiceInterface
     public function storeUserLesson(array $userLesson): void;
 
     public function destroyUserLesson(string $userLessonId): void;
-
-    public function setUserLessonRequestModelTransformer(
-        TransformerToObjectInterface $userLessonRequestModelTransformer
-    ): void;
-
-    public function setUserRequestModelTransformer(TransformerToObjectInterface $userRequestModelTransformer): void;
-
-    public function setUserTransformer(TransformerInterface $userTransformer): void;
 }

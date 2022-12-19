@@ -8,36 +8,31 @@ use App\Constants\DateConstants;
 use App\Repositories\UserLesson\UserLessonRepositoryInterface;
 use App\Service\Shared\Collection\DataCollection;
 use App\Service\Shared\DTO\RequestModel\DateRequestModel;
-use App\Service\Shared\Exception\ValidatorException;
-use App\Service\Shared\Transformer\TransformerToObjectInterface;
 use App\Service\Student\Evaluations\DTO\Custom\DateRange;
 use App\Service\Student\Evaluations\DTO\Custom\Month;
 use App\Service\Student\Evaluations\DTO\ResponseModel\EvaluationsResponseModel;
+use App\Service\Student\Evaluations\Facade\ErrorHandler\EvaluationsServiceErrorHandlerInterface;
+use App\Service\Student\Evaluations\Facade\Transformers\EvaluationsServiceTransformersInterface;
 use App\Service\Student\Evaluations\Filter\DaysFromToFilterInterface;
-use App\Service\Student\Evaluations\Transformer\LessonEvaluationsTransformerInterface;
-use App\Service\Student\Evaluations\Validator\LessonEvaluationsValidatorInterface;
 use App\Service\Teacher\Lessons\DTO\Custom\UserPartial;
 use DateTime;
-use Psr\Log\LoggerInterface;
 
 final class EvaluationsService implements EvaluationsServiceInterface
 {
     private const FIRST_DAY_OF = 'first day of ';
     private const LAST_DAY_OF = 'last day of ';
-    private TransformerToObjectInterface $dateRequestModelTransformer;
 
     public function __construct(
-        private readonly LoggerInterface $logger,
+        private readonly EvaluationsServiceTransformersInterface $transformers,
+        private readonly EvaluationsServiceErrorHandlerInterface $errorHandler,
         private readonly UserLessonRepositoryInterface $userLessonRepository,
-        private readonly DaysFromToFilterInterface $daysFromToFilter,
-        private readonly LessonEvaluationsTransformerInterface $lessonEvaluationsTransformer,
-        private readonly LessonEvaluationsValidatorInterface $lessonEvaluationsValidator
+        private readonly DaysFromToFilterInterface $daysFromToFilter
     ) {
     }
 
     public function getEvaluationsResponseModel(UserPartial $user, array $date): EvaluationsResponseModel
     {
-        $dateRequestModel = $this->dateRequestModelTransformer->transformToObject($date);
+        $dateRequestModel = $this->transformers->getDateRequestModelTransformer()->transformToObject($date);
         $monthResponseModel = $this->getMonth($dateRequestModel);
         $evaluations = $this->getEvaluations($dateRequestModel, $user);
 
@@ -49,13 +44,9 @@ final class EvaluationsService implements EvaluationsServiceInterface
         $dateRange = $this->getDateRange($dateRequestModel);
         $lessonEvaluationsArray = $this->userLessonRepository->getUserEvaluations($user->getId(), $dateRange);
 
-        try {
-            $this->lessonEvaluationsValidator->validate($lessonEvaluationsArray);
-        } catch (ValidatorException $exception) {
-            $this->logger->error($exception);
-        }
+        $this->errorHandler->handleLessonEvaluations($lessonEvaluationsArray);
 
-        return $this->lessonEvaluationsTransformer->transformToCollection($lessonEvaluationsArray);
+        return $this->transformers->getLessonEvaluationsTransformer()->transformToCollection($lessonEvaluationsArray);
     }
 
     private function getMonth(DateRequestModel $dateRequestModel): Month
@@ -74,10 +65,5 @@ final class EvaluationsService implements EvaluationsServiceInterface
             new DateTime(self::FIRST_DAY_OF . $dateRequestModel->getDate()->format(DateConstants::DATE_FORMAT_FULL)),
             new DateTime(self::LAST_DAY_OF . $dateRequestModel->getDate()->format(DateConstants::DATE_FORMAT_FULL))
         );
-    }
-
-    public function setDateRequestModelTransformer(TransformerToObjectInterface $dateRequestModelTransformer): void
-    {
-        $this->dateRequestModelTransformer = $dateRequestModelTransformer;
     }
 }

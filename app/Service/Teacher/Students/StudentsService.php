@@ -4,48 +4,29 @@ declare(strict_types=1);
 
 namespace App\Service\Teacher\Students;
 
-use App\Repositories\Lesson\LessonRepositoryInterface;
-use App\Repositories\User\UserRepositoryInterface;
-use App\Repositories\UserLesson\UserLessonRepositoryInterface;
 use App\Service\Shared\Collection\DataCollection;
 use App\Service\Shared\DTO\Model\UserModel;
-use App\Service\Shared\Exception\ValidatorException;
-use App\Service\Shared\Transformer\TransformerInterface;
-use App\Service\Shared\Transformer\TransformerToObjectInterface;
-use App\Service\Shared\Validator\Model\ValidatorInterface;
 use App\Service\Teacher\Students\DTO\ResponseModel\StudentLessonsResponseModel;
-use App\Service\Teacher\Students\Transformer\UserAttendedLessonResponseModelTransformerInterface;
-use App\Service\Teacher\Students\Validator\UserAttendedLessonResponseModelValidatorInterface;
-use Psr\Log\LoggerInterface;
+use App\Service\Teacher\Students\Facade\ErrorHandler\StudentsServiceErrorHandlerInterface;
+use App\Service\Teacher\Students\Facade\Repositories\StudentsServiceRepositoriesInterface;
+use App\Service\Teacher\Students\Facade\Transformers\StudentsServiceTransformersInterface;
 
 final class StudentsService implements StudentsServiceInterface
 {
-    private TransformerToObjectInterface $userRequestModelTransformer;
-    private TransformerToObjectInterface $userLessonRequestModelTransformer;
-    private TransformerInterface $userTransformer;
-    private ValidatorInterface $userModelValidator;
-
     public function __construct(
-        private readonly LoggerInterface $logger,
-        private readonly UserRepositoryInterface $userRepository,
-        private readonly LessonRepositoryInterface $lessonRepository,
-        private readonly UserLessonRepositoryInterface $userLessonRepository,
-        private readonly UserAttendedLessonResponseModelValidatorInterface $userAttendedLessonResponseModelValidator,
-        private readonly UserAttendedLessonResponseModelTransformerInterface $userAttendedLessonResponseModelTransformer
+        private readonly StudentsServiceErrorHandlerInterface $errorHandler,
+        private readonly StudentsServiceTransformersInterface $transformers,
+        private readonly StudentsServiceRepositoriesInterface $repositories
     ) {
     }
 
     public function getAll(): DataCollection
     {
-        $studentsArray = $this->userRepository->getAllStudents();
+        $studentsArray = $this->repositories->getUserRepository()->getAllStudents();
 
-        try {
-            $this->userModelValidator->validateMany($studentsArray);
-        } catch (ValidatorException $exception) {
-            $this->logger->error($exception);
-        }
+        $this->errorHandler->handleUsers($studentsArray);
 
-        return $this->userTransformer->transformToCollection($studentsArray);
+        return $this->transformers->getUserTransformer()->transformToCollection($studentsArray);
     }
 
     public function getStudentLessons(string $userId): StudentLessonsResponseModel
@@ -57,70 +38,48 @@ final class StudentsService implements StudentsServiceInterface
 
     public function store(array $user): void
     {
-        $userRequestModel = $this->userRequestModelTransformer->transformToObject($user);
-        $this->userRepository->store($userRequestModel);
+        $userRequestModel = $this->transformers->getUserRequestModelTransformer()->transformToObject($user);
+        $this->repositories->getUserRepository()->store($userRequestModel);
     }
 
     public function delete(string $userId): void
     {
-        $this->userRepository->deleteById($userId);
+        $this->repositories->getUserRepository()->deleteById($userId);
     }
 
     public function storeUserLesson(array $userLesson): void
     {
-        $userLessonRequestModel = $this->userLessonRequestModelTransformer->transformToObject($userLesson);
-        $this->userLessonRepository->save($userLessonRequestModel);
+        $userLessonRequestModel = $this->transformers
+            ->getUserLessonRequestModelTransformer()
+            ->transformToObject($userLesson);
+
+        $this->repositories->getUserLessonRepository()->save($userLessonRequestModel);
     }
 
     public function destroyUserLesson(string $userLessonId): void
     {
-        $this->userLessonRepository->deleteElementById($userLessonId);
+        $this->repositories->getUserLessonRepository()->deleteElementById($userLessonId);
     }
 
     private function getStudent(string $userId): UserModel
     {
-        $userArray = $this->userRepository->getElementById($userId);
+        $userArray = $this->repositories->getUserRepository()->getElementById($userId);
 
-        try {
-            $this->userModelValidator->validateElement($userArray);
-        } catch (ValidatorException $exception) {
-            $this->logger->error($exception);
-        }
+        $this->errorHandler->handleUser($userArray);
 
-        return $this->userTransformer->transformToObject($userArray);
+        return $this->transformers->getUserTransformer()->transformToObject($userArray);
     }
 
     private function getUserAttendedLessonResponseModel(string $userId): DataCollection
     {
-        $userAttendedLessonsArray = $this->lessonRepository->getAllLessonsWithUserLessonsAttached($userId);
+        $userAttendedLessonsArray = $this->repositories
+            ->getLessonRepository()
+            ->getAllLessonsWithUserLessonsAttached($userId);
 
-        try {
-            $this->userAttendedLessonResponseModelValidator->validate($userAttendedLessonsArray);
-        } catch (ValidatorException $exception) {
-            $this->logger->error($exception);
-        }
+        $this->errorHandler->handleUserAttendedLessons($userAttendedLessonsArray);
 
-        return $this->userAttendedLessonResponseModelTransformer->transformToCollection($userAttendedLessonsArray);
-    }
-
-    public function setUserLessonRequestModelTransformer(
-        TransformerToObjectInterface $userLessonRequestModelTransformer
-    ): void {
-        $this->userLessonRequestModelTransformer = $userLessonRequestModelTransformer;
-    }
-
-    public function setUserRequestModelTransformer(TransformerToObjectInterface $userRequestModelTransformer): void
-    {
-        $this->userRequestModelTransformer = $userRequestModelTransformer;
-    }
-
-    public function setUserTransformer(TransformerInterface $userTransformer): void
-    {
-        $this->userTransformer = $userTransformer;
-    }
-
-    public function setUserModelValidator(ValidatorInterface $userModelValidator): void
-    {
-        $this->userModelValidator = $userModelValidator;
+        return $this->transformers
+            ->getUserAttendedLessonResponseModelTransformer()
+            ->transformToCollection($userAttendedLessonsArray);
     }
 }

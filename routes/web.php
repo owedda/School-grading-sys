@@ -9,7 +9,6 @@ Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
 Route::group(['middleware' => ['auth', 'isStudent']], static function () {
     Route::controller(EvaluationController::class)
         ->prefix('evaluations')
