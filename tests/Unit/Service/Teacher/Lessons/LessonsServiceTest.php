@@ -2,16 +2,14 @@
 
 namespace Service\Teacher\Lessons;
 
-use App\Service\Shared\DTO\Model\LessonModel;
-use App\Service\Shared\DTO\RequestModel\DateRequestModel;
+use App\Repositories\Lesson\LessonRepositoryInterface;
 use App\Service\Shared\DTO\RequestModel\EvaluationRequestModel;
-use App\Service\Shared\Exception\ValidatorException;
+use App\Service\Shared\Transformer\TransformerInterface;
 use App\Service\Shared\Transformer\TransformerToObjectInterface;
 use App\Service\Teacher\Lessons\Facade\ErrorHandler\LessonsServiceErrorHandlerInterface;
 use App\Service\Teacher\Lessons\Facade\Repositories\LessonsServiceRepositoriesInterface;
 use App\Service\Teacher\Lessons\Facade\Transformers\LessonsServiceTransformersInterface;
 use App\Service\Teacher\Lessons\LessonsService;
-use DateTime;
 use PHPUnit\Framework\TestCase;
 
 class LessonsServiceTest extends TestCase
@@ -70,11 +68,22 @@ class LessonsServiceTest extends TestCase
 
     public function testGetAllLessonsCallsAllFunctionsWhenCorrect(): void
     {
+        $lessonRepository = $this->createMock(LessonRepositoryInterface::class);
+        $lessonTransformer = $this->createMock(TransformerInterface::class);
+
+        $lessonRepository->expects($this->once())
+            ->method('getAll');
+
+        $lessonTransformer->expects($this->once())
+            ->method('transformToCollection');
+
         $this->repositories->expects($this->once())
-            ->method('getLessonRepository');
+            ->method('getLessonRepository')
+            ->willReturn($lessonRepository);
 
         $this->transformers->expects($this->once())
-            ->method('getLessonTransformer');
+            ->method('getLessonTransformer')
+            ->willReturn($lessonTransformer);
 
         $this->errorHandler->expects($this->once())
             ->method('handleLessons');
